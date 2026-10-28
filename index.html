@@ -11,7 +11,7 @@
 <div class="card"><h3>Your data in your Drive</h3><p>Your firm's data sheet, PDFs and backups are created in your own Google Drive, and Shakha's emails go from your own Gmail.</p></div>
 <div class="card"><h3>Reports</h3><p>Sales and collection reports, GST summary, GSTR-1 workbook, Tally export, registers and UDIN register.</p></div>
 </section>
-<section class="plans" id="plans"><h2>Plans</h2><p class="sub" id="plansNote">Every plan starts with a free trial. No payment needed to start.</p><div class="pgrid" id="plansGrid"><div class="card"><p>Loading plans…</p></div></div></section>
+<section class="plans" id="plans"><h2>Plans</h2><p class="sub" id="plansNote">Every plan starts with a free trial. No payment needed to start.</p><div id="plansGrid"><div class="card"><p>Loading plans…</p></div></div></section>
 <section class="doc"><h2 style="margin-top:0">How it works</h2><ol><li>Choose a plan and start your free trial with your head office admin's Gmail.</li><li>Click <b>Connect my Google account</b> in the email. Shakha creates your firm's folder and data sheet in your own Google Drive.</li><li>Sign in, add your branches and staff, and start billing.</li></ol><p>Read how Shakha uses your Google account in our <a href="privacy.html">Privacy Policy</a>.</p></section>
 </main>
 <footer class="wrap">© 2026 Shakha · Billing and Compliance for CA firms · Contact: <a href="mailto:admin.shakha@gmail.com">admin.shakha@gmail.com</a></footer>
@@ -19,17 +19,22 @@
 var APP='https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
 (function(){var g=document.getElementById('plansGrid'),note=document.getElementById('plansNote');
  var rs=function(n){return Math.round(+n||0).toLocaleString('en-IN')};var e=function(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML};
- var lim=function(n,one,many,none){return n<0?'Any number of '+many:n===0?none:'Up to '+n+' '+(n===1?one:many)};
+ var Y='<svg class="ic y" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6 10.4l2.7 2.7 5.3-5.6"/></svg>',N='<svg class="ic n" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M7.2 7.2l5.6 5.6M12.8 7.2l-5.6 5.6"/></svg>';
+ var br=function(n){return n<0?'Any number of branches':n===0?'Head office only':'Up to '+n+' branch'+(n===1?'':'es')},lg=function(n){return n<0?'Any number of logins':'Up to '+n+' login'+(n===1?'':'s')};
  fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'}).then(function(r){return r.json()}).then(function(P){
-  if(!P.plans||!P.plans.length){document.getElementById('plans').hidden=true;return}
+  if(!P.plans||!P.plans.length){document.getElementById('plans').hidden=true;return}var F=P.features||[];
   note.textContent=P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.';
   document.getElementById('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
-  g.innerHTML=P.plans.map(function(p){
-   return '<div class="card plan"><h3>'+e(p.name)+'</h3><div class="price">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> ':'')+'&#8377;'+rs(p.price)+'<small> / year</small></div>'+(p.disc?'<div class="save">'+p.disc+'% off</div>':'')+
-    '<p>'+e(p.desc)+'</p><ul><li>'+lim(p.branches,'branch','branches','Head office only')+'</li><li>'+lim(p.logins,'login','logins','No logins')+'</li>'+
-    (P.features||[]).map(function(f){var y=p.features&&p.features[f.id];return '<li class="'+(y?'yes':'no')+'">'+e(f.name)+(y?'':' (not included)')+'</li>'}).join('')+
-    '</ul><a class="btn" href="'+APP+'?register=1&plan='+encodeURIComponent(p.id)+'" target="_top">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
+  var cards=P.plans.map(function(p){var has=function(f){return !p.features||p.features[f.id]!==false};
+   return '<div class="pcard"><div class="pname">'+e(p.name)+'</div><div class="pprice"><span class="amt">&#8377;'+rs(p.price)+'</span><span class="per"> / year</span></div>'+
+    '<div class="pmrp">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span>':'&nbsp;')+'</div>'+(p.desc?'<p class="pdesc">'+e(p.desc)+'</p>':'')+
+    '<ul class="ppts"><li>'+Y+br(p.branches)+'</li><li>'+Y+lg(p.logins)+'</li>'+F.map(function(f){return '<li class="'+(has(f)?'':'no')+'">'+(has(f)?Y:N)+e(f.name)+'</li>'}).join('')+'</ul>'+
+    '<a class="btn" href="'+APP+'?register=1&plan='+encodeURIComponent(p.id)+'" target="_top">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
+  var row=function(l,f){return '<tr><th scope="row">'+l+'</th>'+P.plans.map(function(p){return '<td>'+f(p)+'</td>'}).join('')+'</tr>'};
+  var cmp='<h3 class="cmph">Compare plans</h3><div class="cmpw"><table class="cmp"><thead><tr><th></th>'+P.plans.map(function(p){return '<th>'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
+   row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?N+' Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
+   F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?Y:N})}).join('')+'</tbody></table></div>';
+  g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;
  }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn\'t be loaded just now. <a href="'+APP+'?register=1" target="_top">Register here</a> to see them.</p></div>'})})();
-
 </script>
 </body></html>
