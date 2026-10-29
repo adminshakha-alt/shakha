@@ -42,7 +42,10 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
     document.getElementById('msg').innerHTML = 'Shakha couldn\'t be reached just now. Check your internet connection and try again.<br><br><button class="btn" onclick="location.reload()">Try again</button>';
   }
   function start(exec, w, html) {
-    var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';<\/script>';
+    var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
+      /* on the sign-in and sign-up screens the Shakha logo goes back to the website's home page */
+      'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
+      '<\/script><style>.auth-brand{cursor:pointer}</style>';
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + boot; }) : boot + html;
     document.open(); document.write(html); document.close();
   }
@@ -53,13 +56,22 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
     : getJson(SHAKHA_APP + '?app=where&' + args).then(function (w) { return [SHAKHA_APP, w]; });
   where.then(function (x) {
     var exec = x[0], w = x[1], key = exec + '|' + w.build, saved = null;
+    /* the version written inside the screens themselves; a saved copy is used only when it is the version the web app runs */
+    function built(h) { var m = /<meta name="shakha-build" content="([^"]+)"/.exec((h || '').slice(0, 4000)); return m ? m[1] : ''; }
     try { saved = JSON.parse(localStorage.getItem(keep) || 'null'); } catch (e) { }
-    if (saved && saved.k === key && saved.h) return start(exec, w, saved.h);
-    return getText(exec + '?app=page').then(function (h) {
-      if (!/SHAKHA VERSION|<!doctype html/i.test(h.slice(0, 2000))) throw new Error('Not the Shakha page');
-      try { localStorage.setItem(keep, JSON.stringify({ k: key, h: h })); } catch (e) { try { localStorage.removeItem(keep); } catch (e2) { } }
-      start(exec, w, h);
-    });
+    if (saved && saved.k === key && saved.h && built(saved.h) === w.build) return start(exec, w, saved.h);
+    try { localStorage.removeItem(keep); } catch (e) { }
+    /* just after a release Google can still hand out the old screens for a moment: ask again a few times before using them */
+    function page(n) {
+      return getText(exec + '?app=page&v=' + encodeURIComponent(w.build) + '&t=' + Date.now()).then(function (h) {
+        if (!/SHAKHA VERSION|<!doctype html/i.test(h.slice(0, 2000))) throw new Error('Not the Shakha page');
+        var b = built(h);
+        if (b && b !== w.build && n > 0) return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return page(n - 1); });
+        if (b === w.build) { try { localStorage.setItem(keep, JSON.stringify({ k: key, h: h })); } catch (e) { try { localStorage.removeItem(keep); } catch (e2) { } } }
+        start(exec, w, h);
+      });
+    }
+    return page(3);
   }).catch(function (e) { console.warn(e); fail(); });
 })();
 </script>
