@@ -1,40 +1,395 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shakha · Billing and Compliance for CA firms</title><meta name="description" content="Shakha: billing, collections and compliance tracking for CA firms with a head office and branches."><link rel="stylesheet" href="style.css"></head><body>
-<header class="wrap"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div><nav><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="app/">Sign In</a></nav></header>
-<main class="wrap">
-<section class="hero"><h1>One firm. Every branch. Every deadline.</h1><p>Shakha runs the billing and compliance of a CA firm across its head office and branches: GST invoices, receipts, collections and client due dates in one place.</p>
-<a class="btn" href="app/?register=1" id="heroBtn">Start your free trial</a> <a class="btn ghost" href="app/">Sign In</a> <a class="btn ghost" href="#plans">See plans</a></section>
-<section class="grid">
-<div class="card"><h3>Billing</h3><p>Tax invoices, proformas, receipts, TDS, credit and debit notes, recurring retainers, PDFs by email and WhatsApp.</p></div>
-<div class="card"><h3>Collections</h3><p>Outstanding and overdue lists, automatic payment reminders, receivable ageing and party statements.</p></div>
-<div class="card"><h3>Compliance</h3><p>GST, TDS, income-tax and ROC due dates for every client, a To Do list, UDIN, client reminders and billing filed work.</p></div>
-<div class="card"><h3>Head office and branches</h3><p>Each branch has its own login, numbering, GSTIN and bank details; head office sees and controls everything.</p></div>
-<div class="card"><h3>Your data in your Drive</h3><p>Your firm's data sheet, PDFs and backups are created in your own Google Drive, and Shakha's emails go from your own Gmail.</p></div>
-<div class="card"><h3>Reports</h3><p>Sales and collection reports, GST summary, GSTR-1 workbook, Tally export, registers and UDIN register.</p></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shakha – Billing and Compliance for CA firms</title>
+<meta name="description" content="Shakha runs the billing, collections and client compliance of a CA firm across its head office and branches. Your data stays in your own Google Drive. Free trial.">
+<meta name="theme-color" content="#0D3A2C">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-bill" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></symbol>
+<symbol id="i-cert" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5"/><path d="M14 2v6h6M20 8v3"/><circle cx="17" cy="16" r="3"/><path d="m15.5 18.5-1 3.5 2.5-1.2 2.5 1.2-1-3.5"/><path d="M8 9h2M8 13h4"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 16v-4M13 16V8M18 16v-7"/></symbol>
+<symbol id="i-branch" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="12" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v9M12 12H7a2 2 0 0 0-2 2v2.5M12 12h5a2 2 0 0 1 2 2v2.5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9L9.6 3.9A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="m9 13 2 2 4-4"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></symbol>
+<symbol id="i-door" viewBox="0 0 24 24"><path d="M13 4h3a2 2 0 0 1 2 2v14M2 20h3M13 20h9M10 12v.01"/><path d="M13 4.6v16.2a.6.6 0 0 1-.8.6L5 19V5.6a1 1 0 0 1 .8-1l6.4-1.5a.6.6 0 0 1 .8.6z"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-playc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></symbol>
+<symbol id="i-logo" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></symbol>
+</svg>
+
+<header class="top dark"><div class="wrap">
+<a class="brand" href="index.html" aria-label="Shakha home"><svg aria-hidden="true"><use href="#i-logo"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div></a>
+<button class="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
+<nav class="nav" id="nav" aria-label="Main"><a href="#features">Features</a><a href="#demo">Demo</a><a href="#plans">Plans</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="app/">Sign in</a><a class="btn sun" href="app/?register=1" data-trial>Start free trial</a></nav>
+</div></header>
+
+<main id="main">
+<section class="hero" aria-labelledby="heroH">
+<span class="shape sL" aria-hidden="true"></span><span class="shape sR" aria-hidden="true"></span>
+<div class="wrap">
+<div class="heroText">
+<span class="pill"><i aria-hidden="true"></i>For CA firms with a head office and branches</span>
+<h1 id="heroH"><span>One firm. Every branch.</span><span>Every deadline.</span></h1>
+<p>Shakha brings your firm’s billing, collections and client compliance into one place. Each branch runs its own work, and the head office sees all of it.</p>
+<div class="heroCta"><a class="btn sun" href="app/?register=1" id="heroBtn" data-trial>Start your free 15-day trial</a><a class="btn onDark" href="#demo">Watch the demo</a></div></div>
+
+<div class="mockWrap">
+<div class="app" id="app" role="group" aria-label="Sample Shakha To Do screen with made-up clients">
+<div class="appSide" aria-hidden="true"><svg class="logo"><use href="#i-logo"/></svg><span class="on"><svg class="ico"><use href="#i-cal"/></svg></span><span><svg class="ico"><use href="#i-bill"/></svg></span><span><svg class="ico"><use href="#i-wallet"/></svg></span><span><svg class="ico"><use href="#i-cert"/></svg></span><span><svg class="ico"><use href="#i-chart"/></svg></span><span><svg class="ico"><use href="#i-users"/></svg></span></div>
+<div class="appMain">
+<div class="appBar" aria-hidden="true"><div class="appSearch"><svg class="ico"><use href="#i-search"/></svg><span>Search parties, invoices, UDIN…</span></div><div class="appIc plus"><svg class="ico"><use href="#i-plus"/></svg></div><div class="appIc"><svg class="ico"><use href="#i-bell"/></svg></div><div class="appUser"><div><b>R. Kulkarni</b>Partner</div><i>RK</i></div></div>
+<div class="appHead"><div><h2>To Do</h2><p class="fade" id="mSub">October 2026, whole firm</p></div>
+<div class="seg"><span id="segL">Working as</span><div class="segBtns" role="group" aria-labelledby="segL">
+<button type="button" data-o="all" aria-pressed="true">Whole firm</button><button type="button" data-o="ho" aria-pressed="false">Head office</button><button type="button" data-o="pune" aria-pressed="false">Pune</button><button type="button" data-o="nashik" aria-pressed="false">Nashik</button></div></div></div>
+<div class="stats fade" aria-live="polite">
+<div class="stat"><small>Returns due this week</small><b id="mDue">42</b><em>GST, TDS, IT and ROC</em></div>
+<div class="stat"><small>Overdue returns</small><b id="mOver">6</b><em>Client reminders sent</em></div>
+<div class="stat feat"><small>Ready to bill</small><b id="mBill">₹2,84,500</b><em>Filed work, not yet billed</em></div>
+<div class="stat"><small>Fees outstanding</small><b id="mOut">₹6,12,300</b><em>Payment reminders on</em></div>
+</div>
+<div class="appGrid">
+<div class="panel"><h3>Pending and ready to bill <small>Due date</small></h3>
+<table class="todo fade"><thead><tr><th>Client</th><th class="offC">Office</th><th>Work</th><th>Due</th><th>Status</th></tr></thead><tbody id="mRows"></tbody></table></div>
+<div class="panel chartP"><h3>Collections <small>₹ lakh, Apr–Sep</small></h3>
+<div class="bars fade" id="mBars" role="img" aria-label="Monthly collections"></div><div class="barL" aria-hidden="true"><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span></div></div>
+</div>
+</div></div>
+</div>
+</div>
 </section>
-<section class="plans" id="plans"><h2>Plans</h2><p class="sub" id="plansNote">Every plan starts with a free trial. No payment needed to start.</p><div id="plansGrid"><div class="card"><p>Loading plans…</p></div></div></section>
-<section class="doc"><h2 style="margin-top:0">How it works</h2><ol><li>Choose a plan and start your free trial with your head office admin's Gmail.</li><li>Click <b>Connect my Google account</b> in the email. Shakha creates your firm's folder and data sheet in your own Google Drive.</li><li>Sign in, add your branches and staff, and start billing.</li></ol><p>Read how Shakha uses your Google account in our <a href="privacy.html">Privacy Policy</a>.</p></section>
+
+<section class="sec first" aria-label="Shakha at a glance"><div class="wrap">
+<div class="facts">
+<div class="factLead"><span aria-hidden="true"><svg class="ico" style="width:28px;height:28px"><use href="#i-folder"/></svg></span><p>Your firm’s data stays in your firm’s own Google Drive</p></div>
+<div class="fact"><b>41</b><span>CA certificate formats ready to use</span></div>
+<div class="fact"><b><span class="tD">15</span> days</b><span>free trial, no payment to start</span></div>
+<div class="fact"><b>Any</b><span>number of branches, each with its own GSTIN</span></div>
+<div class="fact"><b>0</b><span>things to install, in the browser or on Android</span></div>
+</div>
+</div></section>
+
+<section class="sec" id="features" aria-labelledby="featH" style="padding-top:24px"><div class="wrap">
+<div class="secHead"><h2 id="featH">Everything a CA firm bills, collects and files</h2><p>Nine parts that work together. Open any of them to see the full list of what it does.</p></div>
+<div class="mods">
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-bill"/></svg></span><h3>Billing</h3><p>GST tax invoices, proformas, receipts with TDS, credit and debit notes, and recurring retainer bills.</p>
+<details><summary>All billing features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>CGST and SGST or IGST worked out from the place of supply</li>
+<li>Each office has its own numbering, GSTIN and bank details</li>
+<li>GSTIN auto-fill: type a GSTIN and the party’s details fill in</li>
+<li>Services list with SAC codes and default fees</li>
+<li>Proforma invoices, converted to a tax invoice in one click</li>
+<li>Receipts with TDS deducted, part payments and advances</li>
+<li>Credit and debit notes, including the right way to change or cancel an invoice after its GST return is filed</li>
+<li>Recurring invoices for retainers, with a “to bill” count</li>
+<li>PDF, print, email from your own Gmail, WhatsApp and Drive links</li>
+<li>Classic, Modern, Minimal and Traditional invoice templates, with your colours, fonts, logo, bank and UPI details, and the Udyam number if you want it</li>
+<li>A saved signature, a DSC box or space to sign, chosen per invoice</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-wallet"/></svg></span><h3>Collections</h3><p>See who owes what and remind them automatically, so fees don’t go uncollected.</p>
+<details><summary>All collection features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Outstanding and overdue lists, with follow-up notes</li>
+<li>Automatic payment reminders to clients</li>
+<li>Receivable ageing with periods you can change</li>
+<li>Party statements</li>
+<li>TDS receivable tracking</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cal"/></svg></span><h3>Compliance</h3><p>GST, TDS, income-tax and ROC due dates for every client in one To Do list.</p>
+<details><summary>All compliance features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Due dates set up from each client’s work</li>
+<li>To Do list: pending and overdue returns, work ready to bill, client reminders and filed returns by month</li>
+<li>A calendar, and extended due dates</li>
+<li>Event-based forms such as DIR-12, MGT-14 and PAS-3, due a set number of days after the event</li>
+<li>Mark returns filed with the UDIN, or get a reminder when the UDIN isn’t generated yet</li>
+<li>Email clients to send their documents</li>
+<li>Quarterly, half-yearly and yearly bills show as ready only after every return of the period is filed</li>
+<li>GSTR-1 and GSTR-3B status with due dates, and locking a month once filed</li>
+<li>A branch with its own GSTIN in another state files its own returns</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters prepared every year from each client’s work.</p>
+<details><summary>All certificate and letter features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Net worth, turnover, Form 15CB, utilisation and end use of funds</li>
+<li>Bank, RERA, NBFC, GST refund, KYC, and visa or study loan net worth</li>
+<li>Others, plus your own wording</li>
+<li>Client details fill in by themselves, figures and totals are worked out, with the UDIN and partner, as a PDF or email on the office’s letterhead</li>
+<li>Engagement letters on your letterhead and appointment letters on the client’s:<ul>
+<li>Standard or Detailed wording, with terms that protect the firm</li>
+<li>Fees for the year, with how often each service is billed</li>
+<li>The right signatory: proprietor, partner, designated partner with DPIN, director with DIN, karta or trustee</li>
+<li>Three client letterhead styles</li>
+<li>“Same as last year” or “From current work”</li></ul></li>
+<li>Long documents split into A4 pages, with the letterhead and table headings repeated</li>
+<li>Each office prepares and keeps its own</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales and collection, GST summary, GSTR-1 workbook, Tally export and the UDIN register.</p>
+<details><summary>All reports<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Sales and collection, outstanding, party statement and monthly summary</li>
+<li>UDIN Register showing the invoice, proforma or “bill” status, with your choice of columns and a CSV export</li>
+<li>GST summary and a GSTR-1 Excel workbook</li>
+<li>Tally XML export</li>
+<li>Invoice and receipt registers in CSV</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-branch"/></svg></span><h3>Head office and branches</h3><p>One firm with any number of branches. Head office sees everything; branch work stays with the branch.</p>
+<details><summary>How branches work<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Each branch has its own logins, numbering, GSTIN, bank details, partners and letterhead</li>
+<li>“Working as”: the whole firm, head office only, or one branch</li>
+<li>Head office sees and controls everything</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-shield"/></svg></span><h3>Logins and security</h3><p>Sign in with an emailed code or a password, and see every device that’s signed in.</p>
+<details><summary>All security features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Sign in with an emailed 6-digit code or a password</li>
+<li>QR sign-in: scan the code with your phone to sign in on a computer</li>
+<li>A list of signed-in devices, with sign-out from any of them</li>
+<li>Logins for each branch and for staff</li>
+<li>Activity log, backup and restore, and resetting data with branch approval</li>
+<li>Data sheet, PDFs and backups in your own Google Drive; emails from your own Gmail</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-phone"/></svg></span><h3>Ease of use</h3><p>Search everything from one box, add things with one tap, and use it on your phone.</p>
+<details><summary>All ease-of-use features<svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></summary><ul>
+<li>Search across parties, invoices, receipts, compliance, certificates and letters, the UDIN Register, greetings, screens and settings</li>
+<li>A quick “+” button for common tasks</li>
+<li>Notifications bell, a guided tour, and Help &amp; Guide where you can ask a question</li>
+<li>Light or dark, Large and Extra Large text, fonts, compact layout and high contrast</li>
+<li>The Android app adds notifications, a home-screen widget and tap-to-call</li>
+<li>Typed details aren’t lost when the app refreshes in the background</li>
+<li>Feedback and support from inside the app</li>
+</ul></details></article>
+
+<article class="mod"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-gift"/></svg></span><h3>Greetings</h3><p>Birthday and festival greetings to clients, sent by the head office or branch that added the client.</p></article>
+
+</div>
+</div></section>
+
+<section class="sec flowSec" aria-labelledby="flowH"><div class="wrap">
+<div class="secHead"><h2 id="flowH">From due date to paid invoice</h2><p>Compliance and billing are one flow in Shakha, so filed work never goes unbilled.</p></div>
+<ol class="flow">
+<li><h3>Due dates appear</h3><p>GST, TDS, income-tax and ROC due dates are set up from each client’s work and show in the To Do list.</p></li>
+<li><h3>Staff mark it filed</h3><p>They record the UDIN, or Shakha reminds them when it isn’t generated yet. Clients get an email when documents are needed.</p></li>
+<li><h3>It shows as ready to bill</h3><p>Quarterly, half-yearly and yearly bills wait until every return of the period is filed.</p></li>
+<li><h3>The invoice goes out</h3><p>A GST invoice goes by email or WhatsApp, and payment reminders follow until it’s paid.</p></li>
+</ol>
+</div></section>
+
+<section class="sec band" aria-labelledby="ownH"><div class="wrap">
+<div><h2 id="ownH">Your firm’s data stays with your firm</h2><p class="lead">Your clients, invoices and filings are kept in your own Google account, where you can open them any time. <a href="privacy.html">Read how it works</a></p></div>
+<ul class="own">
+<li><span aria-hidden="true"><svg class="ico"><use href="#i-folder"/></svg></span><div><h3>Stored in your Google Drive</h3><p>Your data sheet, invoice PDFs and backups live in a “Shakha” folder in your own Drive. Shakha can open only the files it creates there.</p></div></li>
+<li><span aria-hidden="true"><svg class="ico"><use href="#i-mail"/></svg></span><div><h3>Sent from your Gmail</h3><p>Invoices, reminders and sign-in codes go from your firm’s Gmail. Shakha can send email but can’t read, search or delete it.</p></div></li>
+<li><span aria-hidden="true"><svg class="ico"><use href="#i-door"/></svg></span><div><h3>Yours if you leave</h3><p>Export your data at any time. If you stop using Shakha, your files stay in your Drive.</p></div></li>
+</ul>
+</div></section>
+
+<section class="sec" aria-labelledby="whyH"><div class="wrap">
+<div class="secHead"><h2 id="whyH">Why firms choose Shakha</h2></div>
+<div class="why">
+<div class="whyC"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-branch"/></svg></span><h3>Head office keeps control</h3><p>It sees every branch, and each branch works on its own with its own logins.</p></div>
+<div class="whyC"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-folder"/></svg></span><h3>Data stays with the firm</h3><p>Everything is stored in your own Google Drive, and emails go from your own Gmail.</p></div>
+<div class="whyC"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cloud"/></svg></span><h3>Nothing to install</h3><p>It works in the browser and on phones, with an Android app.</p></div>
+<div class="whyC"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-gauge"/></svg></span><h3>Easy to try</h3><p>Start with a free <span class="tD">15</span>-day trial, then choose a plan that fits your firm’s size.</p></div>
+</div>
+</div></section>
+
+<section class="sec flowSec" id="demo" aria-labelledby="demoH"><div class="wrap">
+<div class="secHead"><h2 id="demoH">See Shakha in use</h2><p>A short walk through billing, the To Do list and branches. Then pick a tutorial for the task you want to learn.</p></div>
+<div class="demo">
+<div class="video" id="video"></div>
+<div class="tuts"><h3>Tutorials</h3><ul class="tutList" id="tuts"></ul>
+<a class="btn line" href="#contact" data-demo>Ask for a live demo</a></div>
+</div>
+</div></section>
+
+<section class="sec plans" id="plans" aria-labelledby="plansH"><div class="wrap">
+<div class="secHead c"><h2 id="plansH">Which Shakha plan is right for your firm?</h2><p class="sub" id="plansNote">Every plan starts with a free trial. No payment needed to start.</p></div>
+<div id="plansGrid"><div class="card"><p>Loading plans…</p></div></div>
+<ol class="steps" aria-label="How to start">
+<li><b>Choose a plan</b> and start your free trial with your head office admin’s Gmail.</li>
+<li><b>Click “Connect my Google account”</b> in the email. Shakha creates your firm’s folder and data sheet in your own Drive.</li>
+<li><b>Sign in</b>, add your branches and staff, and start billing.</li>
+</ol>
+</div></section>
+
+<section class="sec flowSec" id="faq" aria-labelledby="faqH"><div class="wrap faqGrid">
+<div class="secHead"><h2 id="faqH">Questions firms ask</h2><p>Can’t find your answer? <a href="#contact">Ask us</a>.</p></div>
+<div class="faq">
+<details><summary>Where is our firm’s data kept?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>In your own Google Drive. Shakha creates a folder named “Shakha – your firm name” with your data sheet, and saves your invoice PDFs, statements and backups there. Your firm owns these files.</p></div></details>
+<details><summary>Can Shakha read our email or our other Drive files?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>No. Shakha asks Google only for access to the files it creates, and for permission to send email. It can’t see other files in your Drive, and it can’t read, search or delete your email.</p></div></details>
+<details><summary>How does the free trial work?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Choose a plan and register with your head office admin’s Gmail. You get <span class="tD">15</span> days free with no payment needed to start. After that, you pay for the plan that fits your firm’s size.</p></div></details>
+<details><summary>Can each branch have its own GSTIN, numbering and letterhead?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Each branch has its own logins, invoice numbering, GSTIN, bank details, partners and letterhead. A branch with its own GSTIN in another state files its own GST returns.</p></div></details>
+<details><summary>Does the head office see branch work?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. The head office sees and controls everything. It can work as the whole firm, as the head office only, or as any one branch. Branch staff see only their branch’s work.</p></div></details>
+<details><summary>Do we need to install anything?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>No. Shakha works in any modern browser on a computer or phone. There’s also an Android app, which adds notifications, a home-screen widget and tap-to-call.</p></div></details>
+<details><summary>Can we send our data to Tally?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Shakha gives a Tally XML export, invoice and receipt registers in CSV, a GST summary and a GSTR-1 Excel workbook.</p></div></details>
+<details><summary>How do staff sign in?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>With a 6-digit code sent to their email, or a password. They can also scan a QR code with their phone to sign in on a computer. You can see every signed-in device and sign any of them out.</p></div></details>
+<details><summary>What happens if we stop using Shakha?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Your files stay in your Drive. You can export your data at any time, and remove Shakha’s access from your Google Account. Email us to have your registration and logins deleted, and we’ll do it within 30 days.</p></div></details>
+</div>
+</div></section>
+
+<section class="sec" id="contact" aria-labelledby="contactH"><div class="wrap contact">
+<div><div class="secHead" style="margin:0"><h2 id="contactH">Book a demo or ask a question</h2><p>Tell us about your firm, and we’ll show you Shakha with your own kind of work: your branches, your clients’ returns and your billing.</p></div>
+<ul class="reach" id="reach">
+<li><a href="mailto:admin.shakha@gmail.com"><span aria-hidden="true"><svg class="ico"><use href="#i-mail"/></svg></span><div><small>Email</small><b>admin.shakha@gmail.com</b></div></a></li>
+</ul></div>
+
+<form class="form" id="cForm" novalidate>
+<h3>Request a demo</h3><p>Fields marked <span aria-hidden="true">*</span><span class="vh">with an asterisk</span> are required.</p>
+<fieldset class="fld"><legend>What would you like?</legend><div class="radios">
+<label><input type="radio" name="want" value="A live demo" checked>A live demo</label>
+<label><input type="radio" name="want" value="An answer to a question">Ask a question</label></div></fieldset>
+<div class="fRow">
+<div class="fld"><label for="cName">Your name <i aria-hidden="true">*</i></label><input id="cName" name="name" autocomplete="name" required aria-describedby="cNameE"><span class="err" id="cNameE"></span></div>
+<div class="fld"><label for="cFirm">Firm name <i aria-hidden="true">*</i></label><input id="cFirm" name="firm" autocomplete="organization" required aria-describedby="cFirmE"><span class="err" id="cFirmE"></span></div>
+</div>
+<div class="fRow">
+<div class="fld"><label for="cMail">Email <i aria-hidden="true">*</i></label><input id="cMail" name="email" type="email" autocomplete="email" required aria-describedby="cMailE"><span class="err" id="cMailE"></span></div>
+<div class="fld"><label for="cTel">Phone or WhatsApp</label><input id="cTel" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+</div>
+<div class="fRow">
+<div class="fld"><label for="cCity">City</label><input id="cCity" name="city" autocomplete="address-level2"></div>
+<div class="fld"><label for="cBr">Branches</label><select id="cBr" name="branches"><option>Head office only</option><option>1 to 2 branches</option><option>3 to 5 branches</option><option>More than 5 branches</option></select></div>
+</div>
+<div class="fld"><label for="cMsg">Anything we should know?</label><textarea id="cMsg" name="msg" placeholder="For example, a good time to call, or what you use for billing today"></textarea></div>
+<button class="btn" type="submit">Email my request</button>
+<p class="fNote">This opens your email app with your request filled in, ready to send to admin.shakha@gmail.com.</p>
+<p class="fDone" id="cDone" role="status"></p>
+</form>
+</div></section>
+
+<section class="end" aria-labelledby="endH"><span class="shape sE" aria-hidden="true"></span><div class="wrap">
+<div><h2 id="endH">Try Shakha with your own firm for <span class="tD">15</span> days</h2><p>Set up your head office and branches, raise a real invoice, and see your clients’ due dates in one list.</p></div>
+<div class="heroCta"><a class="btn sun" href="app/?register=1" data-trial>Start free trial</a><a class="btn onDark" href="app/">Sign in</a></div>
+</div></section>
 </main>
-<footer class="wrap">© 2026 Shakha · Billing and Compliance for CA firms · Contact: <a href="mailto:admin.shakha@gmail.com">admin.shakha@gmail.com</a></footer>
+
+<footer class="foot"><div class="wrap">
+<div><a class="brand" href="index.html"><svg aria-hidden="true"><use href="#i-logo"/></svg><div><div class="bn">Shakha</div></div></a><p>Billing and compliance for CA firms with a head office and branches.</p></div>
+<div><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#demo">Demo</a></li><li><a href="#plans">Plans</a></li><li><a href="#faq">FAQ</a></li><li><a href="app/">Sign in</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="#contact">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li><li><a href="mailto:admin.shakha@gmail.com">admin.shakha@gmail.com</a></li></ul></div>
+<div class="copy"><span>© 2026 Shakha</span><span>Made for chartered accountant firms in India</span></div>
+</div></footer>
+
 <script>
+/* ---- Settings you can change ---- */
 var APP='https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
-(function(){var g=document.getElementById('plansGrid'),note=document.getElementById('plansNote');
- var rs=function(n){return Math.round(+n||0).toLocaleString('en-IN')};var e=function(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML};
+var CONTACT_EMAIL='admin.shakha@gmail.com';
+var WHATSAPP='';          /* e.g. '919812345678' (country code, no + or spaces). Leave empty to hide. */
+var DEMO_VIDEO='';        /* YouTube video ID of the main demo, e.g. 'dQw4w9WgXcQ'. Leave empty until ready. */
+var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
+ {t:'Raise your first GST invoice',id:'',len:''},
+ {t:'Add a branch and its logins',id:'',len:''},
+ {t:'Mark a return filed with the UDIN',id:'',len:''},
+ {t:'Prepare a yearly engagement letter',id:'',len:''},
+ {t:'Send payment reminders',id:'',len:''}];
+
+(function(){
+ var e=function(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML};
+
+ /* mobile menu */
+ var mb=document.querySelector('.menuBtn'),nav=document.getElementById('nav');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(ev){if(ev.target.closest('a')){nav.classList.remove('open');mb.setAttribute('aria-expanded','false')}});
+ document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&nav.classList.contains('open')){nav.classList.remove('open');mb.setAttribute('aria-expanded','false');mb.focus()}});
+
+ /* sample dashboard: "Working as" switch (made-up clients) */
+ var O={
+  all:{n:'whole firm',due:42,over:6,bill:'2,84,500',out:'6,12,300',bars:[8.2,8.4,9.0,9.8,11.2,12.2],rows:[
+   ['Joshi Agro Foods','Pune','GSTR-3B Sep','20 Oct','overdue'],['Patil Engineering Pvt Ltd','Head office','AOC-4 FY 25-26','29 Oct','due'],['Kulkarni Textiles LLP','Head office','ITR-5 (audit)','31 Oct','due'],['Bhosale Traders','Nashik','GSTR-1 Sep','11 Oct','filed'],['Mehta & Sons','Head office','GST returns Q2','','bill']]},
+  ho:{n:'head office',due:18,over:3,bill:'1,36,000',out:'2,94,500',bars:[4.2,3.8,5.1,4.6,5.9,6.4],rows:[
+   ['Desai Clinic','Head office','GSTR-1 Sep','11 Oct','overdue'],['Patil Engineering Pvt Ltd','Head office','AOC-4 FY 25-26','29 Oct','due'],['Shah Logistics','Head office','TDS 26Q Q2','31 Oct','due'],['Kulkarni Textiles LLP','Head office','ITR-5 (audit)','31 Oct','due'],['Mehta & Sons','Head office','GST returns Q2','','bill']]},
+  pune:{n:'Pune branch',due:14,over:2,bill:'92,500',out:'1,88,300',bars:[2.6,2.9,2.4,3.3,3.1,3.8],rows:[
+   ['Joshi Agro Foods','Pune','GSTR-3B Sep','20 Oct','overdue'],['Pawar Builders','Pune','TDS 24Q Q2','31 Oct','due'],['Deshpande Motors Pvt Ltd','Pune','Tax audit 3CD','30 Sep','filed'],['Gokhale Pharma LLP','Pune','GST returns Q2','','bill']]},
+  nashik:{n:'Nashik branch',due:10,over:1,bill:'56,000',out:'1,29,500',bars:[1.4,1.7,1.5,1.9,2.2,2.0],rows:[
+   ['Wagh Farms','Nashik','ITR-3','31 Oct','due'],['Sapte Wines Pvt Ltd','Nashik','MGT-7 FY 25-26','29 Nov','due'],['Bhosale Traders','Nashik','GSTR-1 Sep','11 Oct','filed'],['Thakur Hardware','Nashik','TDS returns Q2','','bill']]}};
+ var TAG={filed:'Filed',due:'Due',overdue:'Overdue',bill:'Ready to bill'},MON=['Apr','May','Jun','Jul','Aug','Sep'];
+ var app=document.getElementById('app'),$=function(i){return document.getElementById(i)},max=12.5;
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function paint(k){var d=O[k];
+  $('mSub').textContent='October 2026, '+d.n;$('mDue').textContent=d.due;$('mOver').textContent=d.over;$('mBill').textContent='₹'+d.bill;$('mOut').textContent='₹'+d.out;
+  $('mRows').innerHTML=d.rows.map(function(r){return '<tr><td>'+e(r[0])+'</td><td class="oName offC">'+e(r[1])+'</td><td>'+e(r[2])+'</td><td>'+(r[3]?e(r[3]):'<span aria-label="not applicable">–</span>')+'</td><td><span class="tag '+r[4]+'">'+TAG[r[4]]+'</span></td></tr>'}).join('');
+  $('mBars').setAttribute('aria-label','Monthly collections for the '+d.n+', in lakh rupees: '+d.bars.map(function(v,i){return MON[i]+' '+v}).join(', '));
+  $('mBars').innerHTML=d.bars.map(function(v){return '<div class="bar"><b>'+v.toFixed(1)+'</b><i style="height:'+Math.round(v/max*100)+'%"></i></div>'}).join('')}
+ paint('all');
+ app.querySelectorAll('.segBtns button').forEach(function(b){b.addEventListener('click',function(){
+  if(b.getAttribute('aria-pressed')==='true')return;
+  app.querySelectorAll('.segBtns button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+  if(reduce){paint(b.dataset.o);return}
+  app.classList.add('swap');setTimeout(function(){paint(b.dataset.o);app.classList.remove('swap')},170)})});
+
+ /* demo video and tutorials: YouTube loads only after a click */
+ var yt=function(id){return 'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&rel=0'};
+ var v=$('video');
+ if(DEMO_VIDEO){v.innerHTML='<button type="button" class="poster"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><b>Shakha in 5 minutes</b><small>Billing, the To Do list and branches</small><span class="vh">Play the demo video</span></button>';
+  v.querySelector('button').addEventListener('click',function(){v.innerHTML='<iframe src="'+yt(DEMO_VIDEO)+'" title="Shakha demo video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'})}
+ else v.innerHTML='<div class="poster static"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><b>The demo video is on its way</b><small>Until then, we’re happy to show you Shakha live. Ask for a demo below.</small></div>';
+ $('tuts').innerHTML=TUTORIALS.map(function(t,i){return t.id?'<li><a href="https://www.youtube.com/watch?v='+encodeURIComponent(t.id)+'" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-playc"/></svg>'+e(t.t)+'<em>'+e(t.len||'Watch')+'</em></a></li>':'<li><span><svg class="ico" aria-hidden="true"><use href="#i-playc"/></svg>'+e(t.t)+'<em>Coming soon</em></span></li>'}).join('');
+
+ /* WhatsApp contact, shown only when a number is set */
+ if(WHATSAPP){var li=document.createElement('li');li.innerHTML='<a href="https://wa.me/'+encodeURIComponent(WHATSAPP)+'" target="_blank" rel="noopener"><span aria-hidden="true"><svg class="ico"><use href="#i-chat"/></svg></span><div><small>WhatsApp</small><b>Message us on WhatsApp</b></div></a>';$('reach').appendChild(li)}
+
+ /* contact form: checks fields, then opens the visitor's email app */
+ var f=$('cForm'),done=$('cDone');
+ var rules={cName:['Enter your name.'],cFirm:['Enter your firm’s name.'],cMail:['Enter your email address.','Enter an email address like name@firm.com.']};
+ function check(id){var el=$(id),m='';if(!el.value.trim())m=rules[id][0];else if(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()))m=rules[id][1];
+  $(id+'E').textContent=m;if(m)el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');return !m}
+ Object.keys(rules).forEach(function(id){$(id).addEventListener('blur',function(){if($(id).value)check(id)});$(id).addEventListener('input',function(){if($(id).getAttribute('aria-invalid'))check(id)})});
+ f.addEventListener('submit',function(ev){ev.preventDefault();done.textContent='';
+  var bad=Object.keys(rules).filter(function(id){return !check(id)});if(bad.length){$(bad[0]).focus();return}
+  var g=function(n){return (f.elements[n].value||'').trim()},want=f.querySelector('input[name=want]:checked').value;
+  var body=['I would like '+want.toLowerCase()+'.','','Name: '+g('name'),'Firm: '+g('firm'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'City: '+(g('city')||'-'),'Branches: '+g('branches'),'',g('msg')].join('\n');
+  location.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent((want==='A live demo'?'Demo request: ':'Question: ')+g('firm'))+'&body='+encodeURIComponent(body);
+  done.textContent='Your email app should open with the request ready. If it didn’t, email us at '+CONTACT_EMAIL+'.'});
+ document.querySelectorAll('[data-demo]').forEach(function(a){a.addEventListener('click',function(){f.querySelector('input[value="A live demo"]').checked=true})});
+
+ /* scroll motion: content rises into place as it enters the screen (skipped for reduced motion) */
+ var io=!reduce&&'IntersectionObserver' in window&&new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.12});
+ function reveal(sel){if(!io)return;document.querySelectorAll(sel).forEach(function(el){if(el.classList.contains('rv'))return;
+  var i=Array.prototype.indexOf.call(el.parentNode.children,el);el.style.setProperty('--d',(i%4)*80+'ms');el.classList.add('rv');io.observe(el)})}
+ reveal('.secHead,.facts>*,.mod,.flow,.flow li,.band .wrap>div,.own li,.whyC,.demo>*,.steps li,.faq details,.contact>*,.end .wrap>*,.foot .wrap>div');
+
+ /* plans, loaded live from the Shakha app */
+ var g=$('plansGrid'),note=$('plansNote'),rs=function(n){return Math.round(+n||0).toLocaleString('en-IN')};
  var Y='<svg class="ic y" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6 10.4l2.7 2.7 5.3-5.6"/></svg>',N='<svg class="ic n" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M7.2 7.2l5.6 5.6M12.8 7.2l-5.6 5.6"/></svg>';
  var br=function(n){return n<0?'Any number of branches':n===0?'Head office only':'Up to '+n+' branch'+(n===1?'':'es')},lg=function(n){return n<0?'Any number of logins':'Up to '+n+' login'+(n===1?'':'s')};
  fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'}).then(function(r){return r.json()}).then(function(P){
-  if(!P.plans||!P.plans.length){document.getElementById('plans').hidden=true;return}var F=P.features||[];
+  if(!P.plans||!P.plans.length){$('plans').hidden=true;return}var F=P.features||[];
   note.textContent=P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.';
-  document.getElementById('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
+  document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
+  $('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
+  if(!P.autoTrial)document.querySelectorAll('[data-trial]').forEach(function(a){if(a.id!=='heroBtn')a.textContent='Register your firm'});
   var cards=P.plans.map(function(p){var has=function(f){return !p.features||p.features[f.id]!==false};
    return '<div class="pcard"><div class="pname">'+e(p.name)+'</div><div class="pprice"><span class="amt">&#8377;'+rs(p.price)+'</span><span class="per"> / year</span></div>'+
     '<div class="pmrp">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span>':'&nbsp;')+'</div>'+(p.desc?'<p class="pdesc">'+e(p.desc)+'</p>':'')+
-    '<ul class="ppts"><li>'+Y+br(p.branches)+'</li><li>'+Y+lg(p.logins)+'</li>'+F.map(function(f){return '<li class="'+(has(f)?'':'no')+'">'+(has(f)?Y:N)+e(f.name)+'</li>'}).join('')+'</ul>'+
+    '<ul class="ppts"><li>'+Y+br(p.branches)+'</li><li>'+Y+lg(p.logins)+'</li>'+F.map(function(f){return '<li class="'+(has(f)?'':'no')+'">'+(has(f)?Y:N)+'<span>'+(has(f)?'':'<span class="vh">Not included: </span>')+e(f.name)+'</span></li>'}).join('')+'</ul>'+
     '<a class="btn" href="app/?register=1&plan='+encodeURIComponent(p.id)+'">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
   var row=function(l,f){return '<tr><th scope="row">'+l+'</th>'+P.plans.map(function(p){return '<td>'+f(p)+'</td>'}).join('')+'</tr>'};
-  var cmp='<h3 class="cmph">Compare plans</h3><div class="cmpw"><table class="cmp"><thead><tr><th></th>'+P.plans.map(function(p){return '<th>'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
-   row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?N+' Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
-   F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?Y:N})}).join('')+'</tbody></table></div>';
-  g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;
- }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn\'t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'})})();
+  var yes=Y+'<span class="vh">Included</span>',no=N+'<span class="vh">Not included</span>';
+  var cmp='<h3 class="cmph">Compare plans</h3><div class="cmpw"><table class="cmp"><thead><tr><th><span class="vh">Feature</span></th>'+P.plans.map(function(p){return '<th scope="col">'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
+   row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?'Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
+   F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?yes:no})}).join('')+'</tbody></table></div>';
+  g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;reveal('.pcard,.cmph,.cmpw');
+ }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn’t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'});
+})();
 </script>
 </body></html>

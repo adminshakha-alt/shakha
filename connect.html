@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Shakha · Connecting your Google account</title><link rel="stylesheet" href="style.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Shakha · Connecting your Google account</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="style.css">
 <style>
 .cx{max-width:560px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
 .cx h1{font-size:20px;margin:0 0 12px}.cx p,.cx li{font-size:15px;line-height:1.55;text-align:justify}.cx ul{padding-left:20px}
@@ -7,9 +7,9 @@
 @keyframes r{to{transform:rotate(360deg)}}
 @media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}}
 </style></head><body>
-<header class="wrap"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div></header>
-<main class="wrap"><div class="cx" id="box"><h1>Connecting your Google account</h1><div class="spin"></div><p>Please keep this page open. Shakha is setting up your firm's folder and data sheet in your Google Drive. This takes a few seconds.</p></div></main>
-<footer class="wrap">© 2026 Shakha · Billing and Compliance for CA firms · Contact: <a href="mailto:admin.shakha@gmail.com">admin.shakha@gmail.com</a></footer>
+<header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Shakha home"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div></a><nav class="nav" style="display:flex;position:static;flex-direction:row;padding:0;border:0" aria-label="Main"><a href="index.html">Home</a><a href="app/">Sign in</a></nav></div></header>
+<main class="wrap docMain" id="main"><div class="cx" id="box"><h1>Connecting your Google account</h1><div class="spin"></div><p>Please keep this page open. Shakha is setting up your firm's folder and data sheet in your Google Drive. This takes a few seconds.</p></div></main>
+<footer class="foot"><div class="wrap"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div></div></a><p>Billing and compliance for CA firms with a head office and branches.</p></div><div><h4>Product</h4><ul><li><a href="index.html#features">Features</a></li><li><a href="index.html#plans">Plans</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="app/">Sign in</a></li></ul></div><div><h4>Company</h4><ul><li><a href="index.html#contact">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li><li><a href="mailto:admin.shakha@gmail.com">admin.shakha@gmail.com</a></li></ul></div><div class="copy"><span>&copy; 2026 Shakha</span><span>Made for chartered accountant firms in India</span></div></div></footer>
 <script>
 /* Shakha web app address (Deploy → Manage deployments → Web app URL, ending in /exec) */
 var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
@@ -17,6 +17,16 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
   var box = document.getElementById('box');
   var q = new URLSearchParams(location.search), st = q.get('state') || '', code = q.get('code') || '', er = q.get('error') || '';
   function show(t, h) { box.innerHTML = '<h1></h1>' + h; box.firstChild.textContent = t; document.title = 'Shakha · ' + t; }
+  /* the link from the email: show what will happen, with the button to continue with Google */
+  var ct = q.get('connect') || '';
+  if (ct && !st) {
+    show('Connect your Google account', '<div class="spin"></div><p>Opening…</p>');
+    fetch(APP + '?gx=1&connect=' + encodeURIComponent(ct), { credentials: 'omit', redirect: 'follow', cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (o) { show(o.title || 'Connect your Google account', o.html || ''); })
+      .catch(function () { show('Please try again', '<p>Shakha couldn\'t be reached just now. Check your internet connection and open the link again.</p><p class="btns"><a class="btn" href="' + APP + '?connect=' + encodeURIComponent(ct) + '" target="_top">Open the connect page</a></p>'); });
+    return;
+  }
   if (!st || !(code || er)) { show('Open the link from your email', '<p>To connect your firm\'s Google account, open the <b>Connect my Google account</b> link in the email from Shakha.</p>'); return; }
   /* the code works only once: take it out of the address bar so a refresh or a shared link can't reuse it */
   try { history.replaceState(null, '', location.pathname); } catch (e) { }
