@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#17614A">
+<meta name="robots" content="noindex">
+<title>Shakha · Billing and Compliance for CA firms</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%2317614A'/%3E%3Cpath d='M60 100V44M60 76L34 54M60 62L88 40' stroke='%23F7F3E8' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='60' cy='32' r='12' fill='%23F2B632'/%3E%3Ccircle cx='34' cy='54' r='9' fill='%23F2B632'/%3E%3Ccircle cx='88' cy='40' r='9' fill='%23F2B632'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#F3F4F2;--fg:#1B2420;--mu:#5D6B64;--card:#fff;--line:#DDE3DF}
+@media (prefers-color-scheme:dark){:root{--bg:#0B1712;--fg:#E7EFEA;--mu:#9DB0A6;--card:#13221B;--line:#25372E}}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.boot{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;box-sizing:border-box;text-align:center}
+.boot svg{width:64px;height:64px}
+.boot b{font-size:22px}
+.boot p{margin:0;color:var(--mu);font-size:14.5px;max-width:420px;line-height:1.5}
+.bar{width:160px;height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;width:40%;height:100%;background:#17614A;border-radius:4px;animation:m 1.1s ease-in-out infinite}
+@keyframes m{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+.btn{display:inline-block;background:#17614A;color:#fff;border:0;border-radius:9px;padding:10px 18px;font-size:15px;cursor:pointer;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="boot" id="boot" role="status" aria-live="polite">
+  <svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg>
+  <b>Shakha</b>
+  <div class="bar" id="bar"><i></i></div>
+  <p id="msg">Opening Shakha…</p>
+</div>
+<script>
+/* Shakha's web app address (Deploy → Manage deployments → Web app URL, ending in /exec).
+   The screens come from there, so a new version reaches this page as soon as it is made live from the console. */
+var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+(function () {
+  var q = new URLSearchParams(location.search), keep = 'shakha_page';
+  function getJson(u) { return fetch(u, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+  function getText(u) { return fetch(u, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
+  function fail() {
+    document.getElementById('bar').style.display = 'none';
+    document.getElementById('msg').innerHTML = 'Shakha couldn\'t be reached just now. Check your internet connection and try again.<br><br><button class="btn" onclick="location.reload()">Try again</button>';
+  }
+  function start(exec, w, html) {
+    var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';<\/script>';
+    html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + boot; }) : boot + html;
+    document.open(); document.write(html); document.close();
+  }
+  var args = q.toString();
+  /* the preview address (Releases) runs the version being tested, from its own deployment */
+  var where = q.get('preview') === '1'
+    ? getJson(SHAKHA_APP + '?app=where').then(function (w) { var ex = w.preview || SHAKHA_APP; return getJson(ex + '?app=where&' + args).then(function (w2) { return [ex, w2]; }); })
+    : getJson(SHAKHA_APP + '?app=where&' + args).then(function (w) { return [SHAKHA_APP, w]; });
+  where.then(function (x) {
+    var exec = x[0], w = x[1], key = exec + '|' + w.build, saved = null;
+    try { saved = JSON.parse(localStorage.getItem(keep) || 'null'); } catch (e) { }
+    if (saved && saved.k === key && saved.h) return start(exec, w, saved.h);
+    return getText(exec + '?app=page').then(function (h) {
+      if (!/SHAKHA VERSION|<!doctype html/i.test(h.slice(0, 2000))) throw new Error('Not the Shakha page');
+      try { localStorage.setItem(keep, JSON.stringify({ k: key, h: h })); } catch (e) { try { localStorage.removeItem(keep); } catch (e2) { } }
+      start(exec, w, h);
+    });
+  }).catch(function (e) { console.warn(e); fail(); });
+})();
+</script>
+</body>
+</html>

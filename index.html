@@ -1,8 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shakha · Billing and Compliance for CA firms</title><meta name="description" content="Shakha: billing, collections and compliance tracking for CA firms with a head office and branches."><link rel="stylesheet" href="style.css"></head><body>
-<header class="wrap"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div><nav><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<header class="wrap"><svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg><div><div class="bn">Shakha</div><div class="bt">Billing and Compliance for CA firms</div></div><nav><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="app/">Sign In</a></nav></header>
 <main class="wrap">
 <section class="hero"><h1>One firm. Every branch. Every deadline.</h1><p>Shakha runs the billing and compliance of a CA firm across its head office and branches: GST invoices, receipts, collections and client due dates in one place.</p>
-<a class="btn" href="https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec?register=1" target="_top" id="heroBtn">Start your free trial</a> <a class="btn ghost" href="#plans">See plans</a></section>
+<a class="btn" href="app/?register=1" id="heroBtn">Start your free trial</a> <a class="btn ghost" href="app/">Sign In</a> <a class="btn ghost" href="#plans">See plans</a></section>
 <section class="grid">
 <div class="card"><h3>Billing</h3><p>Tax invoices, proformas, receipts, TDS, credit and debit notes, recurring retainers, PDFs by email and WhatsApp.</p></div>
 <div class="card"><h3>Collections</h3><p>Outstanding and overdue lists, automatic payment reminders, receivable ageing and party statements.</p></div>
@@ -29,12 +29,12 @@ var APP='https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5Z
    return '<div class="pcard"><div class="pname">'+e(p.name)+'</div><div class="pprice"><span class="amt">&#8377;'+rs(p.price)+'</span><span class="per"> / year</span></div>'+
     '<div class="pmrp">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span>':'&nbsp;')+'</div>'+(p.desc?'<p class="pdesc">'+e(p.desc)+'</p>':'')+
     '<ul class="ppts"><li>'+Y+br(p.branches)+'</li><li>'+Y+lg(p.logins)+'</li>'+F.map(function(f){return '<li class="'+(has(f)?'':'no')+'">'+(has(f)?Y:N)+e(f.name)+'</li>'}).join('')+'</ul>'+
-    '<a class="btn" href="'+APP+'?register=1&plan='+encodeURIComponent(p.id)+'" target="_top">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
+    '<a class="btn" href="app/?register=1&plan='+encodeURIComponent(p.id)+'">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
   var row=function(l,f){return '<tr><th scope="row">'+l+'</th>'+P.plans.map(function(p){return '<td>'+f(p)+'</td>'}).join('')+'</tr>'};
   var cmp='<h3 class="cmph">Compare plans</h3><div class="cmpw"><table class="cmp"><thead><tr><th></th>'+P.plans.map(function(p){return '<th>'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
    row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?N+' Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
    F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?Y:N})}).join('')+'</tbody></table></div>';
   g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;
- }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn\'t be loaded just now. <a href="'+APP+'?register=1" target="_top">Register here</a> to see them.</p></div>'})})();
+ }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn\'t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'})})();
 </script>
 </body></html>
