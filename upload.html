@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Upload documents</title><link rel="stylesheet" href="style.css">
+<style>
+.cx{max-width:620px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
+.cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13px;color:var(--mu)}
+.it{border-top:1px solid var(--line);padding:14px 0}.it b{display:block;font-size:15px;margin-bottom:6px;overflow-wrap:anywhere}
+.it input[type=file]{display:block;width:100%;font-size:14px;margin:6px 0;box-sizing:border-box}
+.got{display:inline-block;font-size:12px;font-weight:700;color:#17614A;background:#E4F1EB;border-radius:99px;padding:2px 10px;margin-left:6px}
+.ln{font-size:13px;margin-top:4px;overflow-wrap:anywhere}.ln.bad{color:#B3261E}.ln.ok{color:#17614A}
+.bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;width:0;background:#17614A}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:#17614A;border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
+@media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}}
+</style></head><body>
+<main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your request</h1><div class="spin"></div></div></main>
+<script>
+/* Shakha web app address (the same one as connect.html) */
+var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+(function () {
+  var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', r: q.get('r') || '', t: q.get('t') || '' };
+  var box = document.getElementById('box'), P = 5242880, MAX = 26214400, busy = 0;
+  /* everything shown here is set as text, never as page code */
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function fail(t, m) { box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
+  function post(o) { var b = {}; for (var k in K) b[k] = K[k]; for (var j in o) b[j] = o[j];
+    return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+  function b64(blob) { return new Promise(function (y, n) { var r = new FileReader(); r.onload = function () { y(String(r.result).split(',')[1] || ''); }; r.onerror = n; r.readAsDataURL(blob); }); }
+  function wait(ms) { return new Promise(function (y) { setTimeout(y, ms); }); }
+  /* a file goes in pieces; after a dropped connection Shakha asks how far it got and carries on from there */
+  function send(file, item, show) {
+    var uid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8), at = 0, tries = 0;
+    function step() {
+      if (at >= file.size) return Promise.resolve();
+      return b64(file.slice(at, at + P)).then(function (d) { return post({ up: 'piece', uid: uid, item: item, name: file.name, size: file.size, at: at, d: d }); }).then(function (j) {
+        if (!j.ok) { if (j.retry === false || /not really|Please send|up to|limit|valid|expired|closed|received|empty/.test(j.error || '')) throw new Error(j.error); throw { again: j.error }; }
+        tries = 0; at = j.next; show(at / file.size); return j.done ? null : step();
+      }).catch(function (e) {
+        if (!(e && (e.again !== undefined || e instanceof TypeError || /HTTP/.test(e.message || '')))) throw e;
+        if (++tries > 5) throw new Error('The connection keeps dropping. Please try again on a better connection.');
+        return wait(1500 * tries).then(function () { return post({ up: 'piece', uid: uid, probe: 1 }); }).then(function (p) { if (p.ok) { if (p.done) { at = file.size; show(1); return null; } at = p.next || 0; } return step(); }, function () { return step(); });
+      });
+    }
+    return step();
+  }
+  function draw(o) {
+    document.title = 'Upload documents · ' + o.firm; box.textContent = '';
+    box.appendChild(el('h1', '', o.title));
+    box.appendChild(el('p', 'mu', o.firm + (o.office ? ' · ' + o.office : '') + ' asks ' + o.client + ' for these documents by ' + o.dueText + '.'));
+    if (o.message) box.appendChild(el('p', '', o.message));
+    box.appendChild(el('p', 'mu', 'You can send PDF, JPG, PNG, Excel, Word or CSV files of up to 25 MB each. No sign-in is needed. Please keep this page open while files are sending.'));
+    var acc = o.types.map(function (x) { return '.' + x; }).join(',');
+    o.items.forEach(function (it) {
+      var d = el('div', 'it'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received;
+      function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : ''; got.style.display = n ? '' : 'none'; } mark(); h.appendChild(got);
+      var inp = el('input'); inp.type = 'file'; inp.multiple = true; inp.accept = acc; inp.setAttribute('aria-label', 'Choose files for ' + it.name);
+      d.appendChild(h); d.appendChild(inp); var list = el('div'); d.appendChild(list); box.appendChild(d);
+      inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; var chain = Promise.resolve();
+        fs.forEach(function (f) { var ln = el('div', 'ln', f.name), bar = el('div', 'bar'), fill = el('i'); bar.appendChild(fill); list.appendChild(ln); list.appendChild(bar);
+          chain = chain.then(function () { if (f.size > MAX) throw new Error('This file is larger than 25 MB.'); if (!f.size) throw new Error('This file is empty.'); busy++; return send(f, it.id, function (x) { fill.style.width = Math.round(x * 100) + '%'; }); })
+            .then(function () { busy = Math.max(0, busy - 1); n++; mark(); ln.className = 'ln ok'; ln.textContent = f.name + ': received'; bar.remove(); },
+              function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); ln.className = 'ln bad'; ln.textContent = f.name + ': ' + (e.message || 'could not be sent. Please try again.'); bar.remove(); }); }); };
+    });
+  }
+  window.addEventListener('beforeunload', function (e) { if (busy) { e.preventDefault(); e.returnValue = ''; } });
+  if (!K.f || !K.r || !K.t) return fail('Open the link from your email', 'Please open this page from the link the office sent you.');
+  post({ up: 'info' }).then(function (o) { if (!o.ok) return fail('This link can\'t be used', o.error || 'Please ask the office for a new one.'); draw(o); })
+    .catch(function () { fail('Please try again', 'Shakha couldn\'t be reached just now. Check your internet connection and open the link again.'); });
+})();
+</script>
+</body></html>
