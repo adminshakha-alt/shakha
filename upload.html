@@ -45,13 +45,17 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
     box.appendChild(el('h1', '', o.title));
     box.appendChild(el('p', 'mu', o.firm + (o.office ? ' · ' + o.office : '') + ' asks ' + o.client + ' for these documents by ' + o.dueText + '.'));
     if (o.message) box.appendChild(el('p', '', o.message));
-    box.appendChild(el('p', 'mu', 'You can send PDF, JPG, PNG, Excel, Word or CSV files of up to 25 MB each. No sign-in is needed. Please keep this page open while files are sending.'));
+    box.appendChild(el('p', 'mu', 'You can send PDF, JPG, PNG, Excel, Word or CSV files of up to 25 MB each. No sign-in is needed. Tick Not applicable for anything you don\'t have. Please keep this page open while files are sending.'));
     var acc = o.types.map(function (x) { return '.' + x; }).join(',');
     o.items.forEach(function (it) {
-      var d = el('div', 'it'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received;
-      function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : ''; got.style.display = n ? '' : 'none'; } mark(); h.appendChild(got);
+      var d = el('div', 'it'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received, na = !!it.na;
+      if (it.optional) d.appendChild(el('p', 'mu', 'Anything else you want to send us. This is optional.'));
+      var naBox = el('input'), naL = el('label', 'mu'); naBox.type = 'checkbox'; naBox.checked = na; naL.appendChild(naBox); naL.appendChild(document.createTextNode(' Not applicable to me'));
+      function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : na ? 'Not applicable' : ''; got.style.display = n || na ? '' : 'none'; inp.disabled = na; naL.style.display = it.optional || n ? 'none' : ''; }
+      h.appendChild(got);
       var inp = el('input'); inp.type = 'file'; inp.multiple = true; inp.accept = acc; inp.setAttribute('aria-label', 'Choose files for ' + it.name);
-      d.appendChild(h); d.appendChild(inp); var list = el('div'); d.appendChild(list); box.appendChild(d);
+      d.insertBefore(h, d.firstChild); d.appendChild(inp); d.appendChild(naL); var list = el('div'); d.appendChild(list); box.appendChild(d); mark();
+      naBox.onchange = function () { var want = naBox.checked; naBox.disabled = true; post({ up: 'na', item: it.id, na: want ? 1 : 0 }).then(function (j) { naBox.disabled = false; if (!j.ok) { naBox.checked = !want; var er = el('div', 'ln bad', j.error || 'Please try again.'); list.appendChild(er); return; } na = want; mark(); }, function () { naBox.disabled = false; naBox.checked = !want; list.appendChild(el('div', 'ln bad', 'Could not be saved. Please try again.')); }); };
       inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; var chain = Promise.resolve();
         fs.forEach(function (f) { var ln = el('div', 'ln', f.name), bar = el('div', 'bar'), fill = el('i'); bar.appendChild(fill); list.appendChild(ln); list.appendChild(bar);
           chain = chain.then(function () { if (f.size > MAX) throw new Error('This file is larger than 25 MB.'); if (!f.size) throw new Error('This file is empty.'); busy++; return send(f, it.id, function (x) { fill.style.width = Math.round(x * 100) + '%'; }); })
