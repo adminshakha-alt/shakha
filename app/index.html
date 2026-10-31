@@ -6,8 +6,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#17614A">
 <meta name="robots" content="noindex">
-<title>Shakha · Billing and Compliance for CA firms</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%2317614A'/%3E%3Cpath d='M60 100V44M60 76L34 54M60 62L88 40' stroke='%23F7F3E8' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='60' cy='32' r='12' fill='%23F2B632'/%3E%3Ccircle cx='34' cy='54' r='9' fill='%23F2B632'/%3E%3Ccircle cx='88' cy='40' r='9' fill='%23F2B632'/%3E%3C/svg%3E">
+<title>Shakha 360 · Billing and Compliance for CA firms</title>
+<link rel="icon" href="../shakha360-icon.svg" type="image/svg+xml">
 <style>
 :root{--bg:#F3F4F2;--fg:#1B2420;--mu:#5D6B64;--card:#fff;--line:#DDE3DF}
 @media (prefers-color-scheme:dark){:root{--bg:#0B1712;--fg:#E7EFEA;--mu:#9DB0A6;--card:#13221B;--line:#25372E}}
@@ -24,13 +24,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:
 </head>
 <body>
 <div class="boot" id="boot" role="status" aria-live="polite">
-  <svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#17614A"/><path d="M60 100V44M60 76L34 54M60 62L88 40" stroke="#F7F3E8" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="60" cy="32" r="12" fill="#F2B632"/><circle cx="34" cy="54" r="9" fill="#F2B632"/><circle cx="88" cy="40" r="9" fill="#F2B632"/></svg>
-  <b>Shakha</b>
+  <svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#17614A"/><path d="M408.3 185.0A168 168 0 1 1 327.0 103.7" fill="none" stroke="#F7F3E8" stroke-width="20" stroke-linecap="round"/><path d="M256 382V190M256 322L184 268M256 340L330 282" fill="none" stroke="#F7F3E8" stroke-width="22" stroke-linecap="round"/><circle cx="256" cy="178" r="35" fill="#F2B632"/><circle cx="172" cy="256" r="35" fill="#F2B632"/><circle cx="342" cy="270" r="35" fill="#F2B632"/><circle cx="374.8" cy="137.2" r="19" fill="#F2B632"/></svg>
+  <b>Shakha 360</b>
   <div class="bar" id="bar"><i></i></div>
-  <p id="msg">Opening Shakha…</p>
+  <p id="msg">Opening Shakha 360…</p>
 </div>
 <script>
-/* Shakha's web app address (Deploy → Manage deployments → Web app URL, ending in /exec).
+/* Shakha 360's web app address (Deploy → Manage deployments → Web app URL, ending in /exec).
    The screens come from there, so a new version reaches this page as soon as it is made live from the console. */
 var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
 (function () {
@@ -39,11 +39,11 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
   function getText(u) { return fetch(u, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
   function fail() {
     document.getElementById('bar').style.display = 'none';
-    document.getElementById('msg').innerHTML = 'Shakha couldn\'t be reached just now. Check your internet connection and try again.<br><br><button class="btn" onclick="location.reload()">Try again</button>';
+    document.getElementById('msg').innerHTML = 'Shakha 360 couldn\'t be reached just now. Check your internet connection and try again.<br><br><button class="btn" onclick="location.reload()">Try again</button>';
   }
   function start(exec, w, html) {
     var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
-      /* on the sign-in and sign-up screens the Shakha logo goes back to the website's home page */
+      /* on the sign-in and sign-up screens the Shakha 360 logo goes back to the website's home page */
       'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
       '<\/script><style>.auth-brand{cursor:pointer}</style>';
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + boot; }) : boot + html;
@@ -64,7 +64,7 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
     /* just after a release Google can still hand out the old screens for a moment: ask again a few times before using them */
     function page(n) {
       return getText(exec + '?app=page&v=' + encodeURIComponent(w.build) + '&t=' + Date.now()).then(function (h) {
-        if (!/SHAKHA VERSION|<!doctype html/i.test(h.slice(0, 2000))) throw new Error('Not the Shakha page');
+        if (!/SHAKHA VERSION|<!doctype html/i.test(h.slice(0, 2000))) throw new Error('Not the Shakha 360 page');
         var b = built(h);
         if (b && b !== w.build && n > 0) return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return page(n - 1); });
         if (b === w.build) { try { localStorage.setItem(keep, JSON.stringify({ k: key, h: h })); } catch (e) { try { localStorage.removeItem(keep); } catch (e2) { } } }

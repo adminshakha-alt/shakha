@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Upload documents</title><link rel="stylesheet" href="style.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Upload documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
 <style>
 .cx{max-width:620px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
 .cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13px;color:var(--mu)}
@@ -12,7 +12,7 @@
 </style></head><body>
 <main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your request</h1><div class="spin"></div></div></main>
 <script>
-/* Shakha web app address (the same one as connect.html) */
+/* Shakha 360 web app address (the same one as connect.html) */
 var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', r: q.get('r') || '', t: q.get('t') || '' };
@@ -24,7 +24,7 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
     return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
   function b64(blob) { return new Promise(function (y, n) { var r = new FileReader(); r.onload = function () { y(String(r.result).split(',')[1] || ''); }; r.onerror = n; r.readAsDataURL(blob); }); }
   function wait(ms) { return new Promise(function (y) { setTimeout(y, ms); }); }
-  /* a file goes in pieces; after a dropped connection Shakha asks how far it got and carries on from there */
+  /* a file goes in pieces; after a dropped connection Shakha 360 asks how far it got and carries on from there */
   function send(file, item, show) {
     var uid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8), at = 0, tries = 0;
     function step() {
@@ -66,7 +66,7 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
   window.addEventListener('beforeunload', function (e) { if (busy) { e.preventDefault(); e.returnValue = ''; } });
   if (!K.f || !K.r || !K.t) return fail('Open the link from your email', 'Please open this page from the link the office sent you.');
   post({ up: 'info' }).then(function (o) { if (!o.ok) return fail('This link can\'t be used', o.error || 'Please ask the office for a new one.'); draw(o); })
-    .catch(function () { fail('Please try again', 'Shakha couldn\'t be reached just now. Check your internet connection and open the link again.'); });
+    .catch(function () { fail('Please try again', 'Shakha 360 couldn\'t be reached just now. Check your internet connection and open the link again.'); });
 })();
 </script>
 </body></html>
