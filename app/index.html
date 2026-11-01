@@ -44,7 +44,7 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
   function start(exec, w, html) {
     var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
       /* on the sign-in and sign-up screens the Shakha 360 logo goes back to the website's home page */
-      'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
+      'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b&&!window.ShakhaAndroid){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
       '<\/script><style>.auth-brand{cursor:pointer}</style>';
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + boot; }) : boot + html;
     document.open(); document.write(html); document.close();
