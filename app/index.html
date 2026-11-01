@@ -35,6 +35,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:
 var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
 (function () {
   var q = new URLSearchParams(location.search), keep = 'shakha_page';
+  /* 8.7: the server address comes from shakha-config.json beside this site, so a new server needs no change here or in the phone app */
+  var cfgReady = fetch(new URL('../shakha-config.json', location.href).href, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '')) SHAKHA_APP = c.api; }).catch(function () { });
   function getJson(u) { return fetch(u, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
   function getText(u) { return fetch(u, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
   function fail() {
@@ -51,9 +53,9 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
   }
   var args = q.toString();
   /* the preview address (Releases) runs the version being tested, from its own deployment */
-  var where = q.get('preview') === '1'
+  var where = cfgReady.then(function () { return q.get('preview') === '1'
     ? getJson(SHAKHA_APP + '?app=where').then(function (w) { var ex = w.preview || SHAKHA_APP; return getJson(ex + '?app=where&' + args).then(function (w2) { return [ex, w2]; }); })
-    : getJson(SHAKHA_APP + '?app=where&' + args).then(function (w) { return [SHAKHA_APP, w]; });
+    : getJson(SHAKHA_APP + '?app=where&' + args).then(function (w) { return [SHAKHA_APP, w]; }); });
   where.then(function (x) {
     var exec = x[0], w = x[1], key = exec + '|' + w.build, saved = null;
     /* the version written inside the screens themselves; a saved copy is used only when it is the version the web app runs */
