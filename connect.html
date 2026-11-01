@@ -13,6 +13,8 @@
 <script>
 /* Shakha 360 web app address (Deploy → Manage deployments → Web app URL, ending in /exec) */
 var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+/* 8.7: the address can be changed in shakha-config.json beside this page */
+var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
 (function () {
   var box = document.getElementById('box');
   var q = new URLSearchParams(location.search), st = q.get('state') || '', code = q.get('code') || '', er = q.get('error') || '';
@@ -21,7 +23,7 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
   var ct = q.get('connect') || '';
   if (ct && !st) {
     show('Connect your Google account', '<div class="spin"></div><p>Opening…</p>');
-    fetch(APP + '?gx=1&connect=' + encodeURIComponent(ct), { credentials: 'omit', redirect: 'follow', cache: 'no-store' })
+    APP_READY.then(function () { return fetch(APP + '?gx=1&connect=' + encodeURIComponent(ct), { credentials: 'omit', redirect: 'follow', cache: 'no-store' }); })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (o) { show(o.title || 'Connect your Google account', o.html || ''); })
       .catch(function () { show('Please try again', '<p>Shakha 360 couldn\'t be reached just now. Check your internet connection and open the link again.</p><p class="btns"><a class="btn" href="' + APP + '?connect=' + encodeURIComponent(ct) + '" target="_top">Open the connect page</a></p>'); });
@@ -37,7 +39,7 @@ var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq
       '<p class="note">If that shows an error, open the connect link from your email again in a private (incognito) window and sign in only with your firm\'s Google account.</p>');
   }
   var done = false, t = setTimeout(function () { if (!done) { done = true; fallback(); } }, 60000);
-  fetch(APP + '?gx=1&' + args, { credentials: 'omit', redirect: 'follow', cache: 'no-store' })
+  APP_READY.then(function () { return fetch(APP + '?gx=1&' + args, { credentials: 'omit', redirect: 'follow', cache: 'no-store' }); })
     .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function (o) { if (done) return; done = true; clearTimeout(t); show(o.title || 'Done', o.html || ''); })
     .catch(function () { if (done) return; done = true; clearTimeout(t); fallback(); });
