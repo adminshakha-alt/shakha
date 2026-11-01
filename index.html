@@ -277,7 +277,8 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  var g=$('plansGrid'),note=$('plansNote'),rs=function(n){return Math.round(+n||0).toLocaleString('en-IN')};
  var Y='<svg class="ic y" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6 10.4l2.7 2.7 5.3-5.6"/></svg>',N='<svg class="ic n" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M7.2 7.2l5.6 5.6M12.8 7.2l-5.6 5.6"/></svg>';
  var br=function(n){return n<0?'Any number of branches':n===0?'Head office only':'Up to '+n+' branch'+(n===1?'':'es')},lg=function(n){return n<0?'Any number of logins':'Up to '+n+' login'+(n===1?'':'s')};
- fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'}).then(function(r){return r.json()}).then(function(P){
+ /* the server address comes from shakha-config.json, as on the app page; the address above is only used if that file can't be read */
+ fetch('shakha-config.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(c){if(c&&/^https:\/\//.test(c.api||''))APP=c.api;return fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'})}).then(function(r){return r.json()}).then(function(P){
   if(!P.plans||!P.plans.length){$('plans').hidden=true;return}var F=P.features||[];
   note.textContent=P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.';
   document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
