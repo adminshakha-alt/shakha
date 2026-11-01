@@ -1,4 +1,5 @@
 {
-  "api": "https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec",
+  "api": "https://shakha360-327918432563.asia-south1.run.app/exec",
+  "fallback": "https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec",
   "note": "The address of the Shakha 360 server. The app page, connect page, upload page and the Android app read it here, so a new server needs only this file changed."
 }
