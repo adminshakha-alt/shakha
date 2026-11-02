@@ -67,9 +67,11 @@
 <div class="mockWrap"><div class="shotBox"><div class="shotTabs" role="tablist" aria-label="Screens of Shakha 360">
 <button type="button" role="tab" id="st0" aria-controls="shotPane" aria-selected="true" data-shot="dashboard" data-alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm">Dashboard</button>
 <button type="button" role="tab" id="st1" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="todo" data-alt="To Do list of pending returns for each client, with due dates and status">To Do</button>
-<button type="button" role="tab" id="st2" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
-<button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="clients" data-alt="Clients and Fees: each client's services, fees and how often they are billed">Clients &amp; Fees</button>
-<button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
+<button type="button" role="tab" id="st2" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="staffwork" data-alt="Staff Work: each person's overdue, due and later returns, and the work still to be allotted">Staff Work</button>
+<button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
+<button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notes" data-alt="A client's page with a Keep in mind note and the office's client notes">Client notes</button>
+<button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="clients" data-alt="Clients and Fees: each client's services, fees and how often they are billed">Clients &amp; Fees</button>
+<button type="button" role="tab" id="st6" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
 </div><div class="shotPane" id="shotPane" role="tabpanel" aria-labelledby="st0"><img id="shotImg" src="shots/dashboard.jpg" width="2160" height="1350" alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm"></div>
 <p class="shotNote">Real screens, with a made-up firm and clients.</p></div></div>
 </div>
@@ -79,7 +81,7 @@
 <div class="facts">
 <div class="factLead"><span aria-hidden="true"><svg class="ico" style="width:28px;height:28px"><use href="#i-folder"/></svg></span><p>Your firm’s data stays in your firm’s own Google Drive</p></div>
 <div class="fact"><b>Any</b><span>number of branches, each with its own GSTIN</span></div>
-<div class="fact"><b>41</b><span>CA certificate formats ready to use</span></div>
+<div class="fact"><b>1</b><span>responsible person for every return, with work allotted to staff</span></div>
 <div class="fact"><b><span class="tD">15</span> days</b><span>free trial, no payment to start</span></div>
 <div class="fact"><b>0</b><span>things to install, in the browser or on Android</span></div>
 </div>
@@ -112,10 +114,10 @@
 </div></section>
 
 <section class="sec flowSec" id="team" aria-labelledby="teamH"><div class="wrap split rev">
-<div class="splitText"><h2 id="teamH">Staff logins</h2>
+<div class="splitText"><span class="eyebrow">New</span><h2 id="teamH">Staff logins</h2>
 <p>Allot each client’s work to a person. They sign in and see only that work.</p>
-<ul class="ticks"><li>Prepared returns come to you for review</li><li>Each person’s pending work in one view</li></ul></div>
-<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/staffwork.jpg" width="2160" height="1350" alt="Staff Work screen showing each person's overdue, due and later returns"></figure></div>
+<ul class="ticks"><li>Prepared returns come to you for review</li><li>Each person’s pending work in one view</li><li>Head office decides how many logins each branch gets</li><li>Notes about a client stay with the office, and “Keep in mind” shows when its work is opened</li></ul></div>
+<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/mywork.jpg" width="2160" height="1350" alt="My Work: a staff member's own list of returns to do, for review and completed"></figure><figure class="phone"><img loading="lazy" src="shots/phone-staffwork.jpg" width="780" height="1688" alt="Staff Work on a phone: each person's workload"></figure></div>
 </div></section>
 
 <section class="sec" aria-labelledby="brH"><div class="wrap split">
@@ -280,7 +282,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  /* the server address comes from shakha-config.json, as on the app page; the address above is only used if that file can't be read */
  fetch('shakha-config.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(c){if(c&&/^https:\/\//.test(c.api||''))APP=c.api;return fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'})}).then(function(r){return r.json()}).then(function(P){
   if(!P.plans||!P.plans.length){$('plans').hidden=true;return}var F=P.features||[];
-  note.textContent=(P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.')+(P.extraPrice?' Need more logins? Extra logins are ₹'+rs(P.extraPrice)+' a year each.':'');
+  note.innerHTML=e(P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.')+(P.extraPrice?'<span class="noteX">Need more logins on any plan? Extra logins are ₹'+rs(P.extraPrice)+' a year each.</span>':'');
   document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
   $('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
   if(!P.autoTrial)document.querySelectorAll('[data-trial]').forEach(function(a){if(a.id!=='heroBtn')a.textContent='Register your firm'});
