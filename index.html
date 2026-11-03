@@ -22,6 +22,7 @@
 /* a picture with a few words beside it */
 .split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center}.split.rev .splitText{order:2}
 .eyebrow{display:inline-block;background:#F2B632;color:#17211D;font:700 12px/1 var(--f-b);padding:6px 10px;border-radius:99px;margin-bottom:12px}
+.ptag{display:block;margin-top:10px;font:600 13px/1.4 var(--f-b);color:var(--mu)}.splitText .ptag{margin:0 0 12px}
 .splitText h2{margin-top:0}.splitText>p{margin-top:12px;color:var(--mu)}.ticks{list-style:none;padding:0;margin:18px 0 0}.ticks li{position:relative;padding:0 0 10px 26px;line-height:1.5}.ticks li:before{content:'';position:absolute;left:2px;top:7px;width:12px;height:7px;border-left:2.5px solid #17614A;border-bottom:2.5px solid #17614A;transform:rotate(-45deg)}
 .splitShots{position:relative}.browser{margin:0;border-radius:12px;overflow:hidden;box-shadow:0 18px 44px rgba(13,58,44,.2);border:1px solid rgba(23,33,29,.1)}.browser img,.phone img{display:block;width:100%;height:auto}
 .phone{position:absolute;right:-14px;bottom:-34px;width:24%;margin:0;border-radius:18px;overflow:hidden;border:5px solid #17211D;box-shadow:0 18px 40px rgba(0,0,0,.3);background:#fff}
@@ -80,10 +81,10 @@
 <section class="sec first" aria-label="Shakha 360 at a glance"><div class="wrap">
 <div class="facts">
 <div class="factLead"><span aria-hidden="true"><svg class="ico" style="width:28px;height:28px"><use href="#i-folder"/></svg></span><p>Your firm’s data stays in your firm’s own Google Drive</p></div>
-<div class="fact"><b>Any</b><span>number of branches, each with its own GSTIN</span></div>
+<div class="fact" id="brFact"><b>Every</b><span>branch with its own GSTIN</span></div>
 <div class="fact"><b>1</b><span>responsible person for every return, with work allotted to staff</span></div>
 <div class="fact"><b><span class="tD">15</span> days</b><span>free trial, no payment to start</span></div>
-<div class="fact"><b>0</b><span>things to install, in the browser or on Android</span></div>
+<div class="fact"><b>0</b><span>things to install: use it in the browser on a computer or phone</span></div>
 </div>
 </div></section>
 
@@ -93,8 +94,8 @@
 <article class="doesC c1"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-bill"/></svg></span><h3>Billing</h3><p>GST invoices, proformas, receipts and notes, numbered for each office, sent by email or WhatsApp from your own letterhead.</p></article>
 <article class="doesC c2"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-wallet"/></svg></span><h3>Collections</h3><p>Who owes what, with payment reminders that go out on their own, and receivable ageing for the whole firm.</p></article>
 <article class="doesC c3"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cal"/></svg></span><h3>Compliance</h3><p>Every client’s GST, TDS, income-tax and ROC due dates in one To Do list. Mark a return filed, and it moves to the bill.</p></article>
-<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link, and you see what came in.</p></article>
-<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters, with the partner’s signature and the UDIN.</p></article>
+<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link, and you see what came in.</p><span class="ptag" data-feat="docreq" hidden></span></article>
+<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters, with the partner’s signature and the UDIN.</p><span class="ptag" data-feat="letters" data-label="Letters" hidden></span><span class="ptag" data-feat="certs" data-label="CA certificates" hidden></span></article>
 <article class="doesC c6"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales, collections, outstanding, GST summary, GSTR-1 workbook, Tally export and the UDIN register.</p></article>
 </div>
 </div></section>
@@ -107,7 +108,7 @@
 </div></section>
 
 <section class="sec" id="docs" aria-labelledby="docsH"><div class="wrap split">
-<div class="splitText"><span class="eyebrow">New</span><h2 id="docsH">Documents come to you</h2>
+<div class="splitText"><span class="eyebrow">New</span><span class="ptag" data-feat="docreq" hidden></span><h2 id="docsH">Documents come to you</h2>
 <p>Ask for the papers you need this month, from one client or from all of them, in one go.</p>
 <ul class="ticks"><li>Each client gets a private link by email or WhatsApp, with nothing to install</li><li>They upload from a phone or computer, no sign-in needed</li><li>Reminders go out until the documents are in</li><li>See who has sent what, client by client, month by month</li></ul></div>
 <div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/docrequests.jpg" width="2160" height="1350" alt="Document Requests screen with a document list and clients ticked"></figure><figure class="phone"><img loading="lazy" src="shots/phone-upload.jpg" width="780" height="1688" alt="The client's upload page on a phone"></figure></div>
@@ -121,7 +122,7 @@
 </div></section>
 
 <section class="sec" aria-labelledby="brH"><div class="wrap split">
-<div class="splitText"><h2 id="brH">Head office sees the firm. Each branch runs its own.</h2>
+<div class="splitText"><span class="ptag" data-feat="branches" data-label="Branches" hidden></span><h2 id="brH">Head office sees the firm. Each branch runs its own.</h2>
 <p>Switch between the whole firm, head office and any branch. Branch staff see only their branch.</p>
 <ul class="ticks"><li>Each branch has its own logins, numbering, GSTIN, bank details and letterhead</li><li>A branch can keep its documents in its own Google account</li><li>One client list, one services list, one To Do for the firm</li></ul></div>
 <div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/dashboard.jpg" width="2160" height="1350" alt="Dashboard with the Working as switch for the whole firm, head office and branches"></figure></div>
@@ -132,7 +133,7 @@
 <ul class="own">
 <li><span aria-hidden="true"><svg class="ico"><use href="#i-folder"/></svg></span><div><h3>Stored in your Google Drive</h3><p>Your data sheet, PDFs and client documents live in a folder in your own Drive. Shakha 360 can open only the files it creates there.</p></div></li>
 <li><span aria-hidden="true"><svg class="ico"><use href="#i-mail"/></svg></span><div><h3>Sent from your Gmail</h3><p>Invoices, reminders and sign-in codes go from your firm’s Gmail. Shakha 360 can send email but can’t read it.</p></div></li>
-<li><span aria-hidden="true"><svg class="ico"><use href="#i-door"/></svg></span><div><h3>Yours if you leave</h3><p>Export your data at any time. If you stop using Shakha 360, your files stay in your Drive.</p></div></li>
+<li><span aria-hidden="true"><svg class="ico"><use href="#i-door"/></svg></span><div><h3>Yours if you leave</h3><p>Back up your data to your Drive at any time. If you stop using Shakha 360, your files stay in your Drive.</p></div></li>
 </ul>
 </div></section>
 
@@ -164,9 +165,9 @@
 <details><summary>Can each branch have its own GSTIN, numbering and letterhead?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Each branch has its own logins, invoice numbering, GSTIN, bank details, partners and letterhead, and head office sees all of it.</p></div></details>
 <details><summary>Can staff have limited access?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. A staff login shows only the work allotted to that person. Returns they prepare come to you for review.</p></div></details>
 <details><summary>How do clients send us their documents?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>You send a request, and each client gets a private link. They open it on a phone or computer, with no sign-in, and upload their files. The files go straight to your Google Drive.</p></div></details>
-<details><summary>Do we need to install anything?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>No. Shakha 360 works in any modern browser. There is also an Android app, with notifications and a home-screen widget.</p></div></details>
+<details><summary>Do we need to install anything?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>No. Shakha 360 works in any modern browser, on a computer or a phone. There is no Android app to download yet; it is being built. Until then, use the website app in your phone’s browser.</p></div></details>
 <details><summary>Can we send our data to Tally?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Shakha 360 gives a Tally export, invoice and receipt registers, a GST summary and a GSTR-1 Excel workbook.</p></div></details>
-<details><summary>What happens if we stop using Shakha 360?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Your files stay in your Drive. Export your data at any time, and remove Shakha 360’s access from your Google Account.</p></div></details>
+<details><summary>What happens if we stop using Shakha 360?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Your files stay in your Drive. Back up your data to your Drive at any time, and remove Shakha 360’s access from your Google Account.</p></div></details>
 </div>
 </div></section>
 
@@ -297,6 +298,14 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
    row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?'Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
    F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?yes:no})}).join('')+'</tbody></table></div>';
   g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;reveal('.pcard,.cmph,.cmpw');
+  /* which plans include a feature, and the branch fact, from the same live plan list */
+  var nm=function(p){return String(p.name||'').replace(/^Shakha 360\s+/,'')},inc=function(id){return P.plans.filter(function(p){return id==='branches'?+p.branches!==0:!p.features||p.features[id]!==false})};
+  var and=function(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1]};
+  document.querySelectorAll('.ptag[data-feat]').forEach(function(t){var on=inc(t.dataset.feat);if(!on.length||on.length===P.plans.length)return;
+   t.textContent=(t.dataset.label?t.dataset.label+': on the ':'On the ')+and(on.map(nm))+' plan'+(on.length>1?'s':'');t.hidden=false});
+  var any=P.plans.filter(function(p){return +p.branches<0}),most=P.plans.reduce(function(m,p){return +p.branches>(m?+m.branches:0)?p:m},null);
+  if(any.length)$('brFact').innerHTML='<b>Any</b><span>number of branches on '+e(and(any.map(nm)))+', each with its own GSTIN</span>';
+  else if(most)$('brFact').innerHTML='<b>'+(+most.branches)+'</b><span>branches on '+e(nm(most))+', each with its own GSTIN</span>';
  }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn’t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'});
 })();
 </script>
