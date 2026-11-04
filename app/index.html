@@ -44,7 +44,7 @@ var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB
     document.getElementById('msg').innerHTML = 'Shakha 360 couldn\'t be reached just now. Check your internet connection and try again.<br><br><button class="btn" onclick="location.reload()">Try again</button>';
   }
   function start(exec, w, html) {
-    var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
+    var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_SITE=' + JSON.stringify(new URL('../', location.href).href) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
       /* on the sign-in and sign-up screens the Shakha 360 logo goes back to the website's home page */
       'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b&&!window.ShakhaAndroid){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
       '<\/script><style>.auth-brand{cursor:pointer}</style>';
