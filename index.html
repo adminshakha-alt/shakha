@@ -94,8 +94,8 @@
 <article class="doesC c1"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-bill"/></svg></span><h3>Billing</h3><p>GST invoices, proformas, receipts and notes, numbered for each office, sent by email or WhatsApp from your own letterhead.</p></article>
 <article class="doesC c2"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-wallet"/></svg></span><h3>Collections</h3><p>Who owes what, with payment reminders that go out on their own, and receivable ageing for the whole firm.</p></article>
 <article class="doesC c3"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cal"/></svg></span><h3>Compliance</h3><p>Every client’s GST, TDS, income-tax and ROC due dates in one To Do list. Mark a return filed, and it moves to the bill.</p></article>
-<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link, and you see what came in.</p><span class="ptag" data-feat="docreq" hidden></span></article>
-<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters, with the partner’s signature and the UDIN.</p><span class="ptag" data-feat="letters" data-label="Letters" hidden></span><span class="ptag" data-feat="certs" data-label="CA certificates" hidden></span></article>
+<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link, and you see what came in.</p></article>
+<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters, with the partner’s signature and the UDIN.</p></article>
 <article class="doesC c6"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales, collections, outstanding, GST summary, GSTR-1 workbook, Tally export and the UDIN register.</p></article>
 </div>
 </div></section>
@@ -108,7 +108,7 @@
 </div></section>
 
 <section class="sec" id="docs" aria-labelledby="docsH"><div class="wrap split">
-<div class="splitText"><span class="eyebrow">New</span><span class="ptag" data-feat="docreq" hidden></span><h2 id="docsH">Documents come to you</h2>
+<div class="splitText"><span class="eyebrow">New</span><h2 id="docsH">Documents come to you</h2>
 <p>Ask for the papers you need this month, from one client or from all of them, in one go.</p>
 <ul class="ticks"><li>Each client gets a private link by email or WhatsApp, with nothing to install</li><li>They upload from a phone or computer, no sign-in needed</li><li>Reminders go out until the documents are in</li><li>See who has sent what, client by client, month by month</li></ul></div>
 <div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/docrequests.jpg" width="2160" height="1350" alt="Document Requests screen with a document list and clients ticked"></figure><figure class="phone"><img loading="lazy" src="shots/phone-upload.jpg" width="780" height="1688" alt="The client's upload page on a phone"></figure></div>
@@ -122,9 +122,9 @@
 </div></section>
 
 <section class="sec" aria-labelledby="brH"><div class="wrap split">
-<div class="splitText"><span class="ptag" data-feat="branches" data-label="Branches" hidden></span><h2 id="brH">Head office sees the firm. Each branch runs its own.</h2>
+<div class="splitText"><h2 id="brH">Head office sees the firm. Each branch runs its own.</h2>
 <p>Switch between the whole firm, head office and any branch. Branch staff see only their branch.</p>
-<ul class="ticks"><li>Each branch has its own logins, numbering, GSTIN, bank details and letterhead</li><li>A branch can keep its documents in its own Google account</li><li>One client list, one services list, one To Do for the firm</li></ul></div>
+<ul class="ticks"><li>Each branch has its own logins, numbering, GSTIN, bank details and letterhead</li><li>Each branch can keep its documents in its own Google Drive, separate from head office</li><li>One client list, one services list, one To Do for the firm</li></ul></div>
 <div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/dashboard.jpg" width="2160" height="1350" alt="Dashboard with the Working as switch for the whole firm, head office and branches"></figure></div>
 </div></section>
 
@@ -283,13 +283,14 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  /* the server address comes from shakha-config.json, as on the app page; the address above is only used if that file can't be read */
  fetch('shakha-config.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(c){if(c&&/^https:\/\//.test(c.api||''))APP=c.api;return fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'})}).then(function(r){return r.json()}).then(function(P){
   if(!P.plans||!P.plans.length){$('plans').hidden=true;return}var F=P.features||[];
-  note.innerHTML=e(P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.')+'<span class="noteX">Logins are for everyone who signs in: partners, staff and branches. Each partner has their own.</span>'+(P.extraPrice?'<span class="noteX">Need more logins on any plan? Extra logins are ₹'+rs(P.extraPrice)+' a year each.</span>':'');
+  note.innerHTML=e(P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.')+'<span class="noteX">Logins cover partners, staff and branches. Each partner has their own.</span>'+(P.extraPrice?'<span class="noteX">Extra logins on any plan: ₹'+rs(P.extraPrice)+' a year each.</span>':'');
+  var till=P.offerTill&&/^\d{4}-\d{2}-\d{2}$/.test(P.offerTill)?new Date(P.offerTill+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
   document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
   $('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
   if(!P.autoTrial)document.querySelectorAll('[data-trial]').forEach(function(a){if(a.id!=='heroBtn')a.textContent='Register your firm'});
   var cards=P.plans.map(function(p){var has=function(f){return !p.features||p.features[f.id]!==false};
    return '<div class="pcard"><div class="pname">'+e(p.name)+'</div><div class="pprice"><span class="amt">&#8377;'+rs(p.price)+'</span><span class="per"> / year</span></div>'+
-    '<div class="pmrp">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span>':'&nbsp;')+'</div>'+(p.desc?'<p class="pdesc">'+e(p.desc)+'</p>':'')+
+    '<div class="pmrp">'+(p.disc?'<s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span>':'&nbsp;')+'</div>'+(p.disc&&till?'<div class="ptill">Offer valid till '+e(till)+'</div>':'')+(p.desc?'<p class="pdesc">'+e(p.desc)+'</p>':'')+
     '<ul class="ppts"><li>'+Y+br(p.branches)+'</li><li>'+Y+lg(p.logins)+'</li>'+F.map(function(f){return '<li class="'+(has(f)?'':'no')+'">'+(has(f)?Y:N)+'<span>'+(has(f)?'':'<span class="vh">Not included: </span>')+e(f.name)+'</span></li>'}).join('')+'</ul>'+
     '<a class="btn" href="app/?register=1&plan='+encodeURIComponent(p.id)+'">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
   var row=function(l,f){return '<tr><th scope="row">'+l+'</th>'+P.plans.map(function(p){return '<td>'+f(p)+'</td>'}).join('')+'</tr>'};
@@ -301,8 +302,6 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
   /* which plans include a feature, and the branch fact, from the same live plan list */
   var nm=function(p){return String(p.name||'').replace(/^Shakha 360\s+/,'')},inc=function(id){return P.plans.filter(function(p){return id==='branches'?+p.branches!==0:!p.features||p.features[id]!==false})};
   var and=function(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1]};
-  document.querySelectorAll('.ptag[data-feat]').forEach(function(t){var on=inc(t.dataset.feat);if(!on.length||on.length===P.plans.length)return;
-   t.textContent=(t.dataset.label?t.dataset.label+': on the ':'On the ')+and(on.map(nm))+' plan'+(on.length>1?'s':'');t.hidden=false});
   var any=P.plans.filter(function(p){return +p.branches<0}),most=P.plans.reduce(function(m,p){return +p.branches>(m?+m.branches:0)?p:m},null);
   if(any.length)$('brFact').innerHTML='<b>Any</b><span>number of branches on '+e(and(any.map(nm)))+', each with its own GSTIN</span>';
   else if(most)$('brFact').innerHTML='<b>'+(+most.branches)+'</b><span>branches on '+e(nm(most))+', each with its own GSTIN</span>';
