@@ -39,8 +39,8 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     document.title = 'Engagement letter accepted · ' + info.firm; box.textContent = '';
     box.appendChild(el('h1', '', 'Thank you. The letter is accepted.'));
     var b = el('div', 'ok-box'); var r = el('div', 'rw'); row(r, 'Letter', 'Engagement letter, FY ' + info.fy + ', dated ' + info.date); row(r, 'Firm', info.firm + (info.office ? ', ' + info.office : '')); row(r, 'Client', info.client);
-    row(r, 'Accepted by', (o.name || info.name) + (o.designation || info.designation ? ', ' + (o.designation || info.designation) : '')); row(r, 'On', o.at || info.at); row(r, 'Reference', o.ref || info.ref); row(r, 'Letter fingerprint', info.hash); b.appendChild(r); box.appendChild(b);
-    box.appendChild(el('p', 'mu', o.mailed === false ? 'The confirmation email could not be sent just now; the firm has the acceptance on record.' : 'A confirmation with the letter attached has been emailed to ' + info.to + ' and to the firm. Keep it with the letter: the fingerprint lets anyone check that the letter has not changed.'));
+    row(r, 'Accepted by', (o.name || info.name) + (o.designation || info.designation ? ', ' + (o.designation || info.designation) : '')); row(r, 'On', o.at || info.at); row(r, 'Reference', o.ref || info.ref); row(r, 'SHA-256 of the letter', info.hash); b.appendChild(r); box.appendChild(b);
+    box.appendChild(el('p', 'mu', o.mailed === false ? 'The confirmation email could not be sent just now; the firm has the acceptance on record.' : 'A confirmation with the letter attached has been emailed to ' + info.to + ' and to the firm. Keep it with the letter. The SHA-256 above lets anyone check that the letter has not changed.'));
     var btn = el('button', 'bt sec', 'Open the letter'), note = el('div', 'ln'); btn.type = 'button'; btn.onclick = function () { openPdf(btn, note); }; box.appendChild(btn); box.appendChild(note);
   }
   function draw(o) {
