@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Shared documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+<style>
+.cx{max-width:620px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
+.cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13px;color:var(--mu)}
+.fd{font-size:13px;font-weight:700;color:var(--mu);margin:16px 0 4px}
+.fl{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding:12px 0}.fl:first-of-type{border-top:0}
+.fl span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:15px}.fl small{display:block;font-size:12px;color:var(--mu)}
+.fl button{border:0;border-radius:8px;background:#17614A;color:#fff;font-weight:700;font-size:14px;padding:9px 14px;cursor:pointer;min-height:40px}.fl button:disabled{opacity:.6;cursor:default}
+.ln{font-size:13px;color:#B3261E}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:#17614A;border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
+@media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}}
+</style></head><body>
+<main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your documents</h1><div class="spin"></div></div><p style="text-align:center;font-size:13px;opacity:.75;margin:18px 0 8px"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
+<script>
+/* Shakha 360 web app address (the same one as upload.html) */
+var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https?:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
+(function () {
+  var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', s: q.get('s') || '', t: q.get('t') || '' };
+  var box = document.getElementById('box');
+  /* everything shown here is set as text, never as page code */
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function fail(t, m) { box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
+  function post(o) { var b = {}; for (var k in K) b[k] = K[k]; for (var j in o) b[j] = o[j];
+    return APP_READY.then(function () { return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }); }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+  function size(n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+  function save(name, b64) { var bin = atob(b64), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    var url = URL.createObjectURL(new Blob([u], { type: 'application/octet-stream' })); var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 2000); }
+  function draw(o) {
+    document.title = 'Shared documents · ' + o.firm; box.textContent = '';
+    box.appendChild(el('h1', '', o.title));
+    box.appendChild(el('p', 'mu', o.firm + (o.office ? ' · ' + o.office : '') + ' has shared these documents with ' + o.client + '. This link works until ' + o.expText + '.'));
+    if (o.message) box.appendChild(el('p', '', o.message));
+    if (!o.files.length) { box.appendChild(el('p', '', 'No documents are shared on this link any more. Please contact the office.')); return; }
+    var last = null;
+    o.files.slice().sort(function (a, b) { return (a.folder + '/' + a.name).localeCompare(b.folder + '/' + b.name); }).forEach(function (f) {
+      if (f.folder !== last) { last = f.folder; if (f.folder) box.appendChild(el('div', 'fd', f.folder.split('/').join(' / '))); }
+      var row = el('div', 'fl'), nm = el('span', '', f.name); nm.appendChild(el('small', '', size(f.size || 0)));
+      var b = el('button', '', 'Download'); b.type = 'button'; b.setAttribute('aria-label', 'Download ' + f.name); var er = el('div', 'ln', '');
+      b.onclick = function () { b.disabled = true; b.textContent = 'Opening…'; er.textContent = '';
+        post({ sh: 'get', file: f.id }).then(function (j) { b.disabled = false; b.textContent = 'Download'; if (!j.ok) { er.textContent = j.error || 'Please try again.'; return; } save(j.name || f.name, j.base64); },
+          function () { b.disabled = false; b.textContent = 'Download'; er.textContent = 'Could not open it. Check your connection and try again.'; }); };
+      row.appendChild(nm); row.appendChild(b); box.appendChild(row); box.appendChild(er);
+    });
+    box.appendChild(el('p', 'mu', 'Please don\'t forward this link. If something is missing, contact the office.'));
+  }
+  if (!K.f || !K.s || !K.t) return fail('This link is not complete', 'Please open the full link from the email or message the office sent you.');
+  post({ sh: 'info' }).then(function (j) { if (!j.ok) return fail('This link can\'t be opened', j.error || 'Please ask the office for a new link.'); draw(j); },
+    function () { fail('Could not open your documents', 'Check your internet connection and open the link again.'); });
+})();
+</script>
+</body></html>
