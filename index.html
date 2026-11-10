@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shakha 360 · Billing and Compliance for CA firms</title>
-<meta name="description" content="Shakha 360 runs the billing, collections, compliance deadlines and client documents of a CA firm with a head office and branches. Your data stays in your own Google Drive. Free trial.">
+<meta name="description" content="Shakha 360 runs the billing, collections, compliance deadlines, notices and appeals, work allocation and client documents of a CA firm with a head office and branches. Your data stays in your own Google Drive. Free trial.">
 <meta name="theme-color" content="#0D3A2C">
 <link rel="icon" href="shakha360-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
 .does{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .doesC{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:26px 24px;display:flex;flex-direction:column;gap:10px}
 .doesC .modIc{width:50px;height:50px}.doesC h3{font-size:1.2rem;font-weight:600;margin-top:4px}.doesC p{color:var(--mu);font-size:15px}
-.c1 .modIc{background:#DCEBE4;color:#17614A}.c2 .modIc{background:#FBEBC2;color:#8A5A00}.c3 .modIc{background:#DCE6F7;color:#2B4F9E}.c4 .modIc{background:#F8DDD8;color:#A3271B}.c5 .modIc{background:#E6DDF5;color:#5B3E9E}.c6 .modIc{background:#D9EFE9;color:#136A5E}
+.c1 .modIc{background:#DCEBE4;color:#17614A}.c2 .modIc{background:#FBEBC2;color:#8A5A00}.c3 .modIc{background:#DCE6F7;color:#2B4F9E}.c4 .modIc{background:#F8DDD8;color:#A3271B}.c5 .modIc{background:#E6DDF5;color:#5B3E9E}.c6 .modIc{background:#D9EFE9;color:#136A5E}.c7 .modIc{background:#DDE9F8;color:#1F5FA8}.c8 .modIc{background:#F6E3CF;color:#8A4B12}.c9 .modIc{background:#E3E8EE;color:#34495E}
 @media(max-width:900px){.does{grid-template-columns:1fr 1fr}}@media(max-width:600px){.does{grid-template-columns:1fr}}
 /* a picture with a few words beside it */
 .split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center}.split.rev .splitText{order:2}
@@ -43,6 +43,9 @@
 <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
 <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></symbol>
 <symbol id="i-door" viewBox="0 0 24 24"><path d="M13 4h3a2 2 0 0 1 2 2v14M2 20h3M13 20h9M10 12v.01"/><path d="M13 4.6v16.2a.6.6 0 0 1-.8.6L5 19V5.6a1 1 0 0 1 .8-1l6.4-1.5a.6.6 0 0 1 .8.6z"/></symbol>
+<symbol id="i-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14"/><path d="m5 7-3 7a3.5 3.5 0 0 0 6 0zM19 7l-3 7a3.5 3.5 0 0 0 6 0z"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
 <symbol id="i-playc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></symbol>
@@ -62,17 +65,18 @@
 <div class="heroText">
 <span class="pill"><i aria-hidden="true"></i>Made for CA firms with a head office and branches</span>
 <h1 id="heroH"><span>Your whole firm,</span><span>in one view.</span></h1>
-<p>Billing, collections, compliance deadlines and client documents, for every office of the firm, in one place.</p>
+<p>Billing, collections, compliance deadlines, notices, work allocation and client documents, for every office of the firm, in one place.</p>
 <div class="heroCta"><a class="btn sun" href="app/?register=1" id="heroBtn" data-trial>Start your free 15-day trial</a><a class="btn onDark" href="#demo">Watch the demo</a></div></div>
 
 <div class="mockWrap"><div class="shotBox"><div class="shotTabs" role="tablist" aria-label="Screens of Shakha 360">
 <button type="button" role="tab" id="st0" aria-controls="shotPane" aria-selected="true" data-shot="dashboard" data-alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm">Dashboard</button>
 <button type="button" role="tab" id="st1" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="todo" data-alt="To Do list of pending returns for each client, with due dates and status">To Do</button>
-<button type="button" role="tab" id="st2" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="staffwork" data-alt="Staff Work: each person's overdue, due and later returns, and the work still to be allotted">Staff Work</button>
-<button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
-<button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notes" data-alt="A client's page with a Keep in mind note and the office's client notes">Client notes</button>
-<button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="clients" data-alt="Clients and Fees: each client's services, fees and how often they are billed">Clients &amp; Fees</button>
-<button type="button" role="tab" id="st6" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
+<button type="button" role="tab" id="st2" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="alloc" data-alt="Work Allocation: the partners on the left, and one partner's clients with the partner and staff member for each service">Work Allocation</button>
+<button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notices" data-alt="Notices and Appeals: each client's notice with its reply date, hearing date, amount in dispute and the appeal still to file">Notices &amp; Appeals</button>
+<button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
+<button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notes" data-alt="A client's page with a Keep in mind note and the office's client notes">Client notes</button>
+<button type="button" role="tab" id="st6" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="clients" data-alt="Clients and Fees: each client's services, fees and how often they are billed">Clients &amp; Fees</button>
+<button type="button" role="tab" id="st7" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
 </div><div class="shotPane" id="shotPane" role="tabpanel" aria-labelledby="st0"><img id="shotImg" src="shots/dashboard.jpg" width="2160" height="1350" alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm"></div>
 <p class="shotNote">Real screens, with a made-up firm and clients.</p></div></div>
 </div>
@@ -82,21 +86,24 @@
 <div class="facts">
 <div class="factLead"><span aria-hidden="true"><svg class="ico" style="width:28px;height:28px"><use href="#i-folder"/></svg></span><p>Your firm’s data stays in your firm’s own Google Drive</p></div>
 <div class="fact" id="brFact"><b>Every</b><span>branch with its own GSTIN</span></div>
-<div class="fact"><b>1</b><span>responsible person for every return, with work allotted to staff</span></div>
+<div class="fact"><b>1</b><span>partner in charge and one staff member for every service of every client</span></div>
 <div class="fact"><b><span class="tD">15</span> days</b><span>free trial, no payment to start</span></div>
 <div class="fact"><b>0</b><span>things to install: use it in the browser on a computer or phone</span></div>
 </div>
 </div></section>
 
 <section class="sec" id="does" aria-labelledby="doesH" style="padding-top:24px"><div class="wrap">
-<div class="secHead"><h2 id="doesH">What Shakha 360 does</h2><p>Six parts of a CA firm’s day, handled in one place.</p></div>
+<div class="secHead"><h2 id="doesH">What Shakha 360 does</h2><p>Nine parts of a CA firm’s day, handled in one place.</p></div>
 <div class="does">
 <article class="doesC c1"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-bill"/></svg></span><h3>Billing</h3><p>GST invoices, proformas, receipts and notes, numbered for each office, sent by email or WhatsApp from your own letterhead.</p></article>
 <article class="doesC c2"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-wallet"/></svg></span><h3>Collections</h3><p>Who owes what, with payment reminders that go out on their own, and receivable ageing for the whole firm.</p></article>
 <article class="doesC c3"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cal"/></svg></span><h3>Compliance</h3><p>Every client’s GST, TDS, income-tax and ROC due dates in one To Do list. Mark a return filed, and it moves to the bill.</p></article>
-<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link, and you see what came in.</p></article>
+<article class="doesC c7"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-team"/></svg></span><h3>Work allocation</h3><p>A partner in charge and a staff member for each service of each client. Each partner opens on their own work, and you see everyone’s load.</p></article>
+<article class="doesC c8"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-scale"/></svg></span><h3>Notices and appeals</h3><p>Each notice with its reply date, hearings and orders. The last date to appeal is worked out for you, and the fee for each stage is billed from the case.</p></article>
+<article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Ask one client or all of them for their papers. They upload through a private link. Each client’s files and working papers sit in one place, in your Drive.</p></article>
 <article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 CA certificate formats, and engagement and appointment letters, with the partner’s signature and the UDIN.</p></article>
-<article class="doesC c6"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales, collections, outstanding, GST summary, GSTR-1 workbook, Tally export and the UDIN register.</p></article>
+<article class="doesC c6"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales, collections, outstanding, GST summary, GSTR-1 workbook and the UDIN register.</p></article>
+<article class="doesC c9"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-link"/></svg></span><h3>Tally Connector</h3><p>A small Windows program sends your invoices, credit and debit notes and receipts to TallyPrime, so nothing is entered twice.</p></article>
 </div>
 </div></section>
 
@@ -108,17 +115,31 @@
 </div></section>
 
 <section class="sec" id="docs" aria-labelledby="docsH"><div class="wrap split">
-<div class="splitText"><span class="eyebrow">New</span><h2 id="docsH">Documents come to you</h2>
+<div class="splitText"><h2 id="docsH">Documents come to you</h2>
 <p>Ask for the papers you need this month, from one client or from all of them, in one go.</p>
-<ul class="ticks"><li>Each client gets a private link by email or WhatsApp, with nothing to install</li><li>They upload from a phone or computer, no sign-in needed</li><li>Reminders go out until the documents are in</li><li>See who has sent what, client by client, month by month</li></ul></div>
+<ul class="ticks"><li>Each client gets a private link by email or WhatsApp, with nothing to install</li><li>They upload from a phone or computer, no sign-in needed</li><li>Reminders go out until the documents are in</li><li>See who has sent what, client by client, month by month</li><li>Keep each client’s working papers and portal logins with their work, the logins encrypted</li></ul></div>
 <div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/docrequests.jpg" width="2160" height="1350" alt="Document Requests screen with a document list and clients ticked"></figure><figure class="phone"><img loading="lazy" src="shots/phone-upload.jpg" width="780" height="1688" alt="The client's upload page on a phone"></figure></div>
 </div></section>
 
+<section class="sec flowSec" id="partners" aria-labelledby="partH"><div class="wrap split rev">
+<div class="splitText"><span class="eyebrow">New</span><h2 id="partH">Every partner sees their own work</h2>
+<p>Tick what each partner looks after: GST, audit, ROC, assessments. Their dashboard and To Do then open on their own clients.</p>
+<ul class="ticks"><li>Work Allocation lists your partners and staff, with each person’s clients, open and overdue returns</li><li>Click a person to see their work, the team working with them and a summary</li><li>Set the partner and the staff member for one service, or tick many and set them together</li><li>A partner can take a client or hand one over, and the other partner is told</li></ul></div>
+<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/alloc.jpg" width="2160" height="1350" alt="Work Allocation: partners on the left with their clients, open and overdue returns, and one partner's clients on the right"></figure><figure class="phone"><img loading="lazy" src="shots/phone-alloc.jpg" width="780" height="1688" alt="Work Allocation on a phone: one partner's work as cards with the partner and staff for each"></figure></div>
+</div></section>
+
+<section class="sec" id="notices" aria-labelledby="noticeH"><div class="wrap split">
+<div class="splitText"><span class="eyebrow">New</span><h2 id="noticeH">Notices and appeals, with every date</h2>
+<p>Record a notice once. Each reply, hearing and order is then added to the same matter.</p>
+<ul class="ticks"><li>Income tax, TDS and GST notices, with the section, DIN and reply date</li><li>Replies and hearings due this week show on the dashboard</li><li>When an order goes against the client, the last date to appeal and the appeal fee are worked out</li><li>Agree a fee for each stage and bill it from the case</li></ul></div>
+<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/notices.jpg" width="2160" height="1350" alt="Notices and Appeals: five open matters with reply dates, a hearing date, an appeal to file and the amounts in dispute"></figure></div>
+</div></section>
+
 <section class="sec flowSec" id="team" aria-labelledby="teamH"><div class="wrap split rev">
-<div class="splitText"><span class="eyebrow">New</span><h2 id="teamH">Staff logins</h2>
+<div class="splitText"><h2 id="teamH">Staff logins</h2>
 <p>Allot each client’s work to a person. They sign in and see only that work.</p>
 <ul class="ticks"><li>Prepared returns come to you for review</li><li>Each person’s pending work in one view</li><li>Head office decides how many logins each branch gets</li><li>Notes about a client stay with the office, and “Keep in mind” shows when its work is opened</li></ul></div>
-<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/mywork.jpg" width="2160" height="1350" alt="My Work: a staff member's own list of returns to do, for review and completed"></figure><figure class="phone"><img loading="lazy" src="shots/phone-staffwork.jpg" width="780" height="1688" alt="Staff Work on a phone: each person's workload"></figure></div>
+<div class="splitShots"><figure class="browser"><img loading="lazy" src="shots/mywork.jpg" width="2160" height="1350" alt="My Work: a staff member's own list of returns to do, for review and completed"></figure></div>
 </div></section>
 
 <section class="sec" aria-labelledby="brH"><div class="wrap split">
@@ -164,9 +185,11 @@
 <details><summary>How does the free trial work?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Choose a plan and register with your head office admin’s Gmail. You get <span class="tD">15</span> days free with no payment needed to start.</p></div></details>
 <details><summary>Can each branch have its own GSTIN, numbering and letterhead?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Each branch has its own logins, invoice numbering, GSTIN, bank details, partners and letterhead, and head office sees all of it.</p></div></details>
 <details><summary>Can staff have limited access?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. A staff login shows only the work allotted to that person. Returns they prepare come to you for review.</p></div></details>
+<details><summary>Can each partner see only their own work?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Each partner’s dashboard and To Do open on the work they look after, by speciality or client by client. It is a view, not a lock: a partner can still choose the whole office.</p></div></details>
+<details><summary>Can we track notices, hearings and appeals?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Record a notice with its section, DIN and reply date, then add each reply, hearing and order. Shakha 360 works out the last date to appeal, and the fee for each stage can be billed from the case.</p></div></details>
 <details><summary>How do clients send us their documents?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>You send a request, and each client gets a private link. They open it on a phone or computer, with no sign-in, and upload their files. The files go straight to your Google Drive.</p></div></details>
 <details><summary>Do we need to install anything?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>No. Shakha 360 works in any modern browser, on a computer or a phone. There is no Android app to download yet; it is being built. Until then, use the website app in your phone’s browser.</p></div></details>
-<details><summary>Can we send our data to Tally?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. Shakha 360 gives a Tally export, invoice and receipt registers, a GST summary and a GSTR-1 Excel workbook.</p></div></details>
+<details><summary>Can we send our data to Tally?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Yes. The Shakha Tally Connector, a program for the Windows computer that has TallyPrime, sends your invoices, credit and debit notes and receipts to Tally by itself. You can also download a Tally export, registers, a GST summary and a GSTR-1 Excel workbook.</p></div></details>
 <details><summary>What happens if we stop using Shakha 360?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="ans"><p>Your files stay in your Drive. Back up your data to your Drive at any time, and remove Shakha 360’s access from your Google Account.</p></div></details>
 </div>
 </div></section>
@@ -241,7 +264,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  /* the screens viewer: changes only when someone chooses a tab; phones get the phone screens where there are any */
  var tabs=[].slice.call(document.querySelectorAll('.shotTabs [role=tab]')),img=$('shotImg'),pane=$('shotPane');
  function pick(t,focus){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);if(on)x.removeAttribute('tabindex');else x.setAttribute('tabindex','-1')});
-  var small=window.matchMedia&&matchMedia('(max-width:700px)').matches&&(t.dataset.shot==='dashboard'||t.dataset.shot==='todo');
+  var small=window.matchMedia&&matchMedia('(max-width:700px)').matches&&['dashboard','todo','alloc','notices'].indexOf(t.dataset.shot)>=0;
   img.src='shots/'+(small?'phone-':'')+t.dataset.shot+'.jpg';img.width=small?780:2160;img.height=small?1688:1350;img.alt=t.dataset.alt;pane.setAttribute('aria-labelledby',t.id);if(focus)t.focus()}
  pick(tabs[0]);tabs.forEach(function(t,i){t.addEventListener('click',function(){pick(t)});t.addEventListener('keydown',function(ev){var k=ev.key==='ArrowRight'?1:ev.key==='ArrowLeft'?-1:0;if(k){ev.preventDefault();pick(tabs[(i+k+tabs.length)%tabs.length],true)}})});
 
