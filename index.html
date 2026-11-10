@@ -2,6 +2,10 @@
 <title>Shakha 360 · Billing and Compliance for CA firms</title>
 <meta name="description" content="Shakha 360 runs the billing, collections, compliance deadlines, notices and appeals, work allocation and client documents of a CA firm with a head office and branches. Your data stays in your own Google Drive. Free trial.">
 <meta name="theme-color" content="#0D3A2C">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Shakha 360"><meta property="og:url" content="https://www.shakha360.com/">
+<meta property="og:title" content="Shakha 360 · Billing and Compliance for CA firms"><meta property="og:description" content="Billing, collections, compliance deadlines, notices, work allocation and client documents, for every office of a CA firm. Free trial.">
+<meta property="og:image" content="https://www.shakha360.com/shots/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Shakha 360: your whole firm, in one view, with the dashboard of the app">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.shakha360.com/shots/share.jpg">
 <link rel="icon" href="shakha360-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
@@ -28,7 +32,8 @@
 .phone{position:absolute;right:-14px;bottom:-34px;width:24%;margin:0;border-radius:18px;overflow:hidden;border:5px solid #17211D;box-shadow:0 18px 40px rgba(0,0,0,.3);background:#fff}
 @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}.split.rev .splitText{order:0}.phone{right:6px;bottom:-22px;width:30%}}
 @media(max-width:700px){.shape{display:none}}
-.heroText>p{text-align:center;hyphens:none}.end{overflow:hidden;position:relative}#plansGrid,.cmpw{min-width:0;max-width:100%}.cmpw{overflow-x:auto;position:relative}
+.heroText>p{text-align:center;hyphens:none}.end{overflow:hidden;position:relative}#plansGrid,.cmpw{min-width:0;max-width:100%}.cmpD>summary{cursor:pointer;list-style-position:inside}.cmpD>summary:focus-visible{outline:3px solid #F2B632;outline-offset:3px}
+@media(max-width:700px){.cmpD>summary{display:block;list-style:none;text-align:center;border:1.5px solid #17614A;color:#17614A;border-radius:99px;padding:12px 18px;font-size:1rem;min-height:44px;box-sizing:border-box}.cmpD>summary::-webkit-details-marker{display:none}.cmpD[open]>summary{margin-bottom:14px}}.cmpw{overflow-x:auto;position:relative}
 </style></head><body>
 <a class="skip" href="#main">Skip to content</a>
 
@@ -74,9 +79,7 @@
 <button type="button" role="tab" id="st2" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="alloc" data-alt="Work Allocation: the partners on the left, and one partner's clients with the partner and staff member for each service">Work Allocation</button>
 <button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notices" data-alt="Notices and Appeals: each client's notice with its reply date, hearing date, amount in dispute and the appeal still to file">Notices &amp; Appeals</button>
 <button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
-<button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notes" data-alt="A client's page with a Keep in mind note and the office's client notes">Client notes</button>
-<button type="button" role="tab" id="st6" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="clients" data-alt="Clients and Fees: each client's services, fees and how often they are billed">Clients &amp; Fees</button>
-<button type="button" role="tab" id="st7" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
+<button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
 </div><div class="shotPane" id="shotPane" role="tabpanel" aria-labelledby="st0"><img id="shotImg" src="shots/dashboard.jpg?v=1097b" width="2160" height="1350" alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm"></div>
 <p class="shotNote">Real screens, with a made-up firm and clients.</p></div></div>
 </div>
@@ -266,10 +269,10 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
     '<a class="btn" href="app/?register=1&plan='+encodeURIComponent(p.id)+'">'+(P.autoTrial?'Start free trial':'Choose '+e(p.name))+'</a></div>'}).join('');
   var row=function(l,f){return '<tr><th scope="row">'+l+'</th>'+P.plans.map(function(p){return '<td>'+f(p)+'</td>'}).join('')+'</tr>'};
   var yes=Y+'<span class="vh">Included</span>',no=N+'<span class="vh">Not included</span>';
-  var cmp='<h3 class="cmph">Compare plans</h3><div class="cmpw"><table class="cmp"><thead><tr><th><span class="vh">Feature</span></th>'+P.plans.map(function(p){return '<th scope="col">'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
+  var cmp='<details class="cmpD"'+(window.matchMedia&&matchMedia('(max-width:700px)').matches?'':' open')+'><summary class="cmph">Compare plans</summary><div class="cmpw"><table class="cmp"><thead><tr><th><span class="vh">Feature</span></th>'+P.plans.map(function(p){return '<th scope="col">'+e(p.name)+'</th>'}).join('')+'</tr></thead><tbody>'+
    row('Price a year',function(p){return '<b>&#8377;'+rs(p.price)+'</b>'})+row('Branches',function(p){return p.branches<0?'Any number':p.branches===0?'Head office only':'Up to '+p.branches})+row('Logins',function(p){return p.logins<0?'Any number':'Up to '+p.logins})+
-   F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?yes:no})}).join('')+'</tbody></table></div>';
-  g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;reveal('.pcard,.cmph,.cmpw');
+   F.map(function(f){return row(e(f.name),function(p){return (!p.features||p.features[f.id]!==false)?yes:no})}).join('')+'</tbody></table></div></details>';
+  g.innerHTML='<div class="pcards">'+cards+'</div>'+cmp;reveal('.pcard,.cmpD');
   /* which plans include a feature, and the branch fact, from the same live plan list */
   var nm=function(p){return String(p.name||'').replace(/^Shakha 360\s+/,'')},inc=function(id){return P.plans.filter(function(p){return id==='branches'?+p.branches!==0:!p.features||p.features[id]!==false})};
   var and=function(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1]};
