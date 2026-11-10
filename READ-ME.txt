@@ -1,8 +1,0 @@
-Home page for www.shakha360.com, rebuilt 10 Nov 2026 from Shakha 360 version 10.9.7.
-
-Upload to the website's GitHub repository (adminshakha-alt/shakha), keeping the folders:
-  index.html            replaces the one there
-  shots/ (14 pictures)  replace the ones with the same name; 5 are new: alloc.jpg, alloc-summary.jpg, notices.jpg, phone-alloc.jpg, phone-notices.jpg
-
-Nothing else changes. shots/staffwork.jpg and shots/phone-staffwork.jpg on the website are no longer used and can be deleted.
-The pictures show a made-up firm (Demo & Associates) with made-up partners, staff and clients.
