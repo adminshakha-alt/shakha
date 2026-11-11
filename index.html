@@ -32,8 +32,26 @@
 .phone{position:absolute;right:-14px;bottom:-34px;width:24%;margin:0;border-radius:18px;overflow:hidden;border:5px solid #17211D;box-shadow:0 18px 40px rgba(0,0,0,.3);background:#fff}
 @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}.split.rev .splitText{order:0}.phone{right:6px;bottom:-22px;width:30%}}
 @media(max-width:700px){.shape{display:none}}
-.heroText>p{text-align:center;hyphens:none}.end{overflow:hidden;position:relative}#plansGrid,.cmpw{min-width:0;max-width:100%}.cmpD>summary{cursor:pointer;list-style-position:inside}.cmpD>summary:focus-visible{outline:3px solid #F2B632;outline-offset:3px}
+.heroText>p{text-align:center;hyphens:none}
+/* one plan and the calculator */
+.one{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:stretch;max-width:1080px;margin:0 auto}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:24px}.calc h3{margin:0 0 6px;font-size:1.2rem}
+.crow{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}.crow>div:first-child{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.crow span{color:var(--mu);font-size:14px;line-height:1.45}.crow em{font-style:normal;font-weight:600;color:#17614A;font-size:14px}
+.cstep{display:flex;align-items:center;gap:8px;flex:none}.cstep button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:20px;cursor:pointer;color:#17211D}.cstep button:hover{border-color:#17614A}.cstep button:focus-visible{outline:3px solid #F2B632;outline-offset:2px}.cstep output{min-width:26px;text-align:center;font-weight:700;font-size:18px}
+.ctot{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding-top:16px}.ctot span{font-weight:600}.ctot b{font:700 2rem/1 var(--f-h,inherit);color:#17211D}.ctot small{flex-basis:100%;color:var(--mu);font-size:14px}.cnote{color:var(--mu);font-size:13px;margin:8px 0 0}
+@media(max-width:860px){.one{grid-template-columns:1fr}}.end{overflow:hidden;position:relative}#plansGrid,.cmpw{min-width:0;max-width:100%}.cmpD>summary{cursor:pointer;list-style-position:inside}.cmpD>summary:focus-visible{outline:3px solid #F2B632;outline-offset:3px}
 @media(max-width:700px){.cmpD>summary{display:block;list-style:none;text-align:center;border:1.5px solid #17614A;color:#17614A;border-radius:99px;padding:12px 18px;font-size:1rem;min-height:44px;box-sizing:border-box}.cmpD>summary::-webkit-details-marker{display:none}.cmpD[open]>summary{margin-bottom:14px}}.cmpw{overflow-x:auto;position:relative}
+.oneCard{display:flex;flex-direction:column}.oneFor{color:var(--mu);margin:6px 0 0}.oneH{font-size:1rem;margin:20px 0 12px;padding-top:18px;border-top:1px solid var(--line)}
+.oneCard .ppts{display:grid;grid-template-columns:1fr;gap:11px;margin:0;align-content:start}.oneCard .ppts li{margin:0}
+.calcH{display:flex;gap:12px;align-items:center;margin-bottom:6px}.calcH svg{width:34px;height:34px;flex:none;fill:none;stroke:#17614A;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.calcH h3{margin:0;font-size:1.25rem}.calcH p{margin:2px 0 0;color:var(--mu);font-size:14px}
+.calc .crow:last-of-type{border-bottom:0}.cbox{background:#EEF6EA;border-radius:14px;padding:14px 16px;margin-top:6px}
+#c_lines>div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:15px}#c_lines b{font-weight:600;font-variant-numeric:tabular-nums}
+.cbox .ctot{align-items:center;border-top:1px solid #CFE0C9;margin-top:8px;padding-top:12px}.cbox .ctot span{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:1.05rem}.cbox .ctot small{flex-basis:auto;font-weight:400;font-size:13px}
+.cbox .ctot b{background:#F7CB4D;border-radius:999px;padding:8px 18px;font-size:1.5rem;font-variant-numeric:tabular-nums}
+.startBar{display:flex;align-items:center;justify-content:space-between;gap:20px 28px;flex-wrap:wrap;max-width:1080px;margin:24px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:22px 26px}
+.startBar h3{margin:0 0 8px;font-size:1.3rem}.startBar ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 22px;color:var(--mu)}.startBar li{display:flex;align-items:center;gap:8px}.startBar li .ic{width:18px;height:18px;flex:none}
+.sbBtns{display:flex;gap:12px;flex-wrap:wrap}.btn.line{background:transparent;color:#17614A;border:1.5px solid #17614A}.btn.line:hover{background:#EEF6EA}
+@media(max-width:700px){.oneCard .ppts{grid-template-columns:1fr}.sbBtns,.sbBtns .btn{width:100%;justify-content:center}}
 </style></head><body>
 <a class="skip" href="#main">Skip to content</a>
 
@@ -60,7 +78,7 @@
 <header class="top dark"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Shakha 360 home"><svg aria-hidden="true"><use href="#i-logo"/></svg><div><div class="bn">Shakha 360</div><div class="bt">Billing and Compliance for CA firms</div></div></a>
 <button class="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
-<nav class="nav" id="nav" aria-label="Main"><a href="#does">What it does</a><a href="#demo">Demo</a><a href="#plans">Plans</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="app/">Sign in</a><a class="btn sun" href="app/?register=1" data-trial>Start free trial</a></nav>
+<nav class="nav" id="nav" aria-label="Main"><a href="#does">What it does</a><a href="#demo">Demo</a><a href="#plans">Pricing</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="app/">Sign in</a><a class="btn sun" href="app/?register=1" data-trial>Start free trial</a></nav>
 </div></header>
 
 <main id="main">
@@ -183,14 +201,14 @@
 
 <footer class="foot"><div class="wrap">
 <div><a class="brand" href="index.html"><svg aria-hidden="true"><use href="#i-logo"/></svg><div><div class="bn">Shakha 360</div></div></a><p>Billing and compliance for CA firms with a head office and branches.</p></div>
-<div><h4>Product</h4><ul><li><a href="#does">What it does</a></li><li><a href="#demo">Demo</a></li><li><a href="#plans">Plans</a></li><li><a href="#faq">FAQ</a></li><li><a href="app/">Sign in</a></li></ul></div>
+<div><h4>Product</h4><ul><li><a href="#does">What it does</a></li><li><a href="#demo">Demo</a></li><li><a href="#plans">Pricing</a></li><li><a href="#faq">FAQ</a></li><li><a href="app/">Sign in</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="#contact">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li><li><a href="mailto:support@shakha360.com">support@shakha360.com</a></li></ul></div>
 <div class="copy"><span>© 2026 Shakha 360</span><span>Made for chartered accountant firms in India</span></div>
 </div></footer>
 
 <script>
 /* ---- Settings you can change ---- */
-var APP='https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+var APP='https://shakha360-327918432563.asia-south1.run.app/exec';
 var CONTACT_EMAIL='hello@shakha360.com';
 var WHATSAPP='';          /* e.g. '919812345678' (country code, no + or spaces). Leave empty to hide. */
 var DEMO_VIDEO='PJOTcPa2bgM';        /* YouTube video ID of the main demo. Leave empty until ready. */
@@ -257,6 +275,20 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  /* the server address comes from shakha-config.json, as on the app page; the address above is only used if that file can't be read */
  fetch('shakha-config.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(c){if(c&&/^https:\/\//.test(c.api||''))APP=c.api;return fetch(APP+'?plans=1',{credentials:'omit',redirect:'follow',cache:'no-store'})}).then(function(r){return r.json()}).then(function(P){
   if(!P.plans||!P.plans.length){$('plans').hidden=true;return}var F=P.features||[];
+  /* one plan (from 10.10.0): one card with everything in it, and a calculator for what a firm adds */
+  if(P.one){var p=P.plans[0];document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
+   $('heroBtn').textContent=P.autoTrial?'Start your free '+P.trialDays+'-day trial':'Register your firm';
+   $('plansH').textContent='One plan. Add only what your firm needs.';note.innerHTML='&#8377;'+rs(p.price)+' a year for your head office, with '+p.logins+' logins. Add logins, branches or billing firms at any time and pay only for the months left in your year.';var offer=P.offer||F.map(function(f){return f.name});
+   var add=[['lg','Extra logins','For more partners and staff.',P.extraPrice,'each'],['br','Branches','Another office with its own GSTIN, invoice series, clients and staff. Comes with '+P.branchLogins+' logins.',P.branchPrice,'each'],['bf','Billing firms','Bill some work from another firm, such as a family firm, with its own totals.',P.bfPrice,'each']];
+   g.innerHTML='<div class="one"><div class="pcard oneCard"><div class="pname">'+e(p.name)+'</div><div class="pprice"><span class="amt">&#8377;'+rs(p.price)+'</span><span class="per"> / year</span></div>'+(p.disc?'<div class="pmrp"><s>&#8377;'+rs(p.mrp)+'</s> <span class="off">'+p.disc+'% off</span></div>':'')+
+    '<p class="oneFor">For your head office, with '+p.logins+' logins.</p><h3 class="oneH">What you get</h3><ul class="ppts">'+offer.map(function(x){return '<li>'+Y+'<span>'+e(x)+'</span></li>'}).join('')+'</ul></div>'+
+    '<div class="calc"><div class="calcH"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg><div><h3>Fee calculator</h3><p>Set it to the size of your firm.</p></div></div>'+add.map(function(a){return '<div class="crow"><div><b>'+a[1]+'</b><span>'+e(a[2])+'</span><em>&#8377;'+rs(a[3])+' a year '+a[4]+'</em></div><div class="cstep" role="group" aria-label="'+a[1]+'"><button type="button" data-c="'+a[0]+'" data-d="-1" aria-label="One fewer">&minus;</button><output id="c_'+a[0]+'">0</output><button type="button" data-c="'+a[0]+'" data-d="1" aria-label="One more">+</button></div></div>'}).join('')+
+    '<div class="cbox" aria-live="polite"><div id="c_lines"></div><div class="ctot"><span>Total a year<small id="c_sum"></small></span><b id="c_tot">&#8377;'+rs(p.price)+'</b></div></div></div></div>'+
+    '<div class="startBar"><div><h3>'+(P.autoTrial?'Start with a free '+P.trialDays+'-day trial':'Register your firm')+'</h3><ul><li>'+Y+P.trialDays+' days, everything open</li><li>'+Y+'No payment now</li><li>'+Y+'Your data stays in your Google Drive</li></ul></div><div class="sbBtns"><a class="btn" href="app/?register=1">'+(P.autoTrial?'Start free trial':'Register your firm')+'</a><a class="btn line" id="c_buy" href="app/?register=1&buy=1">Subscribe now</a></div></div>';
+   var n={lg:0,br:0,bf:0},calc=function(){var t=p.price+n.lg*P.extraPrice+n.br*P.branchPrice+n.bf*P.bfPrice;$('c_tot').innerHTML='&#8377;'+rs(t);var ln=function(a,b){return '<div><span>'+a+'</span><b>&#8377;'+rs(b)+'</b></div>'};$('c_lines').innerHTML=ln('The plan, '+p.logins+' logins',p.price)+(n.lg?ln('Extra logins ('+n.lg+' &times; &#8377;'+rs(P.extraPrice)+')',n.lg*P.extraPrice):'')+(n.br?ln('Branches ('+n.br+' &times; &#8377;'+rs(P.branchPrice)+')',n.br*P.branchPrice):'')+(n.bf?ln('Billing firms ('+n.bf+' &times; &#8377;'+rs(P.bfPrice)+')',n.bf*P.bfPrice):'');Object.keys(n).forEach(function(k){$('c_'+k).textContent=n[k]});
+    var l=p.logins+n.lg+n.br*P.branchLogins;$('c_sum').textContent=l+' login'+(l===1?'':'s')+(n.br?', '+(n.br+1)+' offices':', head office')+(n.bf?', '+n.bf+' billing firm'+(n.bf===1?'':'s'):'');$('c_buy').href='app/?register=1&buy=1&calc='+n.lg+'-'+n.br+'-'+n.bf};
+   g.addEventListener('click',function(ev){var b=ev.target.closest('[data-c]');if(!b)return;var k=b.dataset.c;n[k]=Math.max(0,Math.min(50,n[k]+(+b.dataset.d)));calc()});calc();reveal('.oneCard,.calc,.startBar');
+   $('brFact').innerHTML='<b>Any</b><span>number of branches, each with its own GSTIN</span>';return}
   note.innerHTML=e(P.autoTrial?'Every plan starts with a free '+P.trialDays+'-day trial. No payment needed to start.':'Register and choose a plan; your free '+P.trialDays+'-day trial starts once your firm is approved.')+'<span class="noteX">Logins cover partners, staff and branches. Each partner has their own.</span>'+(P.extraPrice?'<span class="noteX">Extra logins on any plan: ₹'+rs(P.extraPrice)+' a year each.</span>':'');
   var till=P.offerTill&&/^\d{4}-\d{2}-\d{2}$/.test(P.offerTill)?new Date(P.offerTill+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
   document.querySelectorAll('.tD').forEach(function(s){s.textContent=P.trialDays});
@@ -279,7 +311,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
   var any=P.plans.filter(function(p){return +p.branches<0}),most=P.plans.reduce(function(m,p){return +p.branches>(m?+m.branches:0)?p:m},null);
   if(any.length)$('brFact').innerHTML='<b>Any</b><span>number of branches on '+e(and(any.map(nm)))+', each with its own GSTIN</span>';
   else if(most)$('brFact').innerHTML='<b>'+(+most.branches)+'</b><span>branches on '+e(nm(most))+', each with its own GSTIN</span>';
- }).catch(function(){g.innerHTML='<div class="card"><p>Plans couldn’t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'});
+ }).catch(function(){g.innerHTML='<div class="card"><p>Pricing couldn’t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'});
 })();
 </script>
 </body></html>
