@@ -13,7 +13,7 @@
 <main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your documents</h1><div class="spin"></div></div><p style="text-align:center;font-size:13px;opacity:.75;margin:18px 0 8px"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
 <script>
 /* Shakha 360 web app address (the same one as upload.html) */
-var APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
 var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https?:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', s: q.get('s') || '', t: q.get('t') || '' };

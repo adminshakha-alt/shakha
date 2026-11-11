@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /upload.html
+Disallow: /share.html
+Disallow: /accept.html
+Disallow: /connect.html
+
+Sitemap: https://www.shakha360.com/sitemap.xml

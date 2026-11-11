@@ -30,9 +30,11 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:
   <p id="msg">Opening Shakha 360…</p>
 </div>
 <script>
+/* 10.5: Shakha opens only as its own page, never inside another site's frame */
+if (window.top !== window.self) { try { window.top.location = window.location.href; } catch (e) { document.documentElement.innerHTML = ''; } }
 /* Shakha 360's web app address (Deploy → Manage deployments → Web app URL, ending in /exec).
    The screens come from there, so a new version reaches this page as soon as it is made live from the console. */
-var SHAKHA_APP = 'https://script.google.com/macros/s/AKfycbwVDujfSQWbsWiHeTl8pIB4ahPFIq5ZoTnWhdWn8kg-L7Pw5lggYBS0LNjfLDA83gbV7Q/exec';
+var SHAKHA_APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
 (function () {
   var q = new URLSearchParams(location.search), keep = 'shakha_page';
   /* 8.7: the server address comes from shakha-config.json beside this site, so a new server needs no change here or in the phone app */
