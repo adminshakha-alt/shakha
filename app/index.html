@@ -49,7 +49,9 @@ var SHAKHA_APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
     var boot = '<script>window.SHAKHA_EXEC=' + JSON.stringify(exec) + ';window.SHAKHA_SITE=' + JSON.stringify(new URL('../', location.href).href) + ';window.SHAKHA_Q=' + JSON.stringify(w.q || {}).replace(/</g, '\\u003c') + ';' +
       /* on the sign-in and sign-up screens the Shakha 360 logo goes back to the website's home page */
       'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".auth-brand");if(b&&!window.ShakhaAndroid){e.preventDefault();location.href=' + JSON.stringify(new URL('../', location.href).href) + '}});' +
-      '<\/script><style>.auth-brand{cursor:pointer}</style>';
+      '<\/script><style>.auth-brand{cursor:pointer}</style>' +
+      /* 10.20: the screens carry no tab icon of their own, so the Shakha 360 logo goes in with them (else Chrome shows a globe) */
+      '<link rel="icon" href="' + new URL('../shakha360-icon.svg', location.href).href + '" type="image/svg+xml">';
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + boot; }) : boot + html;
     document.open(); document.write(html); document.close();
   }
