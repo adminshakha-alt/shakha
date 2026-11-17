@@ -19,7 +19,7 @@
 .cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13.5px;color:var(--mu)}
 .note{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:6px}.note p+p{margin-top:6px}
 .allin{display:none;background:var(--ok-bg);color:var(--ok);border-radius:14px;padding:12px 14px;font-weight:600;margin-bottom:10px}.allin.on{display:block}
-.grp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.grp h2{font-size:17px;font-weight:600}.grp span{font-size:13px;color:var(--mu);font-weight:600;white-space:nowrap}
+.grp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.grp h2{font-size:17px;font-weight:600}.grp span{font-size:13px;color:var(--mu);font-weight:600;white-space:nowrap}.grpx{height:1px;background:rgba(0,0,0,.1);margin:24px 0 16px}
 .it{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--card)}.it.done{background:var(--card2)}
 .ih{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.ih b{font-size:15.5px;overflow-wrap:anywhere}
 .got{flex:none;font-size:12.5px;font-weight:700;color:var(--ok);background:var(--ok-bg);border-radius:99px;padding:3px 11px}.got.na{color:var(--mu);background:var(--line)}
@@ -93,7 +93,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       var g = it.optional ? '' : (it.group || '');
       /* a heading where the group changes; the optional "Other documents" sits under its own */
       if (it.optional) { var gh0 = el('div', 'grp'); gh0.appendChild(el('h2', '', 'Anything Else')); gh0.appendChild(el('span', '', 'Optional')); box.appendChild(gh0); }
-      else if (g !== last) { last = g; if (g) { var gh = el('div', 'grp'), c = el('span', '', ''); gh.appendChild(el('h2', '', g)); gh.appendChild(c); box.appendChild(gh); groups[g] = { items: [], count: c }; } }
+      else if (g !== last) { var was = last; last = g; if (!g && was) box.appendChild(el('div', 'grpx')); if (g) { var gh = el('div', 'grp'), c = el('span', '', ''); gh.appendChild(el('h2', '', g)); gh.appendChild(c); box.appendChild(gh); groups[g] = { items: [], count: c }; } }
       if (g && groups[g]) groups[g].items.push(it);
       var d = el('div', 'it'), ih = el('div', 'ih'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received, na = !!it.na;
       ih.appendChild(h); ih.appendChild(got); d.appendChild(ih);
