@@ -1,16 +1,45 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Upload documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Upload documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
 <style>
-.cx{max-width:620px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
-.cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13px;color:var(--mu)}
-.it{border-top:1px solid var(--line);padding:14px 0}.it b{display:block;font-size:15px;margin-bottom:6px;overflow-wrap:anywhere}
-.it input[type=file]{display:block;width:100%;font-size:14px;margin:6px 0;box-sizing:border-box}
-.got{display:inline-block;font-size:12px;font-weight:700;color:#17614A;background:#E4F1EB;border-radius:99px;padding:2px 10px;margin-left:6px}
-.ln{font-size:13px;margin-top:4px;overflow-wrap:anywhere}.ln.bad{color:#B3261E}.ln.ok{color:#17614A}
+/* the green band at the top, as on the home page: deep green, a soft glow, the leaf and the flower */
+.uph{position:relative;overflow:hidden;background:#0D3A2C;color:#fff;padding:44px 0 96px}
+.uph::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 70% at 6% 100%,rgba(242,182,50,.14),transparent 70%),radial-gradient(50% 70% at 98% 60%,rgba(46,160,112,.34),transparent 70%)}
+.uph .shape.sL{left:-90px;top:26px;width:230px;height:230px}.uph .shape.sR{right:-70px;top:8px;width:200px;height:200px}
+.uph .in{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px;text-align:center}
+.upill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(242,182,50,.45);color:#F8D98A;font-size:14px;background:rgba(242,182,50,.08);max-width:100%;overflow-wrap:anywhere}
+.upill i{width:7px;height:7px;border-radius:50%;background:#F2B632;flex:none}
+.uph h1{font-size:clamp(1.7rem,4.6vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin:16px 0 8px;overflow-wrap:anywhere}
+.uph .sub{color:#CFE0D8;font-size:15.5px;overflow-wrap:anywhere}
+.prog{display:flex;align-items:center;gap:12px;max-width:420px;margin:20px auto 0}.prog .trk{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.16);overflow:hidden}.prog .trk i{display:block;height:100%;width:0;background:#F2B632;border-radius:8px;transition:width .3s}
+.prog span{font-size:14px;color:#F8D98A;font-weight:600;white-space:nowrap}
+/* the card of documents, lifted over the band */
+.cx{position:relative;z-index:2;max-width:680px;margin:-64px auto 0;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:22px;padding:24px 24px 10px;box-sizing:border-box;box-shadow:0 18px 44px rgba(13,58,44,.14)}
+.cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13.5px;color:var(--mu)}
+.note{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:6px}.note p+p{margin-top:6px}
+.allin{display:none;background:var(--ok-bg);color:var(--ok);border-radius:14px;padding:12px 14px;font-weight:600;margin-bottom:10px}.allin.on{display:block}
+.grp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.grp h2{font-size:17px;font-weight:600}.grp span{font-size:13px;color:var(--mu);font-weight:600;white-space:nowrap}
+.it{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--card)}.it.done{background:var(--card2)}
+.ih{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.ih b{font-size:15.5px;overflow-wrap:anywhere}
+.got{flex:none;font-size:12.5px;font-weight:700;color:var(--ok);background:var(--ok-bg);border-radius:99px;padding:3px 11px}.got.na{color:var(--mu);background:var(--line)}
+/* the drop area: a label around the file chooser, so a tap, a click, the keyboard and a drop all work */
+.dz{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center;margin-top:10px;padding:16px 12px;min-height:60px;border:1.5px dashed var(--line);border-radius:12px;color:var(--mu);font-size:14.5px;cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.over{border-color:var(--link);background:var(--ok-bg);color:var(--fg)}.dz u{color:var(--link);font-weight:600;text-decoration:none}
+.dz svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.dz input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.dz:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.it.done .dz{padding:9px 12px;min-height:44px;font-size:13.5px}.dz.dzna{display:none}
+.nal{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--mu);min-height:28px;cursor:pointer}.nal input{width:17px;height:17px;accent-color:#17614A}
+.ln{font-size:13.5px;margin-top:8px;overflow-wrap:anywhere}.ln.bad{color:var(--bad)}.ln.ok{color:var(--ok)}
 .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;width:0;background:#17614A}
 .spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:#17614A;border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
-@media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}}
+.plain{margin-top:24px}.foot2{text-align:center;font-size:13px;opacity:.75;margin:18px 0 28px}
+@media(max-width:700px){.uph{padding:30px 0 86px}.cx{margin:-60px 12px 0;padding:18px 14px 6px;border-radius:18px}.uph .shape{display:none}}
 </style></head><body>
-<main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your request</h1><div class="spin"></div></div><p style="text-align:center;font-size:13px;opacity:.75;margin:18px 0 8px"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
+<main id="main">
+<header class="uph" id="head" hidden><span class="shape sL" aria-hidden="true"></span><span class="shape sR" aria-hidden="true"></span><div class="in" id="headIn"></div></header>
+<div class="cx plain" id="box" aria-live="polite"><h1>Opening your request</h1><div class="spin"></div></div>
+<p class="foot2"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
 <script>
 /* Shakha 360 web app address (the same one as connect.html) */
 var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
@@ -18,10 +47,10 @@ var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
 var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', r: q.get('r') || '', t: q.get('t') || '' };
-  var box = document.getElementById('box'), P = 5242880, MAX = 26214400, busy = 0;
+  var box = document.getElementById('box'), head = document.getElementById('head'), headIn = document.getElementById('headIn'), P = 5242880, MAX = 26214400, busy = 0;
   /* everything shown here is set as text, never as page code */
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
-  function fail(t, m) { box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
+  function fail(t, m) { head.hidden = true; box.className = 'cx plain'; box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
   function post(o) { var b = {}; for (var k in K) b[k] = K[k]; for (var j in o) b[j] = o[j];
     return APP_READY.then(function () { return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }); }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
   function b64(blob) { return new Promise(function (y, n) { var r = new FileReader(); r.onload = function () { y(String(r.result).split(',')[1] || ''); }; r.onerror = n; r.readAsDataURL(blob); }); }
@@ -42,29 +71,59 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     }
     return step();
   }
+  function icon() { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', 'M12 16V4m0 0L7 9m5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'); s.appendChild(p); return s; }
   function draw(o) {
-    document.title = 'Upload documents · ' + o.firm; box.textContent = '';
-    box.appendChild(el('h1', '', o.title));
-    box.appendChild(el('p', 'mu', o.firm + (o.office ? ' · ' + o.office : '') + ' asks ' + o.client + ' for these documents by ' + o.dueText + '.'));
-    if (o.message) box.appendChild(el('p', '', o.message));
-    box.appendChild(el('p', 'mu', 'You can send PDF, JPG, PNG, Excel, Word or CSV files of up to 25 MB each. No sign-in is needed. Tick Not applicable for anything you don\'t have. Please keep this page open while files are sending.'));
-    var acc = o.types.map(function (x) { return '.' + x; }).join(',');
+    document.title = 'Upload documents · ' + o.firm; box.className = 'cx'; box.textContent = ''; headIn.textContent = ''; head.hidden = false;
+    /* the band: who is asking, for what, from whom, by when, and how far it has got */
+    var pill = el('span', 'upill'); pill.appendChild(el('i')); pill.appendChild(document.createTextNode(o.firm + (o.tagline ? ' · ' + o.tagline : ''))); headIn.appendChild(pill);
+    headIn.appendChild(el('h1', '', o.title));
+    var hasDue = !o.noDue && o.dueText && o.dueText !== 'the earliest';
+    headIn.appendChild(el('p', 'sub', 'For ' + o.client + (hasDue ? ' · by ' + o.dueText : '')));
+    var prog = el('div', 'prog'), trk = el('div', 'trk'), fillP = el('i'), cnt = el('span', '', ''); trk.appendChild(fillP); prog.appendChild(trk); prog.appendChild(cnt); headIn.appendChild(prog);
+    prog.setAttribute('role', 'status');
+    var allin = el('div', 'allin', 'Every document is in. Thank you. You can still add more files below.'); box.appendChild(allin);
+    var note = el('div', 'note'); if (o.message) note.appendChild(el('p', '', o.message));
+    note.appendChild(el('p', 'mu', 'Drop files on a document below, or choose them. PDF, JPG, PNG, Excel, Word or CSV, up to 25 MB each. No sign-in is needed. Tick Not applicable for anything you don\'t have, and keep this page open while files are sending.'));
+    box.appendChild(note);
+    var acc = o.types.map(function (x) { return '.' + x; }).join(','), need = o.items.filter(function (i) { return !i.optional; }), state = {}, groups = {};
+    function total() { var d = 0; need.forEach(function (i) { if (state[i.id]) d++; }); fillP.style.width = (need.length ? Math.round(d / need.length * 100) : 0) + '%'; cnt.textContent = d + ' of ' + need.length + ' done'; allin.className = 'allin' + (need.length && d === need.length ? ' on' : '');
+      for (var g in groups) { var G = groups[g], k = 0; G.items.forEach(function (i) { if (state[i.id]) k++; }); G.count.textContent = k + ' of ' + G.items.length; } }
+    var last = null;
     o.items.forEach(function (it) {
-      var d = el('div', 'it'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received, na = !!it.na;
-      if (it.optional) d.appendChild(el('p', 'mu', 'Anything else you want to send us. This is optional.'));
-      var naBox = el('input'), naL = el('label', 'mu'); naBox.type = 'checkbox'; naBox.checked = na; naL.appendChild(naBox); naL.appendChild(document.createTextNode(' Not applicable to me'));
-      function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : na ? 'Not applicable' : ''; got.style.display = n || na ? '' : 'none'; inp.disabled = na; naL.style.display = it.optional || n ? 'none' : ''; }
-      h.appendChild(got);
-      var inp = el('input'); inp.type = 'file'; inp.multiple = true; inp.accept = acc; inp.setAttribute('aria-label', 'Choose files for ' + it.name);
-      d.insertBefore(h, d.firstChild); d.appendChild(inp); d.appendChild(naL); var list = el('div'); d.appendChild(list); box.appendChild(d); mark();
+      var g = it.optional ? '' : (it.group || '');
+      /* a heading where the group changes; the optional "Other documents" sits under its own */
+      if (it.optional) { var gh0 = el('div', 'grp'); gh0.appendChild(el('h2', '', 'Anything Else')); gh0.appendChild(el('span', '', 'Optional')); box.appendChild(gh0); }
+      else if (g !== last) { last = g; if (g) { var gh = el('div', 'grp'), c = el('span', '', ''); gh.appendChild(el('h2', '', g)); gh.appendChild(c); box.appendChild(gh); groups[g] = { items: [], count: c }; } }
+      if (g && groups[g]) groups[g].items.push(it);
+      var d = el('div', 'it'), ih = el('div', 'ih'), h = el('b', '', it.name), got = el('span', 'got', ''); var n = it.received, na = !!it.na;
+      ih.appendChild(h); ih.appendChild(got); d.appendChild(ih);
+      var dz = el('label', 'dz'), words = el('span'), inp = el('input'); inp.type = 'file'; inp.multiple = true; inp.accept = acc; inp.setAttribute('aria-label', 'Choose files for ' + (g ? g + ' ' : '') + it.name);
+      dz.appendChild(icon()); dz.appendChild(words); dz.appendChild(inp); d.appendChild(dz);
+      var naBox = el('input'), naL = el('label', 'nal'); naBox.type = 'checkbox'; naBox.checked = na; naL.appendChild(naBox); naL.appendChild(document.createTextNode('Not applicable to me')); d.appendChild(naL);
+      var list = el('div'); d.appendChild(list); box.appendChild(d);
+      function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : na ? 'Not applicable' : ''; got.className = 'got' + (na && !n ? ' na' : ''); got.style.display = n || na ? '' : 'none';
+        inp.disabled = na; dz.className = 'dz' + (na ? ' dzna' : ''); d.className = 'it' + (n || na ? ' done' : ''); naL.style.display = it.optional || n ? 'none' : '';
+        words.textContent = ''; words.appendChild(document.createTextNode(n ? 'Drop more files here or ' : 'Drop files here or ')); words.appendChild(el('u', '', 'choose files'));
+        if (!it.optional) state[it.id] = !!(n || na); total(); }
+      mark();
       naBox.onchange = function () { var want = naBox.checked; naBox.disabled = true; post({ up: 'na', item: it.id, na: want ? 1 : 0 }).then(function (j) { naBox.disabled = false; if (!j.ok) { naBox.checked = !want; var er = el('div', 'ln bad', j.error || 'Please try again.'); list.appendChild(er); return; } na = want; mark(); }, function () { naBox.disabled = false; naBox.checked = !want; list.appendChild(el('div', 'ln bad', 'Could not be saved. Please try again.')); }); };
-      inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; var chain = Promise.resolve();
+      function take(fs) { var chain = Promise.resolve();
         fs.forEach(function (f) { var ln = el('div', 'ln', f.name), bar = el('div', 'bar'), fill = el('i'); bar.appendChild(fill); list.appendChild(ln); list.appendChild(bar);
           chain = chain.then(function () { if (f.size > MAX) throw new Error('This file is larger than 25 MB.'); if (!f.size) throw new Error('This file is empty.'); busy++; return send(f, it.id, function (x) { fill.style.width = Math.round(x * 100) + '%'; }); })
             .then(function () { busy = Math.max(0, busy - 1); n++; mark(); ln.className = 'ln ok'; ln.textContent = f.name + ': received'; bar.remove(); },
-              function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); ln.className = 'ln bad'; ln.textContent = f.name + ': ' + (e.message || 'could not be sent. Please try again.'); bar.remove(); }); }); };
+              function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); ln.className = 'ln bad'; ln.textContent = f.name + ': ' + (e.message || 'could not be sent. Please try again.'); bar.remove(); }); }); }
+      inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; take(fs); };
+      /* files dropped on this document go to this document */
+      dz.addEventListener('dragenter', function (e) { e.preventDefault(); if (!na) dz.classList.add('over'); });
+      dz.addEventListener('dragover', function (e) { e.preventDefault(); if (!na) dz.classList.add('over'); });
+      dz.addEventListener('dragleave', function () { dz.classList.remove('over'); });
+      dz.addEventListener('drop', function (e) { e.preventDefault(); dz.classList.remove('over'); if (na) return; var fs = [].slice.call((e.dataTransfer && e.dataTransfer.files) || []); if (fs.length) take(fs); });
     });
+    total();
   }
+  /* a file dropped outside a document must not open in the browser in place of this page */
+  window.addEventListener('dragover', function (e) { e.preventDefault(); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); });
   window.addEventListener('beforeunload', function (e) { if (busy) { e.preventDefault(); e.returnValue = ''; } });
   if (!K.f || !K.r || !K.t) return fail('Open the link from your email', 'Please open this page from the link the office sent you.');
   post({ up: 'info' }).then(function (o) { if (!o.ok) return fail('This link can\'t be used', o.error || 'Please ask the office for a new one.'); draw(o); })
