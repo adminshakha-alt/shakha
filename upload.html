@@ -10,6 +10,8 @@
 .uph .in{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px;text-align:center}
 .upill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(242,182,50,.45);color:#F8D98A;font-size:14px;background:rgba(242,182,50,.08);max-width:100%;overflow-wrap:anywhere}
 .upill i{width:7px;height:7px;border-radius:50%;background:#F2B632;flex:none}
+.upill .pw{min-width:0}.upill .pf,.upill .pt{display:inline-block}.upill .pt::before{content:"\00B7";margin:0 6px}
+@media(max-width:560px){.upill{border-radius:18px;padding:8px 16px}.upill .pf,.upill .pt{display:block}.upill .pt{font-size:13px;opacity:.9;margin-top:1px}.upill .pt::before{content:none}}
 .uph h1{font-size:clamp(1.7rem,4.6vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin:16px 0 8px;overflow-wrap:anywhere}
 .uph .sub{color:#CFE0D8;font-size:15.5px;overflow-wrap:anywhere}
 .prog{display:flex;align-items:center;gap:12px;max-width:420px;margin:20px auto 0}.prog .trk{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.16);overflow:hidden}.prog .trk i{display:block;height:100%;width:0;background:#F2B632;border-radius:8px;transition:width .3s}
@@ -87,7 +89,8 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
   function draw(o) {
     document.title = 'Upload documents · ' + o.firm; box.className = 'cx'; box.textContent = ''; headIn.textContent = ''; head.hidden = false;
     /* the band: who is asking, for what, from whom, by when, and how far it has got */
-    var pill = el('span', 'upill'); pill.appendChild(el('i')); pill.appendChild(document.createTextNode(o.firm + (o.tagline ? ' · ' + o.tagline : ''))); headIn.appendChild(pill);
+    /* 10.21.3: the firm and its line under the name are each kept whole: side by side with a dot on a computer, one under the other on a phone */
+    var pill = el('span', 'upill'); pill.appendChild(el('i')); var pw = el('span', 'pw'); pw.appendChild(el('span', 'pf', o.firm)); if (o.tagline) pw.appendChild(el('span', 'pt', o.tagline)); pill.appendChild(pw); headIn.appendChild(pill);
     headIn.appendChild(el('h1', '', o.title));
     var hasDue = !o.noDue && o.dueText && o.dueText !== 'the earliest';
     headIn.appendChild(el('p', 'sub', 'For ' + o.client + (hasDue ? ' · by ' + o.dueText : '')));

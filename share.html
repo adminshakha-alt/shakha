@@ -1,48 +1,124 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Shared documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Shared documents</title><link rel="icon" href="shakha360-icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
 <style>
-.cx{max-width:620px;margin:24px auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;box-sizing:border-box}
-.cx h1{font-size:20px;margin:0 0 6px}.cx p{font-size:15px;line-height:1.55}.mu{font-size:13px;color:var(--mu)}
-.fd{font-size:13px;font-weight:700;color:var(--mu);margin:16px 0 4px}
-.fl{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding:12px 0}.fl:first-of-type{border-top:0}
-.fl span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:15px}.fl small{display:block;font-size:12px;color:var(--mu)}
-.fl button{border:0;border-radius:8px;background:#17614A;color:#fff;font-weight:700;font-size:14px;padding:9px 14px;cursor:pointer;min-height:40px}.fl button:disabled{opacity:.6;cursor:default}
-.ln{font-size:13px;color:#B3261E}
-.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:#17614A;border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
-@media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}}
-</style></head><body>
-<main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening your documents</h1><div class="spin"></div></div><p style="text-align:center;font-size:13px;opacity:.75;margin:18px 0 8px"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
+/* 10.21.2: the same look as the upload page: the green band with the leaf and the flower, and a card of files lifted over it */
+.uph{position:relative;overflow:hidden;background:#0D3A2C;color:#fff;padding:44px 0 96px}
+.uph::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 70% at 6% 100%,rgba(242,182,50,.14),transparent 70%),radial-gradient(50% 70% at 98% 60%,rgba(46,160,112,.34),transparent 70%)}
+.uph .shape.sL{left:-90px;top:26px;width:230px;height:230px}.uph .shape.sR{right:-70px;top:8px;width:200px;height:200px}
+.uph .in{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px;text-align:center}
+.upill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(242,182,50,.45);color:#F8D98A;font-size:14px;background:rgba(242,182,50,.08);max-width:100%;overflow-wrap:anywhere}
+.upill i{width:7px;height:7px;border-radius:50%;background:#F2B632;flex:none}
+.upill .pw{min-width:0}.upill .pf,.upill .pt{display:inline-block}.upill .pt::before{content:"\00B7";margin:0 6px}
+@media(max-width:560px){.upill{border-radius:18px;padding:8px 16px}.upill .pf,.upill .pt{display:block}.upill .pt{font-size:13px;opacity:.9;margin-top:1px}.upill .pt::before{content:none}}
+.uph h1{font-size:clamp(1.7rem,4.6vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin:16px 0 8px;overflow-wrap:anywhere}
+.uph .sub{color:#CFE0D8;font-size:15.5px;overflow-wrap:anywhere}
+.cx{position:relative;z-index:2;max-width:680px;margin:-64px auto 0;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:22px;padding:24px 24px 14px;box-sizing:border-box;box-shadow:0 18px 44px rgba(13,58,44,.14)}
+.cx h1{font-size:20px;margin:0 0 6px;overflow-wrap:anywhere}.cx p{font-size:15px;line-height:1.55;overflow-wrap:anywhere}.mu{font-size:13.5px;color:var(--mu)}
+.note{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:6px}.note p+p{margin-top:6px}
+/* Download All, above the files */
+.all{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:16px 0 4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ok-bg)}
+.all b{font-size:15.5px}.all .mu{display:block;margin-top:2px}
+.dlb{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;background:#17614A;color:#fff;font:inherit;font-weight:700;font-size:14.5px;padding:10px 16px;min-height:44px;cursor:pointer;white-space:nowrap}
+.dlb:hover{background:#0D3A2C}.dlb:disabled{opacity:.65;cursor:default}.dlb:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.dlb.gh{background:transparent;color:var(--link);border:1.5px solid var(--line)}.dlb.gh:hover{border-color:var(--link);background:transparent}
+.dlb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* a folder heading, with how many files are in it */
+.grp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.grp h2{font-size:17px;font-weight:600;min-width:0;overflow-wrap:anywhere}.grp span{flex:none;font-size:13px;color:var(--mu);font-weight:600;white-space:nowrap}
+.it{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;background:var(--card)}
+.it .ic{flex:none;width:40px;height:40px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--ok)}
+.it .ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.it .nm{flex:1;min-width:0}.it .nm b{display:block;font-size:15px;font-weight:600;overflow-wrap:anywhere}.it .nm small{display:block;font-size:12.5px;color:var(--mu);margin-top:2px}
+.ln{font-size:13.5px;margin:-4px 0 10px;overflow-wrap:anywhere}.ln.bad{color:var(--bad)}.ln.ok{color:var(--ok)}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--ok);border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
+.plain{margin-top:24px}.foot2{text-align:center;font-size:13px;opacity:.75;margin:18px 0 28px}
+@media(max-width:700px){.uph{padding:30px 0 86px}.cx{margin:-60px 12px 0;padding:18px 14px 8px;border-radius:18px}.uph .shape{display:none}.all .dlb{width:100%}.it{flex-wrap:wrap}.it .nm{flex:1 1 calc(100% - 56px)}.it .dlb{margin-left:52px}}
+</style>
+<noscript><style>#box h1,#box .spin{display:none}</style></noscript></head><body>
+<main id="main">
+<header class="uph" id="head" hidden><span class="shape sL" aria-hidden="true"></span><span class="shape sR" aria-hidden="true"></span><div class="in" id="headIn"></div></header>
+<div class="cx plain" id="box" aria-live="polite"><h1>Opening your documents</h1><div class="spin"></div><noscript><p>This page needs JavaScript. Please open the link in Chrome, Safari, Edge or Firefox.</p></noscript></div>
+<p class="foot2"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
 <script>
 /* Shakha 360 web app address (the same one as upload.html) */
 var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
-var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https?:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
+var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', s: q.get('s') || '', t: q.get('t') || '' };
-  var box = document.getElementById('box');
+  var box = document.getElementById('box'), head = document.getElementById('head'), headIn = document.getElementById('headIn');
   /* everything shown here is set as text, never as page code */
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
-  function fail(t, m) { box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
+  function svg(d) { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); d.forEach(function (x) { var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', x); s.appendChild(p); }); return s; }
+  var I_DL = ['M12 4v12m0 0-5-5m5 5 5-5', 'M4 20h16'], I_DOC = ['M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z', 'M14 3v5h5', 'M9 13h6M9 17h4'];
+  function fail(t, m) { head.hidden = true; box.className = 'cx plain'; box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
   function post(o) { var b = {}; for (var k in K) b[k] = K[k]; for (var j in o) b[j] = o[j];
-    return APP_READY.then(function () { return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }); }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+    return APP_READY.then(function () { return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }); }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json().catch(function () { throw new Error('HTTP reply not readable'); }); }); }
   function size(n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
-  function save(name, b64) { var bin = atob(b64), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
-    var url = URL.createObjectURL(new Blob([u], { type: 'application/octet-stream' })); var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 2000); }
+  function bytes(b64) { var bin = atob(b64), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+  function save(name, blob) { var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 4000); }
+  /* one file from Shakha 360; a dropped connection is tried again twice */
+  function get(f, tries) { tries = tries || 0;
+    return post({ sh: 'get', file: f.id }).then(function (j) { if (!j.ok) throw new Error(j.error || 'Please try again.'); return { name: j.name || f.name, data: bytes(j.base64) }; },
+      function (e) { if (tries < 2) return new Promise(function (y) { setTimeout(y, 1500 * (tries + 1)); }).then(function () { return get(f, tries + 1); }); throw new Error('Could not get it. Check your connection and try again.'); }); }
+  /* 10.21.2: Download All makes one ZIP file here, in the browser: the files as they are (PDFs are already packed), in their folders */
+  function crc32(u) { var t = crc32.t, c; if (!t) { t = crc32.t = []; for (var n = 0; n < 256; n++) { c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } }
+    c = 0xFFFFFFFF; for (var i = 0; i < u.length; i++) c = t[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function zip(files) { var enc = new TextEncoder(), parts = [], cen = [], off = 0, d = new Date();
+    var dt = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate(), tm = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+    files.forEach(function (f) { var nm = enc.encode(f.name), c = crc32(f.data), n = f.data.length;
+      var h = new DataView(new ArrayBuffer(30)); h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, tm, true); h.setUint16(12, dt, true); h.setUint32(14, c, true); h.setUint32(18, n, true); h.setUint32(22, n, true); h.setUint16(26, nm.length, true);
+      parts.push(h.buffer, nm, f.data);
+      var e = new DataView(new ArrayBuffer(46)); e.setUint32(0, 0x02014b50, true); e.setUint16(4, 20, true); e.setUint16(6, 20, true); e.setUint16(8, 0x0800, true); e.setUint16(12, tm, true); e.setUint16(14, dt, true); e.setUint32(16, c, true); e.setUint32(20, n, true); e.setUint32(24, n, true); e.setUint16(28, nm.length, true); e.setUint32(42, off, true);
+      cen.push(e.buffer, nm); off += 30 + nm.length + n; });
+    var cs = 0; cen.forEach(function (x) { cs += x.byteLength; });
+    var z = new DataView(new ArrayBuffer(22)); z.setUint32(0, 0x06054b50, true); z.setUint16(8, files.length, true); z.setUint16(10, files.length, true); z.setUint32(12, cs, true); z.setUint32(16, off, true);
+    return new Blob(parts.concat(cen, [z.buffer]), { type: 'application/zip' }); }
+  var safe = function (s) { return String(s || '').replace(/[\\:*?"<>|]+/g, '-').replace(/^[\s.\/]+|[\s.]+$/g, '') || 'Document'; };
   function draw(o) {
-    document.title = 'Shared documents · ' + o.firm; box.textContent = '';
-    box.appendChild(el('h1', '', o.title));
-    box.appendChild(el('p', 'mu', o.firm + (o.office ? ' · ' + o.office : '') + ' has shared these documents with ' + o.client + '. This link works until ' + o.expText + '.'));
-    if (o.message) box.appendChild(el('p', '', o.message));
+    document.title = 'Shared documents · ' + o.firm; box.className = 'cx'; box.textContent = ''; headIn.textContent = ''; head.hidden = false;
+    /* the band: who shared, what, for whom, till when */
+    /* 10.21.3: the firm and its line under the name are each kept whole: side by side with a dot on a computer, one under the other on a phone */
+    var pill = el('span', 'upill'); pill.appendChild(el('i')); var pw = el('span', 'pw'); pw.appendChild(el('span', 'pf', o.firm)); if (o.tagline) pw.appendChild(el('span', 'pt', o.tagline)); pill.appendChild(pw); headIn.appendChild(pill);
+    headIn.appendChild(el('h1', '', o.title));
+    headIn.appendChild(el('p', 'sub', 'For ' + o.client + (o.expText ? ' · This link works till ' + o.expText : '')));
+    var note = el('div', 'note'); if (o.message) note.appendChild(el('p', '', o.message));
+    note.appendChild(el('p', 'mu', 'Download each document, or all of them in one ZIP file. No sign-in is needed. Please don\'t forward this link; if something is missing, contact the office.'));
+    box.appendChild(note);
     if (!o.files.length) { box.appendChild(el('p', '', 'No documents are shared on this link any more. Please contact the office.')); return; }
-    var last = null;
-    o.files.slice().sort(function (a, b) { return (a.folder + '/' + a.name).localeCompare(b.folder + '/' + b.name); }).forEach(function (f) {
-      if (f.folder !== last) { last = f.folder; if (f.folder) box.appendChild(el('div', 'fd', f.folder.split('/').join(' / '))); }
-      var row = el('div', 'fl'), nm = el('span', '', f.name); nm.appendChild(el('small', '', size(f.size || 0)));
-      var b = el('button', '', 'Download'); b.type = 'button'; b.setAttribute('aria-label', 'Download ' + f.name); var er = el('div', 'ln', '');
-      b.onclick = function () { b.disabled = true; b.textContent = 'Opening…'; er.textContent = '';
-        post({ sh: 'get', file: f.id }).then(function (j) { b.disabled = false; b.textContent = 'Download'; if (!j.ok) { er.textContent = j.error || 'Please try again.'; return; } save(j.name || f.name, j.base64); },
-          function () { b.disabled = false; b.textContent = 'Download'; er.textContent = 'Could not open it. Check your connection and try again.'; }); };
-      row.appendChild(nm); row.appendChild(b); box.appendChild(row); box.appendChild(er);
+    var files = o.files.slice().sort(function (a, b) { return (a.folder + '/' + a.name).localeCompare(b.folder + '/' + b.name); });
+    var total = 0; files.forEach(function (f) { total += f.size || 0; });
+    if (files.length > 1) {
+      var all = el('div', 'all'), aw = el('div'); aw.appendChild(el('b', '', 'All ' + files.length + ' documents')); aw.appendChild(el('span', 'mu', 'One ZIP file · ' + size(total))); all.appendChild(aw);
+      var ab = el('button', 'dlb'); ab.type = 'button'; ab.appendChild(svg(I_DL)); var at = el('span', '', 'Download All'); ab.appendChild(at); all.appendChild(ab); box.appendChild(all);
+      var aln = el('div', 'ln', ''); aln.setAttribute('role', 'status'); box.appendChild(aln);
+      ab.onclick = function () { ab.disabled = true; aln.className = 'ln'; aln.textContent = ''; var got = [], bad = [], used = {}, i = 0;
+        (function next() {
+          if (i >= files.length) {
+            if (!got.length) { ab.disabled = false; at.textContent = 'Download All'; aln.className = 'ln bad'; aln.textContent = 'Could not get the documents. Check your connection and try again.'; return; }
+            save(safe(o.title) + '.zip', zip(got)); ab.disabled = false; at.textContent = 'Download All';
+            aln.className = bad.length ? 'ln bad' : 'ln ok'; aln.textContent = bad.length ? 'The ZIP file has ' + got.length + ' of ' + files.length + ' documents. Not included: ' + bad.join(', ') + '. Download those one by one.' : 'Saved as ' + safe(o.title) + '.zip.'; return; }
+          var f = files[i++]; at.textContent = 'Preparing ' + i + ' of ' + files.length + '…';
+          get(f).then(function (x) {
+            /* each file keeps its folder; two of the same name in one folder get (2), (3) */
+            var path = (f.folder ? f.folder.split('/').map(safe).join('/') + '/' : '') + safe(x.name), p = path, n = 1; while (used[p.toLowerCase()]) { n++; p = path.replace(/(\.[^.\/]+)?$/, function (e) { return ' (' + n + ')' + (e || ''); }); } used[p.toLowerCase()] = 1;
+            got.push({ name: p, data: x.data }); }, function () { bad.push(f.name); }).then(next);
+        })(); };
+    }
+    var last = null, grp = null;
+    files.forEach(function (f) {
+      if (f.folder !== last) { last = f.folder; if (f.folder) { var g = el('div', 'grp'); g.appendChild(el('h2', '', f.folder.split('/').join(' › '))); grp = el('span', '', ''); g.appendChild(grp); grp._n = 0; box.appendChild(g); } else grp = null; }
+      if (grp) { grp._n++; grp.textContent = grp._n + (grp._n === 1 ? ' file' : ' files'); }
+      var row = el('div', 'it'), ic = el('span', 'ic'); ic.appendChild(svg(I_DOC)); row.appendChild(ic);
+      var nm = el('div', 'nm'); nm.appendChild(el('b', '', f.name)); nm.appendChild(el('small', '', size(f.size || 0))); row.appendChild(nm);
+      var b = el('button', 'dlb gh'); b.type = 'button'; b.setAttribute('aria-label', 'Download ' + f.name); b.appendChild(svg(I_DL)); var bt = el('span', '', 'Download'); b.appendChild(bt); row.appendChild(b);
+      var er = el('div', 'ln', ''); er.setAttribute('role', 'status');
+      b.onclick = function () { b.disabled = true; bt.textContent = 'Opening…'; er.className = 'ln'; er.textContent = '';
+        get(f).then(function (x) { b.disabled = false; bt.textContent = 'Download'; save(x.name, new Blob([x.data], { type: 'application/octet-stream' })); },
+          function (e) { b.disabled = false; bt.textContent = 'Download'; er.className = 'ln bad'; er.textContent = e.message; }); };
+      box.appendChild(row); box.appendChild(er);
     });
-    box.appendChild(el('p', 'mu', 'Please don\'t forward this link. If something is missing, contact the office.'));
   }
   if (!K.f || !K.s || !K.t) return fail('This link is not complete', 'Please open the full link from the email or message the office sent you.');
   post({ sh: 'info' }).then(function (j) { if (!j.ok) return fail('This link can\'t be opened', j.error || 'Please ask the office for a new link.'); draw(j); },
