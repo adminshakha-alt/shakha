@@ -217,7 +217,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
         if (!it.optional) state[it.id] = !!(n || na); total(); }
       mark();
       naBox.onchange = function () { var want = naBox.checked; naBox.disabled = true; post({ up: 'na', item: it.id, na: want ? 1 : 0 }).then(function (j) { naBox.disabled = false; if (!j.ok) { naBox.checked = !want; var er = el('div', 'ln bad', j.error || 'Please try again.'); list.appendChild(er); return; } na = want; mark(); }, function () { naBox.disabled = false; naBox.checked = !want; list.appendChild(el('div', 'ln bad', 'Could not be saved. Please try again.')); }); };
-      function take(fs) { var chain = Promise.resolve();
+      function take(fs) { var chain = Promise.resolve(); Array.prototype.slice.call(list.querySelectorAll('.ln.bad')).forEach(function (x) { x.remove(); });   /* 10.27.0: earlier failed files' messages go when new files are chosen */
         fs.forEach(function (f) { var ln = el('div', 'ln', f.name), bar = el('div', 'bar'), fill = el('i'); bar.appendChild(fill); list.appendChild(ln); list.appendChild(bar);
           chain = chain.then(function () { if (f.size > MAX) throw new Error('This file is larger than 25 MB.'); if (!f.size) throw new Error('This file is empty.'); busy++; return send(f, it.id, function (x) { fill.style.width = Math.round(x * 100) + '%'; }); })
             .then(function () { busy = Math.max(0, busy - 1); n++; mark(); ln.className = 'ln ok'; ln.textContent = f.name + ': received'; bar.remove(); },
@@ -297,17 +297,19 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       function drawRows(focusRow) { body.textContent = ''; cells = [];
         rows.forEach(function (r, ri) { var row = el('div', 'tr'), top = el('div', 'trt'), x = el('button', 'rm'); top.appendChild(el('b', '', rn + ' ' + (ri + 1)));
           x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + rn + ' ' + (ri + 1)); x.appendChild(el('i', '', '×')); x.appendChild(el('span', '', 'Remove')); x.hidden = rows.length <= min || lock;
-          x.onclick = function () { if (r.some(function (v) { return String(v).trim(); }) && !window.confirm('Remove ' + rn + ' ' + (ri + 1) + '?')) return; rows.splice(ri, 1); drawRows(); sumTxt(); save(true); var f = body.querySelector('input'); if (f) f.focus(); };
+          x.onclick = function () { if (r.some(function (v) { return String(v).trim(); }) && !window.confirm('Remove ' + rn + ' ' + (ri + 1) + '?')) return; rows.splice(ri, 1); drawRows(); sumTxt(); save(true); recheck(); var f = body.querySelector('input'); if (f) f.focus(); };
           top.appendChild(x); row.appendChild(top); var rc = [];
           cols.forEach(function (c, ci) { var cell = el('div', 'tc'), b = box1(c.kind === 'pct' ? 'pct' : c.kind), inp = b.inp, cid = 'q_' + it.id + '_' + ri + '_' + ci, lb = el('label', 'tl', c.name + (c.kind === 'pct' ? ' (%)' : '')), ce = errBox('e_' + it.id + '_' + ri + '_' + ci);
             inp.id = cid; lb.htmlFor = cid; inp.setAttribute('aria-label', c.name + ', ' + rn + ' ' + (ri + 1)); inp.value = shown(c.kind, r[ci]); inp.readOnly = lock;
             inp.addEventListener('input', function () { r[ci] = inp.value; if (c.sum) sumTxt(); clearTimeout(timer); timer = setTimeout(function () { save(false); }, 600); });
-            inp.addEventListener('blur', function () { var cc = chk(c.kind, inp.value); showErr(inp, ce, cc[1]); if (!cc[1] && cc[0] && (c.kind === 'amount' || c.kind === 'mobile')) { inp.value = c.kind === 'amount' ? inr(cc[0]) : cc[0]; r[ci] = cc[0]; } clearTimeout(timer); save(true); });
+            inp.addEventListener('blur', function () { var cc = chk(c.kind, inp.value); showErr(inp, ce, cc[1]); if (!cc[1] && cc[0] && (c.kind === 'amount' || c.kind === 'mobile')) { inp.value = c.kind === 'amount' ? inr(cc[0]) : cc[0]; r[ci] = cc[0]; } clearTimeout(timer); save(true); recheck(); });
             cell.appendChild(lb); cell.appendChild(b.fx); cell.appendChild(ce); row.appendChild(cell); rc.push({ inp: inp, e: ce, c: c }); });
           cells.push(rc); body.appendChild(row); });
         add.hidden = rows.length >= 50 || lock;
         if (focusRow != null) { var f = body.querySelectorAll('.tr')[focusRow]; if (f) { var i0 = f.querySelector('input'); if (i0) i0.focus(); } } }
-      add.onclick = function () { rows.push(cols.map(function () { return ''; })); drawRows(rows.length - 1); };
+      add.onclick = function () { rows.push(cols.map(function () { return ''; })); drawRows(rows.length - 1); recheck(); };
+      /* 10.27.0: once shown, the message under the table follows the boxes: it changes or goes as soon as they are put right */
+      function recheck() { if (er.hidden) return; var m = bad1(false) || why(); showErr(cells.length && cells[0][0] ? cells[0][0].inp : add, er, m); }
       /* a table is kept only when every typed box is right; empty rows are left out */
       function bad1(showAll) { var first = ''; cells.forEach(function (rc, ri) { rc.forEach(function (x, ci) { var cc = chk(x.c.kind, rows[ri][ci]); if (showAll) showErr(x.inp, x.e, cc[1]); if (cc[1] && !first) first = rn + ' ' + (ri + 1) + ', ' + x.c.name + ': ' + cc[1]; }); }); return first; }
       function save(now) { if (lock || na) return; if (bad1(false)) return; var f = filled(), v = f.length ? f : null, js = JSON.stringify(v); if (js === sent) return; sent = js; H.sv.hidden = true; queue(it.id, v || ''); }
@@ -324,6 +326,11 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     function thank() { var dn = need.filter(function (i) { return !i.q && state[i.id]; }).length, an = need.filter(function (i) { return i.q && state[i.id]; }).length;
       thanks.textContent = ''; thanks.appendChild(el('h2', '', 'Thank you, everything has reached ' + (o.firm === String(o.firm).toUpperCase() ? String(o.firm).toLowerCase().replace(/(^|\s)\S/g, function (c) { return c.toUpperCase(); }).replace(/ And /g, ' and ') : o.firm))); var bits = []; if (dn) bits.push(dn + (dn === 1 ? ' document' : ' documents')); if (an) bits.push(an + (an === 1 ? ' answer' : ' answers'));
       thanks.appendChild(el('p', '', bits.join(' and ') + ' sent.')); thanks.hidden = false; sum.hidden = true; foot.hidden = true; lock = true; [].forEach.call(note.querySelectorAll('.mu'), function (x) { x.hidden = true; }); if (!o.message) note.hidden = true; for (var k in Q) Q[k].lock(); }
+    /* 10.27.0: the list of answers that need a look follows the boxes: an answer put right leaves the list, and the list goes when none is left */
+    box.addEventListener('focusout', function () { setTimeout(function () { if (sum.hidden || sum.className !== 'sum') return; var wrong = [];
+      need.forEach(function (i) { if (!i.q) return; var m = Q[i.id].valid(); if (m) wrong.push([i, m]); });
+      if (!wrong.length) { sum.hidden = true; return; }
+      sum.textContent = ''; sum.appendChild(el('h2', '', wrong.length === 1 ? '1 answer needs a look' : wrong.length + ' answers need a look')); var ul = el('ul'); wrong.forEach(function (w) { ul.appendChild(link(w[0].name + ': ' + w[1], anchor(w[0]))); }); sum.appendChild(ul); }, 0); });
     sendB.onclick = function () { sum.hidden = true; var wrong = [];
       need.forEach(function (i) { if (!i.q) return; var q = Q[i.id], m = q.valid(); if (m) wrong.push([i, m]); });
       if (wrong.length) { sum.className = 'sum'; sum.textContent = ''; sum.appendChild(el('h2', '', wrong.length === 1 ? '1 answer needs a look' : wrong.length + ' answers need a look')); var ul = el('ul'); wrong.forEach(function (w) { ul.appendChild(link(w[0].name + ': ' + w[1], anchor(w[0]))); }); sum.appendChild(ul); sum.hidden = false; sum.focus(); sum.scrollIntoView({ block: 'start' }); return; }
