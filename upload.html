@@ -187,9 +187,8 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     var allin = el('div', 'allin', 'Every document is in. Thank you. You can still add more files below.'); if (!hasQ) box.appendChild(allin);
     var note = el('div', 'note'); if (o.message) note.appendChild(el('p', '', o.message));
     if (hasD) note.appendChild(el('p', 'mu', 'PDF, JPG, PNG, Excel, Word or CSV, up to 25 MB each' + (o.maxFiles > 0 ? ', up to ' + o.maxFiles + ' files a document' : '') + '.'));
-    else note.appendChild(el('p', 'mu', 'Each answer is saved as you go, so you can come back to this link to finish. No sign-in is needed.'));
-    box.appendChild(note);
-    var acc = o.types.map(function (x) { return '.' + x; }).join(','), state = {}, groups = {}, Q = {}, sentOnce = false, lock = false;
+    note.hidden = !note.children.length; box.appendChild(note);
+    var acc = o.types.map(function (x) { return '.' + x; }).join(','), state = {}, sentIt = {}, groups = {}, Q = {}, sentOnce = false, lock = false;
     function total() { var d = 0; need.forEach(function (i) { if (state[i.id]) d++; }); var pc = need.length ? Math.round(d / need.length * 100) : 0; fillP.style.width = pc + '%'; cnt.textContent = d + ' of ' + need.length + ' done';
       trk.setAttribute('aria-valuemax', String(need.length)); trk.setAttribute('aria-valuenow', String(d)); trk.setAttribute('aria-valuetext', d + ' of ' + need.length + ' done');
       allin.className = 'allin' + (need.length && d === need.length ? ' on' : '');
@@ -214,7 +213,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       function mark() { got.textContent = n ? 'Received' + (n > 1 ? ' · ' + n + ' files' : '') : na ? 'Not applicable' : ''; got.className = 'got' + (na && !n ? ' na' : ''); got.style.display = n || na ? '' : 'none';
         inp.disabled = na; dz.className = 'dz' + (na ? ' dzna' : ''); d.className = 'it' + (n || na ? ' done' : ''); naL.style.display = it.optional || n ? 'none' : '';
         words.textContent = ''; words.appendChild(document.createTextNode(n ? 'Drop more files here or ' : 'Drop files here or ')); words.appendChild(el('u', '', 'choose files'));
-        if (!it.optional) state[it.id] = !!(n || na); total(); }
+        if (!it.optional) { state[it.id] = !!(n || na); sentIt[it.id] = !!n; } total(); }
       mark();
       naBox.onchange = function () { var want = naBox.checked; naBox.disabled = true; post({ up: 'na', item: it.id, na: want ? 1 : 0 }).then(function (j) { naBox.disabled = false; if (!j.ok) { naBox.checked = !want; var er = el('div', 'ln bad', j.error || 'Please try again.'); list.appendChild(er); return; } na = want; mark(); }, function () { naBox.disabled = false; naBox.checked = !want; list.appendChild(el('div', 'ln bad', 'Could not be saved. Please try again.')); }); };
       function take(fs) { var chain = Promise.resolve(); Array.prototype.slice.call(list.querySelectorAll('.ln.bad')).forEach(function (x) { x.remove(); });   /* 10.27.0: earlier failed files' messages go when new files are chosen */
@@ -231,22 +230,22 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     });
 
     /* ----- 10.27.0: saving answers as they are typed, one save at a time; a dropped connection is tried again ----- */
-    var foot = el('div', 'foot'), fst = el('span', 'fst', 'All answers saved'), sendB = el('button', 'btn', 'Send'); fst.setAttribute('role', 'status'); sendB.type = 'button'; foot.appendChild(fst); foot.appendChild(sendB); foot.hidden = !hasQ; box.appendChild(foot);
-    var pend = {}, running = false, waiters = [], bad = 0;
+    var foot = el('div', 'foot'), fst = el('span', 'fst', hasQ ? 'All answers saved' : ''), sendB = el('button', 'btn', 'Send'); fst.setAttribute('role', 'status'); sendB.type = 'button'; foot.appendChild(fst); foot.appendChild(sendB); box.appendChild(foot);   /* 10.28.0: Send is there for documents too: it emails the client a receipt */
+    var pend = {}, running = false, waiters = [], bad = 0, rcpt = false, rcptMsg = '';
     function setSt(t, c) { fst.textContent = t; fst.className = 'fst' + (c ? ' ' + c : ''); }
     function idle() { var k = 0; for (var x in pend) k++; return !running && !k; }
     window.__dqBusy = function () { return !idle(); };
     function flush(send) { return new Promise(function (y) { waiters.push(y); if (send) pend.__send = 1; if (!running) run(); }); }
     function queue(id, val) { pend[id] = val; if (!running) run(); }
     function run() { var ks = Object.keys(pend).filter(function (k) { return k !== '__send'; }), sd = !!pend.__send;
-      if (!ks.length && !sd) { running = false; var w = waiters; waiters = []; w.forEach(function (f) { f(); }); if (!bad) setSt(total() ? 'Everything is in' : 'All answers saved', total() ? 'ok' : ''); return; }
+      if (!ks.length && !sd) { running = false; var w = waiters; waiters = []; w.forEach(function (f) { f(); }); if (!bad) setSt(total() ? 'Everything is in' : hasQ ? 'All answers saved' : '', total() ? 'ok' : ''); return; }
       running = true; var body = {}; ks.forEach(function (k) { body[k] = pend[k]; }); pend = {}; setSt('Saving…');
       post({ up: 'ans', answers: body, send: sd ? 1 : 0 }).then(function (j) {
         if (!j.ok) { if (stop(j)) { var m = String(j.error || ''), hit = null, qm = m.match(/^Check "([^"]+)"/);
             ks.forEach(function (k) { if (Q[k] && (ks.length === 1 || (qm && Q[k].it.name === qm[1]))) hit = Q[k]; });
             if (hit) hit.fail(m.replace(/^Check "[^"]+"(, )?:? ?/, '')); else { bad = 1; setSt(m, 'bad'); } run(); return; }
           ks.forEach(function (k) { if (!(k in pend)) pend[k] = body[k]; }); if (sd) pend.__send = 1; setSt('Not saved yet. Trying again…', 'bad'); setTimeout(run, 3000); return; }
-        bad = 0; Object.keys(j.items || {}).forEach(function (k) { if (Q[k]) Q[k].saved(j.items[k]); }); run();
+        bad = 0; if (j.receipt) rcpt = true; if (j.receiptMsg) rcptMsg = String(j.receiptMsg); Object.keys(j.items || {}).forEach(function (k) { if (Q[k]) Q[k].saved(j.items[k]); }); run();
       }, function () { ks.forEach(function (k) { if (!(k in pend)) pend[k] = body[k]; }); if (sd) pend.__send = 1; setSt('Not saved yet. Trying again…', 'bad'); setTimeout(run, 3000); }); }
 
     function qHead(it, d, forId) { var ih = el('div', 'ih'), lw = el('div'), lb = el('label', 'ql', it.name), sv = el('span', 'sv', '✓ Saved'), got = el('span', 'got', ''); if (forId) lb.htmlFor = forId; else lb = el('span', 'ql', it.name); sv.hidden = true;
@@ -266,7 +265,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       var naL = naFor(it, d, function (v) { na = v; mark(); });
       card.appendChild(d);
       function mark() { H.got.textContent = done ? 'Received' : na ? 'Not applicable' : ''; H.got.className = 'got' + (na && !done ? ' na' : ''); H.got.style.display = done || na ? '' : 'none';
-        b.fx.style.display = na ? 'none' : ''; d.className = 'it' + (done || na ? ' done' : ''); naL.style.display = done || lock ? 'none' : ''; inp.readOnly = lock; state[it.id] = done || na; total(); }
+        b.fx.style.display = na ? 'none' : ''; d.className = 'it' + (done || na ? ' done' : ''); naL.style.display = done || lock ? 'none' : ''; inp.readOnly = lock; state[it.id] = done || na; sentIt[it.id] = done; total(); }
       function check(save) { var c = chk(it.kind, inp.value); showErr(inp, er, c[1]); if (c[1]) return false; if (it.kind === 'amount' && c[0]) inp.value = inr(c[0]); if (it.kind === 'mobile' && c[0]) inp.value = c[0];
         var v = c[0] || null, js = JSON.stringify(v); if (save && js !== sent) { sent = js; H.sv.hidden = true; queue(it.id, v === null ? '' : v); } return true; }
       inp.addEventListener('change', function () { check(true); }); inp.addEventListener('blur', function () { check(true); });
@@ -315,7 +314,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       function save(now) { if (lock || na) return; if (bad1(false)) return; var f = filled(), v = f.length ? f : null, js = JSON.stringify(v); if (js === sent) return; sent = js; H.sv.hidden = true; queue(it.id, v || ''); }
       function why() { var f = filled(); if (f.length < min) return 'Add at least ' + min + ' ' + rn.toLowerCase() + (min > 1 ? 's' : ''); if (sumCols.length) { var t = 0; f.forEach(function (r) { t += +(chk('pct', r[sumCols[0]])[0] || 0); }); if (Math.abs(t - 100) > 0.005) return cols[sumCols[0]].name + ' must total 100%'; } return ''; }
       function mark() { H.got.textContent = done ? 'Received' : na ? 'Not applicable' : ''; H.got.className = 'got' + (na && !done ? ' na' : ''); H.got.style.display = done || na ? '' : 'none';
-        wrap.style.display = na ? 'none' : ''; add.style.display = na ? 'none' : ''; tot.style.display = na ? 'none' : ''; d.className = 'it' + (done || na ? ' done' : ''); naL.style.display = done || lock ? 'none' : ''; state[it.id] = done || na; total(); }
+        wrap.style.display = na ? 'none' : ''; add.style.display = na ? 'none' : ''; tot.style.display = na ? 'none' : ''; d.className = 'it' + (done || na ? ' done' : ''); naL.style.display = done || lock ? 'none' : ''; state[it.id] = done || na; sentIt[it.id] = done; total(); }
       Q[it.id] = { it: it, el: null, cur: function () { var f = filled(); return f.length ? f : ''; }, valid: function () { if (na) return ''; var b = bad1(true); if (b) return b; return ''; }, need: function () { return na ? '' : why(); }, na: function () { return na; },
         saved: function (r) { if (r.na) return; done = !!r.done; H.sv.hidden = false; mark(); }, fail: function (m) { sent = null; showErr(cells.length && cells[0][0] ? cells[0][0].inp : add, er, m.replace(/\.$/, '')); }, lock: function () { drawRows(); mark(); } };
       drawRows(); sumTxt(); mark(); }
@@ -323,24 +322,27 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     /* Send: every typed answer is checked; anything wrong or still to come is listed at the top with a link to it */
     function link(txt, id) { var li = el('li'), a = el('a', '', txt); a.href = '#' + id; a.onclick = function (e) { e.preventDefault(); var t = document.getElementById(id); if (t) { t.scrollIntoView({ block: 'center' }); if (t.focus) t.focus(); } }; li.appendChild(a); return li; }
     function anchor(it) { var q = Q[it.id]; if (q && q.el) return q.el.id; var x = document.getElementById('q_' + it.id + '_0_0'); if (x) return x.id; return 'f_' + it.id; }
-    function thank() { var dn = need.filter(function (i) { return !i.q && state[i.id]; }).length, an = need.filter(function (i) { return i.q && state[i.id]; }).length;
+    function thank() { var dn = need.filter(function (i) { return !i.q && sentIt[i.id]; }).length, an = need.filter(function (i) { return i.q && sentIt[i.id]; }).length, nn = need.filter(function (i) { return state[i.id] && !sentIt[i.id]; }).length;   /* 10.28.0 (audit): only real files and answers count as sent */
       thanks.textContent = ''; thanks.appendChild(el('h2', '', 'Thank you, everything has reached ' + (o.firm === String(o.firm).toUpperCase() ? String(o.firm).toLowerCase().replace(/(^|\s)\S/g, function (c) { return c.toUpperCase(); }).replace(/ And /g, ' and ') : o.firm))); var bits = []; if (dn) bits.push(dn + (dn === 1 ? ' document' : ' documents')); if (an) bits.push(an + (an === 1 ? ' answer' : ' answers'));
-      thanks.appendChild(el('p', '', bits.join(' and ') + ' sent.')); thanks.hidden = false; sum.hidden = true; foot.hidden = true; lock = true; [].forEach.call(note.querySelectorAll('.mu'), function (x) { x.hidden = true; }); if (!o.message) note.hidden = true; for (var k in Q) Q[k].lock(); }
+      thanks.appendChild(el('p', '', (bits.length ? bits.join(' and ') + ' sent' + (nn ? ', ' : '.') : '') + (nn ? nn + ' marked not applicable.' : ''))); allin.style.display = 'none'; if (rcpt) thanks.appendChild(el('p', '', 'We have emailed you a receipt.')); else if (rcptMsg) thanks.appendChild(el('p', '', rcptMsg)); thanks.hidden = false; sum.hidden = true; foot.hidden = true; lock = true; [].forEach.call(note.querySelectorAll('.mu'), function (x) { x.hidden = true; }); if (!o.message) note.hidden = true; for (var k in Q) Q[k].lock(); }
     /* 10.27.0: the list of answers that need a look follows the boxes: an answer put right leaves the list, and the list goes when none is left */
-    box.addEventListener('focusout', function () { setTimeout(function () { if (sum.hidden || sum.className !== 'sum') return; var wrong = [];
+    box.addEventListener('focusout', function () { if (!sum.hidden && sum.className === 'sum left') { [0, 900, 2000].forEach(function (ms) { setTimeout(function () { if (!sum.hidden && sum.className === 'sum left') drawLeft(); }, ms); }); return; }
+      setTimeout(function () { if (sum.hidden || sum.className !== 'sum') return; var wrong = [];
       need.forEach(function (i) { if (!i.q) return; var m = Q[i.id].valid(); if (m) wrong.push([i, m]); });
       if (!wrong.length) { sum.hidden = true; return; }
       sum.textContent = ''; sum.appendChild(el('h2', '', wrong.length === 1 ? '1 answer needs a look' : wrong.length + ' answers need a look')); var ul = el('ul'); wrong.forEach(function (w) { ul.appendChild(link(w[0].name + ': ' + w[1], anchor(w[0]))); }); sum.appendChild(ul); }, 0); });
-    sendB.onclick = function () { sum.hidden = true; var wrong = [];
+    sendB.onclick = function () { sum.hidden = true; var wrong = []; if (busy) { setSt('Files are still sending. Press Send when they are done.', 'bad'); return; }
       need.forEach(function (i) { if (!i.q) return; var q = Q[i.id], m = q.valid(); if (m) wrong.push([i, m]); });
       if (wrong.length) { sum.className = 'sum'; sum.textContent = ''; sum.appendChild(el('h2', '', wrong.length === 1 ? '1 answer needs a look' : wrong.length + ' answers need a look')); var ul = el('ul'); wrong.forEach(function (w) { ul.appendChild(link(w[0].name + ': ' + w[1], anchor(w[0]))); }); sum.appendChild(ul); sum.hidden = false; sum.focus(); sum.scrollIntoView({ block: 'start' }); return; }
       sendB.disabled = true;
       need.forEach(function (i) { if (i.q && !Q[i.id].na()) queue(i.id, Q[i.id].cur()); });
       flush(true).then(function () { sendB.disabled = false; if (total()) return thank();
-        var left = need.filter(function (i) { return !state[i.id]; }); sum.className = 'sum left'; sum.textContent = '';
-        sum.appendChild(el('h2', '', left.length === 1 ? '1 item is still to come' : left.length + ' items are still to come')); var ul = el('ul');
-        left.forEach(function (i) { var why = i.q && Q[i.id].need ? Q[i.id].need() : ''; ul.appendChild(link((i.group ? i.group + ': ' : '') + i.name + (why ? ' (' + why + ')' : ''), anchor(i))); });
-        sum.appendChild(ul); sum.appendChild(el('p', '', 'Your answers are saved, so you can finish later with this link.')); sum.hidden = false; sum.focus(); sum.scrollIntoView({ block: 'start' }); }); };
+        if (drawLeft()) { sum.focus(); sum.scrollIntoView({ block: 'start' }); } }); };
+    /* 10.27.0: the list of what is still to come, drawn again as answers are saved; it goes when nothing is left */
+    function drawLeft() { var left = need.filter(function (i) { return !state[i.id]; }); if (!left.length) { sum.hidden = true; return false; }
+      sum.className = 'sum left'; sum.textContent = ''; sum.appendChild(el('h2', '', left.length === 1 ? '1 item is still to come' : left.length + ' items are still to come')); var ul = el('ul');
+      left.forEach(function (i) { var why = i.q && Q[i.id].need ? Q[i.id].need() : ''; ul.appendChild(link((i.group ? i.group + ': ' : '') + i.name + (why ? ' (' + why + ')' : ''), anchor(i))); });
+      sum.appendChild(ul); sum.appendChild(el('p', '', (hasQ ? 'Your answers are saved, so you can finish later with this link.' : 'You can send the rest later with this link.') + (rcpt ? ' We have emailed you a receipt of what reached us.' : rcptMsg ? ' ' + rcptMsg : ''))); sum.hidden = false; return true; }
     if (total() && hasQ) thank();
   }
   /* a file dropped outside a document must not open in the browser in place of this page */
