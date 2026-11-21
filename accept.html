@@ -15,7 +15,9 @@
 <script>
 /* Shakha 360 web app address (the same one as connect.html and upload.html) */
 var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
-var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '')) APP = c.api; }).catch(function () { });
+/* 10.29.0: opened from a test server on this computer, the page talks to that server, never to the live one */
+if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) APP = location.origin + '/exec';
+var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '') && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) APP = c.api; }).catch(function () { });
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', d: q.get('d') || '', t: q.get('t') || '' };
   var box = document.getElementById('box'), info = null, pdfUrl = '';
@@ -36,19 +38,19 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     }, function () { btn.disabled = false; note.textContent = 'Shakha 360 couldn\'t be reached just now. Please try again.'; note.className = 'ln bad'; });
   }
   function done(o) {
-    document.title = 'Engagement letter accepted · ' + info.firm; box.textContent = '';
+    document.title = (info.title || 'Engagement Letter') + ' Accepted · ' + info.firm; box.textContent = '';
     box.appendChild(el('h1', '', 'Thank you. The letter is accepted.'));
-    var b = el('div', 'ok-box'); var r = el('div', 'rw'); row(r, 'Letter', 'Engagement letter, FY ' + info.fy + ', dated ' + info.date); row(r, 'Firm', info.firm + (info.office ? ', ' + info.office : '')); row(r, 'Client', info.client);
+    var b = el('div', 'ok-box'); var r = el('div', 'rw'); row(r, 'Letter', (info.title || 'Engagement Letter') + ', FY ' + (info.fyPlain || info.fy) + ', dated ' + info.date); row(r, 'Firm', info.firm + (info.office ? ', ' + info.office : '')); row(r, 'Client', info.client);
     row(r, 'Accepted by', (o.name || info.name) + (o.designation || info.designation ? ', ' + (o.designation || info.designation) : '')); row(r, 'On', o.at || info.at); row(r, 'Reference', o.ref || info.ref); row(r, 'SHA-256 of the letter', info.hash); b.appendChild(r); box.appendChild(b);
     box.appendChild(el('p', 'mu', o.mailed === false ? 'The confirmation email could not be sent just now; the firm has the acceptance on record.' : 'A confirmation with the letter attached has been emailed to ' + info.to + ' and to the firm. Keep it with the letter. The SHA-256 above lets anyone check that the letter has not changed.'));
     var btn = el('button', 'bt sec', 'Open the letter'), note = el('div', 'ln'); btn.type = 'button'; btn.onclick = function () { openPdf(btn, note); }; box.appendChild(btn); box.appendChild(note);
   }
   function draw(o) {
-    info = o; document.title = 'Accept engagement letter · ' + o.firm;
+    info = o; document.title = 'Accept ' + (o.title || 'Engagement Letter') + ' · ' + o.firm;
     if (o.status === 'accepted') return done({});
     box.textContent = '';
-    box.appendChild(el('h1', '', 'Engagement letter for FY ' + o.fy));
-    box.appendChild(el('p', '', o.firm + (o.office ? ', ' + o.office : '') + ' asks ' + o.client + ' to read and accept its engagement letter dated ' + o.date + ', which sets out the scope of its work, the responsibilities of each side and its fees.'));
+    box.appendChild(el('h1', '', (o.title || 'Engagement Letter') + ' for FY ' + (o.fyPlain || o.fy)));
+    box.appendChild(el('p', '', o.firm + (o.office ? ', ' + o.office : '') + ' asks ' + o.client + ' to read and accept its ' + (o.what || 'engagement letter') + ' dated ' + o.date + ', which sets out the scope of its work, the responsibilities of each side and its fees.'));
     var btn = el('button', 'bt', 'Read the letter (PDF)'), note = el('div', 'ln'); btn.type = 'button'; btn.onclick = function () { openPdf(btn, note); }; box.appendChild(btn); box.appendChild(note);
     box.appendChild(el('h2', '', 'Accept the letter'));
     box.appendChild(el('p', 'mu', 'Type your details, ask for a code, and type the code from your email. Accepting here has the same effect as signing and returning the letter.'));
