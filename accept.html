@@ -39,11 +39,13 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
   }
   function done(o) {
     document.title = (info.title || 'Engagement Letter') + ' Accepted · ' + info.firm; box.textContent = '';
+    /* the copy read before accepting is dropped: the letter opened from here is the signed and accepted one */
+    if (pdfUrl) { try { URL.revokeObjectURL(pdfUrl); } catch (e) {} pdfUrl = ''; }
     box.appendChild(el('h1', '', 'Thank you. The letter is accepted.'));
     var b = el('div', 'ok-box'); var r = el('div', 'rw'); row(r, 'Letter', (info.title || 'Engagement Letter') + ', FY ' + (info.fyPlain || info.fy) + ', dated ' + info.date); row(r, 'Firm', info.firm + (info.office ? ', ' + info.office : '')); row(r, 'Client', info.client);
     row(r, 'Accepted by', (o.name || info.name) + (o.designation || info.designation ? ', ' + (o.designation || info.designation) : '')); row(r, 'On', o.at || info.at); row(r, 'Reference', o.ref || info.ref); row(r, 'SHA-256 of the letter', info.hash); b.appendChild(r); box.appendChild(b);
     box.appendChild(el('p', 'mu', o.mailed === false ? 'The confirmation email could not be sent just now; the firm has the acceptance on record.' : 'A confirmation with the letter attached has been emailed to ' + info.to + ' and to the firm. Keep it with the letter. The SHA-256 above lets anyone check that the letter has not changed.'));
-    var btn = el('button', 'bt sec', 'Open the letter'), note = el('div', 'ln'); btn.type = 'button'; btn.onclick = function () { openPdf(btn, note); }; box.appendChild(btn); box.appendChild(note);
+    var btn = el('button', 'bt sec', 'Open the accepted letter'), note = el('div', 'ln'); btn.type = 'button'; btn.onclick = function () { openPdf(btn, note); }; box.appendChild(btn); box.appendChild(note);
   }
   function draw(o) {
     info = o; document.title = 'Accept ' + (o.title || 'Engagement Letter') + ' · ' + o.firm;
