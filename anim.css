@@ -44,7 +44,7 @@ html.sx .sx-dot{opacity:0}
   align-items:center;gap:clamp(6px,2vw,22px)}
 .sx-row.r2{margin-top:64px}
 .sx-row.r3{margin-top:34px}
-.sx-node{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);
+.sx-node{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);
   border-radius:999px;padding:10px 18px;box-shadow:0 6px 18px -10px rgba(13,58,44,.35);
   font:600 15px/1 var(--f-b);color:var(--fg);white-space:nowrap}
 .sx-node .ico{width:18px;height:18px;flex:none}
@@ -76,7 +76,7 @@ html.sx .sx-dot{opacity:0}
 .doesC{transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),
   transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),
   translate .22s cubic-bezier(.2,.75,.3,1),box-shadow .22s,border-color .22s}
-.doesC:hover{translate:0 -3px;border-color:#C6DFD2;box-shadow:0 18px 38px -22px rgba(13,58,44,.5)}
+.doesC:hover{translate:0 -3px;border-color:var(--link);box-shadow:0 18px 38px -22px rgba(13,58,44,.5)}
 .doesC .modIc{transition:translate .25s cubic-bezier(.3,1.4,.5,1),scale .25s cubic-bezier(.3,1.4,.5,1)}
 .doesC:hover .modIc{scale:1.08}
 /* the plan card and the fee calculator sit side by side, so they lift alike */
@@ -94,11 +94,17 @@ html.sx .sx-dot{opacity:0}
    there is genuinely no margin to put it in. */
 .sx-spine{position:absolute;left:0;z-index:0;pointer-events:none}
 .sx-spine svg{display:block;overflow:visible}
-.sx-stem{fill:none;stroke:#17614A;stroke-opacity:.34;stroke-width:2.4;stroke-linecap:round}
-.sx-leaf{fill:#17614A;fill-opacity:.46}
+/* var(--link) so the branch follows the page: dark green on the cream,
+   soft mint in dark mode, where a dark green line would disappear. */
+.sx-stem{fill:none;stroke:var(--link);stroke-opacity:.34;stroke-width:2.4;stroke-linecap:round}
+.sx-leaf{fill:var(--link);fill-opacity:.46}
 .sx-rib{fill:none;stroke:#F7F3E8;stroke-opacity:.55;stroke-width:1.4;stroke-linecap:round}
-.band .sx-stem,.band .sx-leaf{opacity:1}
 #main{position:relative}
+@media (prefers-color-scheme:dark){
+  .sx-stem{stroke-opacity:.3}
+  .sx-leaf{fill-opacity:.3}
+  .sx-rib{stroke:#0F1512;stroke-opacity:.5}
+}
 
 /* ---------- 6. leaves and flowers in the lower sections ---------- */
 #does,.band,#plans,#faq,#contact{position:relative;overflow:hidden}
@@ -111,6 +117,8 @@ html.sx .sx-dot{opacity:0}
 .sx-dec.sx-dec-d{right:-92px;bottom:-30px;top:auto;left:auto;width:190px;height:190px;opacity:.45}
 .sx-dec.sx-dec-e{left:-80px;bottom:-40px;top:auto;width:200px;height:200px;transform:rotate(-14deg);opacity:.42}
 @media (max-width:1100px){.sx-dec{display:none}}
+/* the drawings are bright; on the dark page they only need to be hinted at */
+@media (prefers-color-scheme:dark){.sx-dec{opacity:.3}.sx-dec.sx-dec-b{opacity:.26}}
 
 /* ---------- 8. the "Branches" dropdown ----------
    Looks exactly like the box it replaces; the list below it is ours,
@@ -127,14 +135,21 @@ html.sx .sx-dot{opacity:0}
 .sx-sel-btn:focus-visible,.sx-sel-btn[aria-expanded=true]{outline:none;border-color:var(--link);
   box-shadow:0 0 0 3px rgba(23,97,74,.18)}
 .sx-sel-list{position:absolute;z-index:40;top:calc(100% + 6px);left:0;right:0;margin:0;padding:6px;
-  list-style:none;background:#fff;border:1.5px solid var(--line);border-radius:12px;
+  list-style:none;background:var(--card);border:1.5px solid var(--line);border-radius:12px;
   box-shadow:0 20px 44px -18px rgba(13,58,44,.45);max-height:280px;overflow:auto}
 .sx-sel-list:focus{outline:none}
 .sx-sel-list li{font:inherit;font-size:16px;color:var(--fg);padding:11px 12px;border-radius:8px;cursor:pointer}
 .sx-sel-list li:hover,.sx-sel-list li.on{background:var(--g-soft)}
-.sx-sel-list li[aria-selected=true]{font-weight:600;color:var(--g)}
+.sx-sel-list li[aria-selected=true]{font-weight:600;color:var(--link)}
 .sx-sel-list li[aria-selected=true]::after{content:"";float:right;width:7px;height:12px;margin:3px 2px 0 0;
-  border:solid var(--g);border-width:0 2px 2px 0;transform:rotate(45deg)}
+  border:solid var(--link);border-width:0 2px 2px 0;transform:rotate(45deg)}
+@media (prefers-color-scheme:dark){
+  .sx-sel-list{box-shadow:0 20px 44px -16px rgba(0,0,0,.7)}
+  /* the page's focus glow is a dark green, which all but vanishes on the
+     dark background. Same tint, lifted to the colour dark mode uses. */
+  .fld input:focus,.fld select:focus,.fld textarea:focus,
+  .sx-sel-btn:focus-visible,.sx-sel-btn[aria-expanded=true]{box-shadow:0 0 0 3px rgba(111,203,165,.3)}
+}
 
 /* ---------- 7. the footer headings ----------
    "Product" and "Company" were the only headings on the page set in the

@@ -335,6 +335,35 @@
   }
 
   /* ----------------------------------------------------------
+     3b. THE LAST ROW OF THE PAGE
+     The page's own reveal watcher shrinks its bottom edge by 8%
+     of the window. Anything that only ever reaches that last
+     band therefore never counts as "seen" and stays at opacity
+     0 for good - in practice the copyright line at the very
+     foot, which is invisible on the live site today. This
+     finishes the job for whatever the watcher leaves behind.
+     (Nothing is needed when the visitor asked for less motion:
+     the page then gives nothing the "rv" class in the first
+     place, so it is all visible anyway.)
+     ---------------------------------------------------------- */
+  function revealLeftovers() {
+    var queued = false;
+    function sweep() {
+      queued = false;
+      var left = $$(".rv:not(.in)");
+      left.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("in");
+      });
+      if (!$$(".rv:not(.in)").length) window.removeEventListener("scroll", onScroll);
+    }
+    function onScroll() { if (!queued) { queued = true; requestAnimationFrame(sweep); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("load", function () { setTimeout(sweep, 350); });
+    setTimeout(sweep, 1400);
+  }
+
+  /* ----------------------------------------------------------
      4. THE SCREENS VIEWER AT THE TOP
      ---------------------------------------------------------- */
   function shots() {
@@ -483,7 +512,7 @@
       el.className = "shape " + c[1] + " sx-dec sx-dec-" + c[2];
       el.setAttribute("aria-hidden", "true");
       sec.insertBefore(el, sec.firstChild);
-      gsap.to(el, {
+      drift(el, {
         y: c[2] === "b" || c[2] === "d" ? 16 : -16,
         rotation: c[2] === "c" ? 6 : -6,
         duration: 5.2 + Math.random() * 1.6,
@@ -550,9 +579,22 @@
   /* ----------------------------------------------------------
      5. THE LEAF, FLOWER, STAR AND SUN BREATHE
      ---------------------------------------------------------- */
+  // A drift that never stops costs battery for nothing while it is off the
+  // screen, so each one is paused until its own part of the page is in view.
+  function drift(el, opts) {
+    var tw = gsap.to(el, opts);
+    tw.pause();
+    ScrollTrigger.create({
+      trigger: el.closest("section") || el,
+      start: "top bottom", end: "bottom top",
+      onToggle: function (self) { if (self.isActive) tw.play(); else tw.pause(); }
+    });
+    return tw;
+  }
+
   function decorations() {
     $$(".shape").forEach(function (el, i) {
-      gsap.to(el, {
+      drift(el, {
         y: i % 2 ? 16 : -16,
         rotation: i % 2 ? -4 : 4,
         duration: 4.2 + i * 0.7,
@@ -579,6 +621,7 @@
       heroText();
       setupOrg();
       reveals();
+      revealLeftovers();
       shots();
       decorations();
       corners();
