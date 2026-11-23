@@ -1,0 +1,50 @@
+# Shakha 360
+
+> Billing and compliance software for chartered accountancy firms in India that
+> have a head office and branches. A firm's data is kept in the firm's own
+> Google Drive, not on Shakha 360's servers.
+
+Shakha 360 is used in the browser on a computer or a phone; there is nothing to
+install. One head office and any number of branch offices work in one place,
+each branch with its own GSTIN, invoice series, clients and staff, while the
+head office sees every office.
+
+## What it does
+
+- Billing: GST invoices, proformas, receipts and credit notes for every office, on the firm's own letterhead
+- Collections: outstanding fees, ageing and payment reminders
+- Compliance: GST, TDS, income-tax and ROC due dates for every client, in one To Do list
+- Work allocation: a partner and a staff member for every piece of work, with each person's workload
+- Notices and appeals: notices, hearings, orders and appeals, with every date tracked
+- Client documents: document requests, client files and client logins
+- Certificates and letters: 45 certificate formats, and engagement and appointment letters, with UDIN
+- Reports and exports: sales, collections, outstanding, GST and UDIN reports
+- Tally Connector: invoices and receipts reach TallyPrime on their own
+
+## Pricing
+
+A single plan for the head office, with add-ons for extra logins, branches and
+billing firms, charged yearly and pro-rated for the months left in the year. The
+current prices and the free trial length are shown on the pricing section of the
+home page, which reads them live from Shakha 360. There is a free trial and no
+payment is needed to start.
+
+## Where the data lives
+
+The firm connects its own Google account. Spreadsheets, PDFs and client documents
+are created in that firm's Google Drive and stay there. Invoices and reminders go
+out from the firm's own Gmail in the firm's name. If a firm stops using Shakha 360,
+its files remain in its own Drive.
+
+## Pages
+
+- [Home](https://www.shakha360.com/): what it does, pricing, demo, questions
+- [Privacy Policy](https://www.shakha360.com/privacy.html): what is kept, where, who can see it, how to have it deleted
+- [Terms of Use](https://www.shakha360.com/terms.html): trial, fees, data ownership, ending the service
+- [Delete your account](https://www.shakha360.com/delete-account.html): how to remove a firm's account and data
+
+## Contact
+
+- Sales and demos: hello@shakha360.com
+- Support: support@shakha360.com
+- Privacy: privacy@shakha360.com
