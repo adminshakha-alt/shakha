@@ -14,8 +14,118 @@
 .spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:#17614A;border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
 .code{font-size:22px;letter-spacing:6px;text-align:center}
 @media(max-width:600px){.cx{margin:12px 0;padding:20px 16px}.rw{grid-template-columns:1fr}}
+/* code boxes: a copy of src/c-codebox.css (10.34.0) */
+/* ===== 10.34.0: code boxes (c-codebox.js). Colours from the page's own tokens, so light and dark both work. ===== */
+.cb-stage{--cb-g:#128A5B;--cb-gbg:#E3F1EA;--cb-bad:#B3261E;--cb-badbg:#FCEDEB;position:relative;width:100%;transition:height .4s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cb-stage{--cb-g:#3FB984;--cb-gbg:rgba(63,185,132,.16);--cb-bad:#F28B82;--cb-badbg:rgba(242,139,130,.14)}}
+:root[data-theme="dark"] .cb-stage{--cb-g:#3FB984;--cb-gbg:rgba(63,185,132,.16);--cb-bad:#F28B82;--cb-badbg:rgba(242,139,130,.14)}
+#auth .cb-stage{--cb-g:#128A5B;--cb-gbg:#E3F1EA;--cb-bad:#B3261E;--cb-badbg:#FCEDEB}
+.cb-stage input.cb-in{position:absolute!important;inset:0!important;z-index:2;width:100%!important;max-width:none!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;color:transparent!important;-webkit-text-fill-color:transparent;caret-color:transparent;letter-spacing:0!important;font-size:16px!important;outline:none!important;cursor:text;opacity:1}
+.cb-stage input.cb-in::selection{background:transparent}
+.cb-bx{position:absolute;left:0;top:0;width:var(--cb-s);height:var(--cb-s);transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.cb-bi{width:100%;height:100%;box-sizing:border-box;display:grid;place-items:center;border:1.5px solid var(--line,#DCE1DF);border-radius:12px;background:var(--surface,var(--card,#fff));color:var(--fg,#1F2A30);font:600 calc(var(--cb-s) * .44)/1 var(--f-mono,ui-monospace,Consolas,monospace);font-variant-numeric:tabular-nums;transition:border-color .2s,background-color .25s,box-shadow .25s,color .2s}
+.cb-bx.has .cb-bi{border-color:color-mix(in srgb,var(--fg,#1F2A30) 38%,transparent)}
+.cb-bx.on .cb-bi{border-color:var(--cb-g);box-shadow:0 0 0 4px color-mix(in srgb,var(--cb-g) 18%,transparent)}
+.cb-bx.pop .cb-bi span{display:inline-block;animation:cbPop .2s ease-out}
+@keyframes cbPop{from{transform:scale(.6);opacity:.2}to{transform:none;opacity:1}}
+.cb-stage.float .cb-bi{box-shadow:0 12px 26px rgba(1,84,67,.18);animation:cbFloat 1.3s ease-in-out infinite alternate}
+.cb-stage.float .cb-bx:nth-of-type(2n) .cb-bi{animation-delay:-.45s}.cb-stage.float .cb-bx:nth-of-type(3n) .cb-bi{animation-delay:-.9s}
+@keyframes cbFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
+.cb-stage.pulse .cb-bi{animation:cbPulse .8s ease-in-out infinite alternate}
+@keyframes cbPulse{to{border-color:var(--cb-g);box-shadow:0 0 0 4px color-mix(in srgb,var(--cb-g) 16%,transparent)}}
+.cb-stage.good .cb-bi{border-color:var(--cb-g);background:var(--cb-gbg);color:var(--cb-g);box-shadow:0 0 0 4px color-mix(in srgb,var(--cb-g) 14%,transparent)}
+.cb-stage.bad .cb-bi{border-color:var(--cb-bad);background:var(--cb-badbg);color:var(--cb-bad)}
+.cb-stage.shake .cb-bi{animation:cbShake .42s}
+@keyframes cbShake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+.cb-links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;transition:opacity .3s}
+.cb-links line{stroke:var(--cb-g);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--cb-g) 70%,transparent));transition:stroke-dashoffset .45s ease-out}
+.cb-tile{position:absolute;left:50%;top:50%;width:calc(var(--cb-s) * 1.35);height:calc(var(--cb-s) * 1.35);margin:calc(var(--cb-s) * -.675) 0 0 calc(var(--cb-s) * -.675);border-radius:16px;background:var(--cb-g);display:grid;place-items:center;opacity:0;transform:scale(.4);transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s;box-shadow:0 14px 30px color-mix(in srgb,var(--cb-g) 35%,transparent);pointer-events:none}
+.cb-tile svg{width:52%;height:52%}
+.cb-tile path{fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .35s .15s ease-out}
+.cb-tile.on{opacity:1;transform:none}.cb-tile.on path{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){.cb-stage,.cb-stage *{animation:none!important;transition:none!important}.cb-tile.on path{stroke-dashoffset:0}}
+.dialog [data-cberr]{text-align:left;margin-top:8px}
+/* end of the code boxes copy */
 </style></head><body>
 <main class="wrap docMain" id="main"><div class="cx" id="box" aria-live="polite"><h1>Opening the letter</h1><div class="spin"></div></div><p style="text-align:center;font-size:13px;opacity:.75;margin:18px 0 8px"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
+<!-- code boxes: a copy of src/c-codebox.js (10.34.0) -->
+<script>
+(function () {
+/* ===== 10.34.0: code boxes =====
+   Every box where a code from an email is typed (and the 8-letter code of Sign In a Computer) is drawn as one box for each character.
+   The real input stays on top of the boxes, unseen: paste, the phone's "code from email" suggestion, Backspace and screen readers work
+   as before, and every screen still reads the input's value as it always did.
+   Checking and the answer animate: the full show (the boxes scatter, settle in two rows, are joined by lines and fold into a tick) only
+   when signing in on a device that has not signed in before; a short fold into a tick everywhere else; nothing moves with reduce motion.
+   website/accept.html carries a copy of this file (the client's Accept Letter page is not part of the app). */
+const CB_SEL='input[autocomplete="one-time-code"],input[data-codebox]';
+const CB_MAP=new WeakMap();
+function cbReduce(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}}
+/* a device that has not signed in before (set by finishLogin after the first sign-in) */
+function cbNewDevice(){try{return localStorage.getItem("bb_signed")!=="1"}catch(e){return false}}
+function cbSleep(ms){return new Promise(r=>setTimeout(r,cbReduce()?Math.min(ms,60):ms))}
+function cbOf(inp){return inp?(CB_MAP.get(inp)||codeBox(inp)):null}
+function codeBox(inp){
+  if(CB_MAP.has(inp))return CB_MAP.get(inp);
+  const pair=inp.dataset.codebox==="pair",n=+inp.dataset.n||(pair||inp.maxLength===8?8:6),split=n===8;
+  const clean=v=>(pair?String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,""):String(v||"").replace(/\D/g,"")).slice(0,n);
+  const NS="http://www.w3.org/2000/svg",st=document.createElement("div");st.className="cb-stage"+(pair?" cb-pair":"");
+  inp.parentNode.insertBefore(st,inp);
+  const links=document.createElementNS(NS,"svg");links.setAttribute("class","cb-links");links.setAttribute("aria-hidden","true");st.appendChild(links);
+  const bx=[];for(let i=0;i<n;i++){const b=document.createElement("div");b.className="cb-bx";b.setAttribute("aria-hidden","true");b.innerHTML='<div class="cb-bi"><span></span></div>';st.appendChild(b);bx.push(b)}
+  const tile=document.createElement("div");tile.className="cb-tile";tile.setAttribute("aria-hidden","true");tile.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';st.appendChild(tile);
+  st.appendChild(inp);inp.classList.add("cb-in");if(pair)inp.setAttribute("inputmode","text");
+  let geo=null,phase="typing",last=0,full=false,H=0;
+  const measure=()=>{const W=st.clientWidth||st.parentNode.clientWidth||300,gap=W<340?6:10,extra=split?(W<340?8:14):0;
+    const s=Math.max(28,Math.min(Math.floor((W-(n-1)*gap-extra)/n),split?50:58));st.style.setProperty("--cb-s",s+"px");geo={W,s,gap,extra}};
+  const rowH=()=>geo.s+8,bigH=()=>Math.round(geo.s*2.6+24);
+  const rowPos=()=>{const g=geo,tw=n*g.s+(n-1)*g.gap+g.extra,x0=Math.max(0,(g.W-tw)/2);return bx.map((b,i)=>({x:x0+i*(g.s+g.gap)+(split&&i>=n/2?g.extra:0),y:4,r:0,k:1}))};
+  const gridPos=h=>{const g=geo,c=n/2,gx=Math.round(g.s*.62),gy=Math.round(g.s*.58),tw=c*g.s+(c-1)*gx,th=2*g.s+gy,x0=(g.W-tw)/2,y0=(h-th)/2;return bx.map((b,i)=>({x:x0+(i%c)*(g.s+gx),y:y0+Math.floor(i/c)*(g.s+gy),r:0,k:1}))};
+  const scatter=h=>{const g=geo;return gridPos(h).map(p=>({x:Math.max(0,Math.min(g.W-g.s,p.x+(Math.random()-.5)*g.s*1.7)),y:Math.max(0,Math.min(h-g.s,p.y+(Math.random()-.5)*g.s)),r:(Math.random()-.5)*38,k:1.05}))};
+  const put=ps=>bx.forEach((b,i)=>{const p=ps[i];b.style.transform=`translate(${p.x}px,${p.y}px) rotate(${p.r}deg) scale(${p.k})`;b.style.opacity=""});
+  const draw=()=>{const v=inp.value;bx.forEach((b,i)=>{const d=v.charAt(i);b.firstChild.firstChild.textContent=d;b.classList.toggle("has",!!d);
+      b.classList.toggle("on",phase==="typing"&&!inp.disabled&&i===Math.min(v.length,n-1)&&document.activeElement===inp);
+      if(d&&i>=last){b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")}});last=v.length};
+  const row=()=>{measure();H=rowH();st.style.height=H+"px";put(rowPos())};
+  const merge=h=>{const g=geo,cx=g.W/2-g.s/2,cy=h/2-g.s/2;bx.forEach(b=>{b.style.transform=`translate(${cx}px,${cy}px) scale(.55)`;b.style.opacity="0"});links.style.opacity="0"};
+  const lines=(ps,h)=>{const g=geo,cx=g.W/2,cy=h/2;links.innerHTML="";links.style.opacity="";
+    ps.forEach(p=>{const l=document.createElementNS(NS,"line"),x1=p.x+g.s/2,y1=p.y+g.s/2,len=Math.hypot(cx-x1,cy-y1);
+      l.setAttribute("x1",x1);l.setAttribute("y1",y1);l.setAttribute("x2",cx);l.setAttribute("y2",cy);l.style.strokeDasharray=len;l.style.strokeDashoffset=len;links.appendChild(l)});
+    void links.getBoundingClientRect();links.querySelectorAll("line").forEach(l=>{l.style.strokeDashoffset=0})};
+  inp.value=clean(inp.value);let autoT=0,had=inp.value.length;
+  inp.addEventListener("input",()=>{const v=clean(inp.value);if(inp.value!==v)inp.value=v;const typed=v.length-had===1;had=v.length;if(phase!=="typing")return;st.classList.remove("bad");draw();
+    /* the sign-in screens send the code by themselves when the last digit is typed. A code that arrives all at once (pasted, or the
+       phone's "code from email" suggestion) waits for Sign in as before, so a click on Sign in never meets a card that has moved on. */
+    clearTimeout(autoT);
+    if(v.length===n&&typed&&inp.dataset.auto==="1")autoT=setTimeout(()=>{const f=inp.closest("form");if(!f||!inp.isConnected||phase!=="typing"||inp.value.length!==n||f.dataset.busy)return;
+      if(f.requestSubmit)f.requestSubmit();else{const s=f.querySelector('button[type="submit"]');if(s)s.click()}},300)});
+  inp.addEventListener("focus",draw);inp.addEventListener("blur",draw);
+  let rz=0;window.addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{if(st.isConnected&&phase==="typing")row()},120)});
+  row();draw();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(st.isConnected&&phase==="typing")row()});
+  const api={n,input:inp,el:st,
+    /* checking: the boxes scatter (full) or glow (short) until ok() or bad() */
+    busy(o){if(phase==="checking")return;full=!!(o&&o.full)&&!cbReduce();phase="checking";inp.readOnly=true;draw();
+      if(full){measure();H=bigH();st.style.height=H+"px";st.classList.add("float");put(scatter(H))}else st.classList.add("pulse")},
+    /* the code was right: fold into a tick; resolves when the tick is drawn */
+    async ok(){if(phase==="done")return;st.classList.remove("pulse");
+      if(full){const gp=gridPos(H);st.classList.remove("float");put(gp);await cbSleep(420);st.classList.add("good");lines(gp,H);await cbSleep(600);merge(H);await cbSleep(340)}
+      else{st.classList.add("good");await cbSleep(260);H=Math.round(geo.s*1.6);st.style.height=H+"px";merge(H);await cbSleep(280)}
+      tile.classList.add("on");phase="done";await cbSleep(500)},
+    /* the code was wrong: back in a row, a red shake, emptied and ready again */
+    async bad(){st.classList.remove("pulse");if(full){st.classList.remove("float");row();await cbSleep(420)}
+      st.classList.add("bad","shake");await cbSleep(450);st.classList.remove("shake");inp.value="";last=0;had=0;inp.readOnly=false;phase="typing";full=false;draw();
+      if(!inp.disabled)try{inp.focus({preventScroll:true})}catch(e){}},
+    /* back to typing without an animation (a check that could not be made) */
+    reset(){st.classList.remove("pulse","float","good","shake");phase="typing";inp.readOnly=false;full=false;row();draw()}};
+  CB_MAP.set(inp,api);return api}
+/* every code input gets its boxes as soon as it is drawn, wherever it is (sign-in, dialogs, My Account, the Tally Connector) */
+{let cbQ=false;const cbScan=()=>{cbQ=false;document.querySelectorAll(CB_SEL).forEach(i=>{if(!CB_MAP.has(i)&&i.isConnected&&i.parentNode)codeBox(i)})};
+  new MutationObserver(()=>{if(!cbQ){cbQ=true;requestAnimationFrame(cbScan)}}).observe(document.documentElement,{childList:true,subtree:true})}
+window.cbOf = cbOf;
+})();
+</script>
+<!-- end of the code boxes copy -->
 <script>
 /* Shakha 360 web app address (the same one as connect.html and upload.html) */
 var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
@@ -75,8 +185,12 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       if (!nm.value.trim()) { an.textContent = 'Please type your name.'; nm.focus(); return; } if (ds && !ds.value.trim()) { an.textContent = 'Please type your designation.'; ds.focus(); return; }
       if (!/^\d{6}$/.test(cd.value.trim())) { an.textContent = 'Type the 6-digit code from your email.'; cd.focus(); return; }
       ab.disabled = true; an.textContent = 'Accepting…'; an.className = 'ln';
-      post({ ac: 'accept', name: nm.value.trim(), desig: ds ? ds.value.trim() : '', idno: idn ? idn.value.trim() : '', code: cd.value.trim(), ua: navigator.userAgent }).then(function (j) { if (!j.ok) { ab.disabled = false; an.textContent = j.error || 'Please try again.'; an.className = 'ln bad'; return; } info.name = j.name; info.designation = ds ? ds.value.trim() : ''; done(j); },
-        function () { ab.disabled = false; an.textContent = 'Shakha 360 couldn\'t be reached just now. Please try again.'; an.className = 'ln bad'; }); };
+      /* 10.34.0: the code boxes show the check: a tick when the code is right, a red shake when it is wrong */
+      var box = window.cbOf ? window.cbOf(cd) : null, code = cd.value.trim(); if (box) box.busy();
+      post({ ac: 'accept', name: nm.value.trim(), desig: ds ? ds.value.trim() : '', idno: idn ? idn.value.trim() : '', code: code, ua: navigator.userAgent }).then(function (j) {
+          if (!j.ok) { return (box ? box.bad() : Promise.resolve()).then(function () { ab.disabled = false; an.textContent = j.error || 'Please try again.'; an.className = 'ln bad'; }); }
+          info.name = j.name; info.designation = ds ? ds.value.trim() : ''; return (box ? box.ok() : Promise.resolve()).then(function () { done(j); }); },
+        function () { if (box) box.reset(); ab.disabled = false; an.textContent = 'Shakha 360 couldn\'t be reached just now. Please try again.'; an.className = 'ln bad'; }); };
   }
   if (!K.f || !K.d || !K.t) return fail('Open the link from your email', 'Please open this page from the link the firm sent you.');
   post({ ac: 'info' }).then(function (o) { if (!o.ok) return fail('This link can\'t be used', o.error || 'Please ask the firm for a new one.'); draw(o); })

@@ -99,6 +99,33 @@ html{scroll-padding-bottom:140px}.foot{position:sticky;bottom:0;z-index:3;displa
 .foot .btn{min-height:46px}
 @media(max-width:700px){.gc{padding:14px;border-radius:14px}.foot{margin:16px -14px -6px;padding:10px 14px;border-radius:0 0 18px 18px}.foot .btn{flex:1 1 auto}}
 @media(max-width:700px){.uph{padding:30px 0 86px}.cx{margin:-60px 12px 0;padding:18px 14px 6px;border-radius:18px}.uph .shape{display:none}}
+/* 10.34.0: a pill for each file: it fills while the file goes, says Reconnecting while a dropped connection is tried again, and turns solid green when received */
+.fp{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:18px minmax(0,1fr) auto auto;align-items:center;gap:10px;min-height:44px;margin-top:8px;padding:0 5px 0 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font-size:14px;transition:border-color .3s,color .3s;animation:fpIn .3s ease-out}
+@keyframes fpIn{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+.fp .ff{position:absolute;inset:0 auto 0 0;z-index:-1;width:0;background-color:var(--ok-bg);transition:width .4s cubic-bezier(.3,.6,.4,1),background-color .4s}
+.fp .fi{display:grid;place-items:center;color:var(--mu)}
+.fp .fi svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fp .fn{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fp .fz{font-size:12.5px;color:var(--mu);white-space:nowrap;font-variant-numeric:tabular-nums}
+.fp .fs{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:96px;height:34px;padding:0 12px;box-sizing:border-box;border:0;border-radius:999px;font:600 13px/1 var(--f-b);white-space:nowrap;background:var(--card2);color:var(--mu);font-variant-numeric:tabular-nums;transition:background-color .3s,color .3s}
+.fp .fs svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fp.go{border-color:var(--ok)}
+.fp.go .ff{background-image:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);background-size:220% 100%;animation:fpShim 1.3s linear infinite}
+@keyframes fpShim{from{background-position:120% 0}to{background-position:-120% 0}}
+.fp.go .fs{background:var(--ok);color:var(--card)}
+.fp.wait{border-color:var(--warn)}.fp.wait .fs{background:var(--warn-bg);color:var(--warn)}.fp.wait .ff{background-color:var(--warn-bg);background-image:none;animation:none}
+.fp.ok{border-color:var(--ok);color:var(--card)}
+.fp.ok .ff{width:100%!important;background-color:var(--ok);background-image:none;animation:none}
+.fp.ok .fi,.fp.ok .fz{color:inherit;opacity:.8}
+.fp.ok .fs{background:rgba(255,255,255,.18);color:inherit}
+.fp.bad{border-color:var(--bad)}.fp.bad .ff{background-color:var(--bad-bg);background-image:none;animation:none}
+.fp.bad .fz{color:var(--bad);font-weight:500;white-space:normal;text-align:right}
+.fp.bad .fs{background:var(--bad);color:var(--card)}.fp.bad.final .fs{background:var(--bad-bg);color:var(--bad)}
+.fp button.fs{cursor:pointer}.fp button.fs:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.got{animation:fpPop .3s ease-out}
+@keyframes fpPop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:440px){.fp{grid-template-columns:18px minmax(0,1fr) auto}.fp .fz{display:none}.fp.bad .fz{display:block;grid-column:2/4;padding-bottom:8px;text-align:left}.fp .fs{min-width:84px}}
+@media(prefers-reduced-motion:reduce){.fp,.fp *,.got{animation:none!important;transition:none!important}}
 </style>
 <!-- 10.20.0: with JavaScript off the page says so, and does not spin for ever -->
 <noscript><style>#box h1,#box .spin{display:none}</style></noscript></head><body>
@@ -135,19 +162,42 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
     function step() {
       if (at >= file.size) return Promise.resolve();
       return b64(file.slice(at, at + P)).then(function (d) { return post({ up: 'piece', uid: uid, item: item, name: file.name, size: file.size, at: at, d: d }); }).then(function (j) {
-        if (!j.ok) { if (stop(j)) throw new Error(j.error); throw { again: j.error }; }
+        if (!j.ok) { if (stop(j)) throw Object.assign(new Error(j.error), { final: 1 }); throw { again: j.error }; }
         /* a file Shakha 360 already has (the reply to its last piece was lost) comes back as done: it is received, and is not sent again */
         if (j.done) { at = file.size; show(1); return null; }
         tries = 0; at = j.next; show(at / file.size); return step();
       }).catch(function (e) {
         if (!(e && (e.again !== undefined || e instanceof TypeError || /HTTP/.test(e.message || '')))) throw e;
         if (++tries > 5) throw new Error('The connection keeps dropping. Please try again on a better connection.');
-        return wait(1500 * tries).then(function () { return post({ up: 'piece', uid: uid, probe: 1 }); }).then(function (p) { if (stop(p)) throw new Error(p.error); if (p.ok) { if (p.done) { at = file.size; show(1); return null; } at = p.next || 0; } return step(); }, function () { return step(); });
+        if (show.wait) show.wait();   /* 10.34.0: the file's pill says Reconnecting while this tries again */
+        return wait(1500 * tries).then(function () { return post({ up: 'piece', uid: uid, probe: 1 }); }).then(function (p) { if (stop(p)) throw Object.assign(new Error(p.error), { final: 1 }); if (p.ok) { if (p.done) { at = file.size; show(1); return null; } at = p.next || 0; } return step(); }, function () { return step(); });
       });
     }
     return step();
   }
   function icon() { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', 'M12 16V4m0 0L7 9m5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'); s.appendChild(p); return s; }
+  /* 10.34.0: a file's pill. Its fill shows true progress: it eases over about as long as the last piece took, so it never runs ahead */
+  function svgOf(d) { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); s.appendChild(p); return s; }
+  function mb(b) { return b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
+  function filePill(f) {
+    var w = el('div', 'fp'), ff = el('span', 'ff'), fi = el('span', 'fi'), fn = el('span', 'fn', f.name), fz = el('span', 'fz', mb(f.size)), fs = el('span', 'fs', 'Waiting');
+    fi.appendChild(svgOf('M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.4 3.4 0 0 1 4.8 4.8l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9')); fn.title = f.name;
+    w.appendChild(ff); w.appendChild(fi); w.appendChild(fn); w.appendChild(fz); w.appendChild(fs);
+    var pct = 0, t0 = 0, raf = 0;
+    function status(txt, button, tick) { var nx = el(button ? 'button' : 'span', 'fs'); if (button) nx.type = 'button'; if (tick) nx.appendChild(svgOf('M5 12.5l4.5 4.5L19 7.5')); nx.appendChild(document.createTextNode(txt)); w.replaceChild(nx, fs); fs = nx; return nx; }
+    function count(from, to, ms) { cancelAnimationFrame(raf); var s = performance.now();
+      (function step(t) { var k = Math.min(1, (t - s) / ms); if (w.className === 'fp go') fs.textContent = 'Sending ' + Math.round(from + (to - from) * k) + '%'; if (k < 1) raf = requestAnimationFrame(step); })(s); }
+    function show(x) { var to = Math.max(pct, Math.round(x * 100)), now = performance.now(), dur = Math.min(4, Math.max(.3, (now - t0) / 1000)); t0 = now;
+      if (w.className !== 'fp go') { w.className = 'fp go'; fz.textContent = mb(f.size); status('Sending ' + pct + '%'); }
+      ff.style.transitionDuration = dur + 's, .4s'; ff.style.width = to + '%'; count(pct, to, dur * 1000); pct = to; }
+    show.wait = function () { cancelAnimationFrame(raf); w.className = 'fp wait'; fz.textContent = 'Connection dropped'; status('Reconnecting…'); };
+    return { el: w, show: show,
+      send: function () { pct = 0; ff.style.transitionDuration = '.2s, .4s'; ff.style.width = '0%'; w.className = 'fp go'; fz.textContent = mb(f.size); t0 = performance.now(); status('Sending 0%'); },
+      done: function () { cancelAnimationFrame(raf); ff.style.transitionDuration = '.35s, .4s'; ff.style.width = '100%'; w.className = 'fp ok'; fz.textContent = mb(f.size); status('Received', false, true); },
+      fail: function (msg, retry) { cancelAnimationFrame(raf); w.className = 'fp bad' + (retry ? '' : ' final'); fz.textContent = String(msg).replace(/\.$/, '');
+        if (!retry) { status('Not sent'); return; }
+        var b = status('Try Again', true); b.setAttribute('aria-label', 'Try sending ' + f.name + ' again'); b.onclick = function () { b.disabled = true; retry(); }; } };
+  }
   /* 10.27.0: an answer is checked as Shakha 360 checks it: [the value, or '' when blank; what to do, or ''] */
   function chk(kind, v) { var s = String(v == null ? '' : v).trim(); if (!s) return ['', '']; if (s.length > 2000) return ['', 'An answer can be up to 2,000 characters'];
     if (kind === 'number' || kind === 'amount' || kind === 'pct') { var t = s.replace(/[,\s₹]/g, '').replace(/^rs\.?/i, '').replace(/%$/, '');
@@ -220,11 +270,14 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
         if (!it.optional) { state[it.id] = !!(n || na); sentIt[it.id] = !!n; } total(); }
       mark();
       naBox.onchange = function () { var want = naBox.checked; naBox.disabled = true; post({ up: 'na', item: it.id, na: want ? 1 : 0 }).then(function (j) { naBox.disabled = false; if (!j.ok) { naBox.checked = !want; var er = el('div', 'ln bad', j.error || 'Please try again.'); list.appendChild(er); return; } na = want; mark(); }, function () { naBox.disabled = false; naBox.checked = !want; list.appendChild(el('div', 'ln bad', 'Could not be saved. Please try again.')); }); };
-      function take(fs) { var chain = Promise.resolve(); Array.prototype.slice.call(list.querySelectorAll('.ln.bad')).forEach(function (x) { x.remove(); });   /* 10.27.0: earlier failed files' messages go when new files are chosen */
-        fs.forEach(function (f) { var ln = el('div', 'ln', f.name), bar = el('div', 'bar'), fill = el('i'); bar.appendChild(fill); list.appendChild(ln); list.appendChild(bar);
-          chain = chain.then(function () { if (f.size > MAX) throw new Error('This file is larger than 25 MB.'); if (!f.size) throw new Error('This file is empty.'); busy++; return send(f, it.id, function (x) { fill.style.width = Math.round(x * 100) + '%'; }); })
-            .then(function () { busy = Math.max(0, busy - 1); n++; mark(); ln.className = 'ln ok'; ln.textContent = f.name + ': received'; bar.remove(); },
-              function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); ln.className = 'ln bad'; ln.textContent = f.name + ': ' + (e.message || 'could not be sent. Please try again.'); bar.remove(); }); }); }
+      /* 10.34.0: each file gets a pill (earlier refused files' pills and messages go when new files are chosen); a file that could not be
+         sent because the connection kept dropping gets Try Again, a refused one (too large, empty, not a real PDF...) does not */
+      function take(fs) { var chain = Promise.resolve(); Array.prototype.slice.call(list.querySelectorAll('.ln.bad,.fp.final')).forEach(function (x) { x.remove(); });
+        fs.forEach(function (f) { var P = filePill(f); list.appendChild(P.el);
+          var go = function () { chain = chain.then(function () { if (f.size > MAX) throw { message: 'Larger than 25 MB', final: 1 }; if (!f.size) throw { message: 'This file is empty', final: 1 }; busy++; P.send(); return send(f, it.id, P.show); })
+            .then(function () { busy = Math.max(0, busy - 1); n++; mark(); P.done(); },
+              function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); P.fail((e && e.message) || 'Could not be sent. Please try again.', e && e.final ? null : go); }); };
+          go(); }); }
       inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; take(fs); };
       /* files dropped on this document go to this document */
       dz.addEventListener('dragenter', function (e) { e.preventDefault(); if (!na) dz.classList.add('over'); });
