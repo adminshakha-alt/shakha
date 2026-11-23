@@ -1,0 +1,13 @@
+Contact: mailto:support@shakha360.com
+Expires: 2027-11-24T00:00:00.000Z
+Preferred-Languages: en, hi
+Canonical: https://www.shakha360.com/.well-known/security.txt
+Policy: https://www.shakha360.com/terms.html
+
+# Shakha 360 is billing and compliance software for chartered accountancy
+# firms in India. If you believe you have found a security problem, please
+# write to the address above with enough detail to reproduce it, and give us
+# a reasonable time to put it right before telling anyone else.
+#
+# Please do not run automated scans that create load, send bulk mail through
+# the service, or touch data belonging to a firm that is not yours.
