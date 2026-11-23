@@ -10,6 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="anim.css">
+<script>/* motion is used only if this page can run scripts and the visitor has not asked for less of it */
+(function(d){try{if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches){d.documentElement.className+=' sx';
+setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx')},3500)}}catch(e){}})(document);</script>
 <style>
 /* the screens viewer at the top */
 .shotBox{max-width:1120px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.35);overflow:hidden}
@@ -113,6 +117,31 @@
 </div>
 </div></section>
 
+<!-- TRIAL: head office and branches. DROPPED on the user's instruction,
+     23 Nov 2026. Left here commented out in case it is ever wanted again;
+     its styles are in anim.css under "head office and branches" and its
+     code is setupOrg() in js/anim.js, both of which simply do nothing
+     while this markup stays commented out.
+<section class="sec sx-orgSec" aria-labelledby="orgH"><div class="wrap">
+<div class="sx-orgHead"><h2 id="orgH">One firm. Every branch.</h2></div>
+<div class="sx-org" role="button" tabindex="0" aria-label="How Shakha 360 is set up: a head office, its branches, and the staff logins under each branch. Activate to play the drawing again.">
+<svg class="sx-wires" aria-hidden="true" focusable="false" preserveAspectRatio="none"></svg>
+<div class="sx-row r1"><span class="sx-node ho"><svg class="ico" aria-hidden="true"><use href="#i-team"/></svg>Head Office</span></div>
+<div class="sx-row r2">
+<span class="sx-node br"><svg class="ico" aria-hidden="true"><use href="#i-door"/></svg>Branch 1</span>
+<span class="sx-node br"><svg class="ico" aria-hidden="true"><use href="#i-door"/></svg>Branch 2</span>
+<span class="sx-node br"><svg class="ico" aria-hidden="true"><use href="#i-door"/></svg>Branch 3</span>
+</div>
+<div class="sx-row r3">
+<span class="sx-node st">Staff logins</span>
+<span class="sx-node st">Staff logins</span>
+<span class="sx-node st">Staff logins</span>
+</div>
+</div>
+<span class="sx-hint">Head office sees every office. Each branch sees its own.</span>
+</div></section>
+-->
+
 <section class="sec" id="does" aria-labelledby="doesH" style="padding-top:24px"><div class="wrap">
 <div class="secHead"><h2 id="doesH">What Shakha 360 does</h2><p>Everything a CA firm runs on, in one place.</p></div>
 <div class="does">
@@ -122,7 +151,7 @@
 <article class="doesC c7"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-team"/></svg></span><h3>Work allocation</h3><p>A partner and a staff member for every piece of work, with each person’s workload.</p></article>
 <article class="doesC c8"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-scale"/></svg></span><h3>Notices and appeals</h3><p>Notices, hearings, orders and appeals, with every date tracked.</p></article>
 <article class="doesC c4"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-upload"/></svg></span><h3>Client documents</h3><p>Document requests, client files and portal logins, client by client.</p></article>
-<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>41 certificate formats, and engagement and appointment letters, with UDIN.</p></article>
+<article class="doesC c5"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-cert"/></svg></span><h3>Certificates and letters</h3><p>45 certificate formats, and engagement and appointment letters, with UDIN.</p></article>
 <article class="doesC c6"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-chart"/></svg></span><h3>Reports and exports</h3><p>Sales, collections, outstanding, GST and UDIN reports.</p></article>
 <article class="doesC c9"><span class="modIc" aria-hidden="true"><svg class="ico"><use href="#i-link"/></svg></span><h3>Tally Connector</h3><p>Invoices and receipts reach TallyPrime on their own.</p></article>
 </div>
@@ -180,7 +209,7 @@
 </div>
 <div class="fRow">
 <div class="fld"><label for="cMail">Email <i aria-hidden="true">*</i></label><input id="cMail" name="email" type="email" autocomplete="email" required aria-describedby="cMailE"><span class="err" id="cMailE"></span></div>
-<div class="fld"><label for="cTel">Phone or WhatsApp</label><input id="cTel" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+<div class="fld"><label for="cTel">Mobile number <i aria-hidden="true">*</i></label><input id="cTel" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="cTelE"><span class="err" id="cTelE"></span></div>
 </div>
 <div class="fRow">
 <div class="fld"><label for="cCity">City</label><input id="cCity" name="city" autocomplete="address-level2"></div>
@@ -250,14 +279,14 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
 
  /* contact form: checks fields, then opens the visitor's email app */
  var f=$('cForm'),done=$('cDone');
- var rules={cName:['Enter your name.'],cFirm:['Enter your firm’s name.'],cMail:['Enter your email address.','Enter an email address like name@firm.com.']};
- function check(id){var el=$(id),m='';if(!el.value.trim())m=rules[id][0];else if(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()))m=rules[id][1];
+ var rules={cName:['Enter your name.'],cFirm:['Enter your firm’s name.'],cMail:['Enter your email address.','Enter an email address like name@firm.com.'],cTel:['Enter your mobile number.','Enter a mobile number with at least 10 digits.']};
+ function check(id){var el=$(id),m='';if(!el.value.trim())m=rules[id][0];else if(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()))m=rules[id][1];else if(el.type==='tel'&&(el.value.replace(/\D/g,'').length<10))m=rules[id][1];
   $(id+'E').textContent=m;if(m)el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');return !m}
  Object.keys(rules).forEach(function(id){$(id).addEventListener('blur',function(){if($(id).value)check(id)});$(id).addEventListener('input',function(){if($(id).getAttribute('aria-invalid'))check(id)})});
  f.addEventListener('submit',function(ev){ev.preventDefault();done.textContent='';
   var bad=Object.keys(rules).filter(function(id){return !check(id)});if(bad.length){$(bad[0]).focus();return}
   var g=function(n){return (f.elements[n].value||'').trim()},want=f.querySelector('input[name=want]:checked').value;
-  var body=['I would like '+want.toLowerCase()+'.','','Name: '+g('name'),'Firm: '+g('firm'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'City: '+(g('city')||'-'),'Branches: '+g('branches'),'',g('msg')].join('\n');
+  var body=['I would like '+want.toLowerCase()+'.','','Name: '+g('name'),'Firm: '+g('firm'),'Email: '+g('email'),'Mobile: '+g('phone'),'City: '+(g('city')||'-'),'Branches: '+g('branches'),'',g('msg')].join('\n');
   location.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent((want==='A live demo'?'Demo request: ':'Question: ')+g('firm'))+'&body='+encodeURIComponent(body);
   done.textContent='Your email app should open with the request ready. If it didn’t, email us at '+CONTACT_EMAIL+'.'});
  document.querySelectorAll('[data-demo]').forEach(function(a){a.addEventListener('click',function(){f.querySelector('input[value="A live demo"]').checked=true})});
@@ -266,7 +295,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  var io=!reduce&&'IntersectionObserver' in window&&new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.12});
  function reveal(sel){if(!io)return;document.querySelectorAll(sel).forEach(function(el){if(el.classList.contains('rv'))return;
   var i=Array.prototype.indexOf.call(el.parentNode.children,el);el.style.setProperty('--d',(i%4)*80+'ms');el.classList.add('rv');io.observe(el)})}
- reveal('.secHead,.facts>*,.doesC,.band .wrap>div,.own li,.demo>*,.faq details,.contact>*,.end .wrap>*,.foot .wrap>div');
+ reveal('.secHead,.facts>*,.doesC,.band .wrap>div,.own li,.demo>*,.faq details,.contact>*,.end .wrap>*,.foot .wrap>div,.splitText,.splitShots');
 
  /* plans, loaded live from the Shakha 360 app */
  var g=$('plansGrid'),note=$('plansNote'),rs=function(n){return Math.round(+n||0).toLocaleString('en-IN')};
@@ -314,4 +343,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  }).catch(function(){g.innerHTML='<div class="card"><p>Pricing couldn’t be loaded just now. <a href="app/?register=1">Register here</a> to see them.</p></div>'});
 })();
 </script>
+<script src="js/gsap.min.js" defer></script>
+<script src="js/ScrollTrigger.min.js" defer></script>
+<script src="js/anim.js" defer></script>
 </body></html>

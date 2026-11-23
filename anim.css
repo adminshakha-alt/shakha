@@ -1,0 +1,151 @@
+/* ============================================================
+   Shakha 360 website - motion (TRIAL)
+   Loaded after style.css. Nothing in here changes how the page
+   looks when it is standing still, except the two new pieces
+   that are marked below (the hero branch and the office tree).
+
+   The ".sx" class is put on <html> by a one-line script in the
+   page, and only when JavaScript is running AND the visitor has
+   not asked their device for less motion. So every "hidden at
+   the start" rule below simply never applies when the page is
+   read without JavaScript, or by someone who gets travel sick.
+   ============================================================ */
+
+/* ---------- starting states (only with .sx) ---------- */
+html.sx .sx-r{opacity:0}
+html.sx .sx-dot{opacity:0}
+
+/* ---------- 1. the branch that grows in the hero ---------- */
+/* The hero text sits above it; the branch is only a faint
+   drawing behind the words, in the same cream and yellow the
+   logo already uses. */
+.heroText{position:relative}
+.heroText>.pill,.heroText>h1,.heroText>p,.heroText>.heroCta,.heroText>.heroNote{position:relative;z-index:1}
+.sx-branch{position:absolute;left:50%;top:-34px;width:min(1420px,176%);height:128%;
+  transform:translateX(-50%);z-index:0;pointer-events:none;overflow:visible;
+  -webkit-mask-image:linear-gradient(#000 0,#000 52%,rgba(0,0,0,.45) 72%,transparent 90%);
+  mask-image:linear-gradient(#000 0,#000 52%,rgba(0,0,0,.45) 72%,transparent 90%)}
+.sx-branch path{fill:none;stroke:#F7F3E8;stroke-opacity:.16;stroke-linecap:round}
+.sx-branch circle{fill:#F2B632;fill-opacity:.62}
+@media (max-width:700px){.sx-branch{display:none}}
+
+/* ---------- 2. head office and branches (NEW BLOCK) ---------- */
+.sx-orgSec{padding-top:6px;padding-bottom:10px}
+.sx-orgHead{text-align:center;margin:0 0 30px}
+.sx-orgHead h2{margin:0;font-size:clamp(1.6rem,3.4vw,2.2rem)}
+.sx-org{position:relative;max-width:700px;margin:0 auto;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.sx-org:focus-visible{outline:3px solid var(--y);outline-offset:8px;border-radius:14px}
+.sx-org svg.sx-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.sx-wires path{fill:none;stroke:#9FC4B4;stroke-width:2;stroke-linecap:round}
+.sx-row{position:relative}
+.sx-row.r1{display:flex;justify-content:center}
+.sx-row.r2,.sx-row.r3{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;
+  align-items:center;gap:clamp(6px,2vw,22px)}
+.sx-row.r2{margin-top:64px}
+.sx-row.r3{margin-top:34px}
+.sx-node{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:10px 18px;box-shadow:0 6px 18px -10px rgba(13,58,44,.35);
+  font:600 15px/1 var(--f-b);color:var(--fg);white-space:nowrap}
+.sx-node .ico{width:18px;height:18px;flex:none}
+.sx-node.ho{background:var(--g);border-color:var(--g);color:#fff;padding:13px 26px;font-size:17px;
+  box-shadow:0 14px 30px -14px rgba(13,58,44,.6)}
+.sx-node.br{background:#fff;color:var(--g)}
+.sx-node.st{background:var(--g-soft);border-color:#C6DFD2;color:#17211D;font-size:13px;padding:7px 14px}
+.sx-hint{display:block;text-align:center;margin-top:22px;font:600 13px/1 var(--f-b);color:var(--mu)}
+@media (max-width:620px){
+  .sx-row.r2,.sx-row.r3{gap:8px}
+  .sx-node{padding:8px 11px;font-size:13px;gap:6px}
+  .sx-node .ico{width:15px;height:15px}
+  .sx-node.ho{padding:11px 18px;font-size:15px}
+  .sx-node.st{font-size:11px;padding:6px 9px}
+}
+
+/* ---------- 3. hover life (no change when still) ----------
+   The lift uses the separate "translate" property, never "transform".
+   The page's own scroll reveal animates transform over .7s, and a
+   transform here would have taken that rule's place and made whole
+   sections snap in. Keeping the two apart leaves the reveal exactly
+   as it is on the live site. */
+.btn{transition:translate .18s cubic-bezier(.2,.75,.3,1),background .2s,border-color .2s}
+.btn:hover{translate:0 -2px}
+.btn:active{translate:0 0}
+/* The first two lines here are copied from ".rv" in style.css on purpose.
+   A "transition" set on the card replaces the one the reveal rule gives it,
+   so the reveal's own .7s rise has to be repeated or the cards snap in. */
+.doesC{transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),
+  transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),
+  translate .22s cubic-bezier(.2,.75,.3,1),box-shadow .22s,border-color .22s}
+.doesC:hover{translate:0 -3px;border-color:#C6DFD2;box-shadow:0 18px 38px -22px rgba(13,58,44,.5)}
+.doesC .modIc{transition:translate .25s cubic-bezier(.3,1.4,.5,1),scale .25s cubic-bezier(.3,1.4,.5,1)}
+.doesC:hover .modIc{scale:1.08}
+/* the plan card and the fee calculator sit side by side, so they lift alike */
+.pcard,.calc{transition:translate .22s cubic-bezier(.2,.75,.3,1),border-color .2s,box-shadow .2s}
+.pcard:hover,.calc:hover{translate:0 -3px}
+.shotTabs button{transition:background .2s,color .2s}
+
+/* ---------- 4. the screens viewer ---------- */
+.shotPane{position:relative;overflow:hidden}
+
+/* ---------- 5. a branch runs down the left margin ----------
+   Its position and width are worked out in anim.js from how much
+   room is actually left of the text, so it fits whatever the window
+   and the display scaling happen to be. It is left out only when
+   there is genuinely no margin to put it in. */
+.sx-spine{position:absolute;left:0;z-index:0;pointer-events:none}
+.sx-spine svg{display:block;overflow:visible}
+.sx-stem{fill:none;stroke:#17614A;stroke-opacity:.34;stroke-width:2.4;stroke-linecap:round}
+.sx-leaf{fill:#17614A;fill-opacity:.46}
+.sx-rib{fill:none;stroke:#F7F3E8;stroke-opacity:.55;stroke-width:1.4;stroke-linecap:round}
+.band .sx-stem,.band .sx-leaf{opacity:1}
+#main{position:relative}
+
+/* ---------- 6. leaves and flowers in the lower sections ---------- */
+#does,.band,#plans,#faq,#contact{position:relative;overflow:hidden}
+#does>.wrap,.band>.wrap,#plans>.wrap,#faq>.wrap,#contact>.wrap{position:relative;z-index:1}
+.sx-dec{z-index:0;opacity:.5}
+.sx-dec.sx-dec-a{right:-86px;top:30px;left:auto;width:190px;height:190px;transform:rotate(128deg)}
+.sx-dec.sx-dec-b{left:-40px;bottom:-34px;top:auto;width:180px;height:180px;transform:rotate(-38deg);opacity:.3}
+/* on the right, so it does not crowd the branch running down the left */
+.sx-dec.sx-dec-c{right:-56px;top:110px;left:auto;width:185px;height:185px;transform:rotate(-152deg);opacity:.38}
+.sx-dec.sx-dec-d{right:-92px;bottom:-30px;top:auto;left:auto;width:190px;height:190px;opacity:.45}
+.sx-dec.sx-dec-e{left:-80px;bottom:-40px;top:auto;width:200px;height:200px;transform:rotate(-14deg);opacity:.42}
+@media (max-width:1100px){.sx-dec{display:none}}
+
+/* ---------- 8. the "Branches" dropdown ----------
+   Looks exactly like the box it replaces; the list below it is ours,
+   so it is in the page's own font and colours instead of Windows'. */
+.sx-sel{position:relative}
+.sx-sel-real{position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;
+  border:0!important;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.sx-sel-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  font:inherit;font-size:16px;text-align:left;color:var(--fg);background:var(--bg);
+  border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;min-height:48px;cursor:pointer}
+.sx-sel-btn svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;transition:transform .18s}
+.sx-sel-btn[aria-expanded=true] svg{transform:rotate(180deg)}
+.sx-sel-btn:focus-visible,.sx-sel-btn[aria-expanded=true]{outline:none;border-color:var(--link);
+  box-shadow:0 0 0 3px rgba(23,97,74,.18)}
+.sx-sel-list{position:absolute;z-index:40;top:calc(100% + 6px);left:0;right:0;margin:0;padding:6px;
+  list-style:none;background:#fff;border:1.5px solid var(--line);border-radius:12px;
+  box-shadow:0 20px 44px -18px rgba(13,58,44,.45);max-height:280px;overflow:auto}
+.sx-sel-list:focus{outline:none}
+.sx-sel-list li{font:inherit;font-size:16px;color:var(--fg);padding:11px 12px;border-radius:8px;cursor:pointer}
+.sx-sel-list li:hover,.sx-sel-list li.on{background:var(--g-soft)}
+.sx-sel-list li[aria-selected=true]{font-weight:600;color:var(--g)}
+.sx-sel-list li[aria-selected=true]::after{content:"";float:right;width:7px;height:12px;margin:3px 2px 0 0;
+  border:solid var(--g);border-width:0 2px 2px 0;transform:rotate(45deg)}
+
+/* ---------- 7. the footer headings ----------
+   "Product" and "Company" were the only headings on the page set in the
+   body font; every other h1-h4 uses the display one. This matches them. */
+.foot h4{font:600 15px/1.2 var(--f-d);letter-spacing:-.01em}
+
+/* ---------- people who asked for less motion ---------- */
+/* .sx is never added for them, so nothing is hidden and nothing
+   moves. These two rules switch off the hover movement as well. */
+@media (prefers-reduced-motion:reduce){
+  .btn:hover,.doesC:hover,.pcard:hover,.calc:hover{translate:none}
+  .doesC:hover .modIc{scale:none}
+  .sx-branch{display:none}
+}
