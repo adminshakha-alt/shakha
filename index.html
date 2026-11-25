@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0D3A2C">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Shakha 360"><meta property="og:url" content="https://www.shakha360.com/">
 <meta property="og:title" content="Shakha 360 · Billing and Compliance for CA firms"><meta property="og:description" content="Billing, collections, compliance deadlines, notices, work allocation and client documents, for every office of a CA firm. Free trial.">
-<meta property="og:image" content="https://www.shakha360.com/shots/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Shakha 360: your whole firm, in one view, with the dashboard of the app">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.shakha360.com/shots/share.jpg">
+<meta property="og:image" content="https://www.shakha360.com/shots/share.jpg?v=1043"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Shakha 360: your whole firm, in one view, with the dashboard of the app">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.shakha360.com/shots/share.jpg?v=1043">
 <link rel="icon" href="shakha360-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
@@ -121,7 +121,7 @@ setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx'
 <button type="button" role="tab" id="st3" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="notices" data-alt="Notices and Appeals: each client's notice with its reply date, hearing date, amount in dispute and the appeal still to file">Notices &amp; Appeals</button>
 <button type="button" role="tab" id="st4" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="docrequests" data-alt="Document Requests: a document list with clients ticked to receive it">Client documents</button>
 <button type="button" role="tab" id="st5" aria-controls="shotPane" aria-selected="false" tabindex="-1" data-shot="invoice" data-alt="An invoice with payments, follow-up notes and the letterhead">Invoice</button>
-</div><div class="shotPane" id="shotPane" role="tabpanel" aria-labelledby="st0"><img id="shotImg" src="shots/dashboard.jpg?v=1097b" width="2160" height="1350" alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm"></div>
+</div><div class="shotPane" id="shotPane" role="tabpanel" aria-labelledby="st0"><img id="shotImg" src="shots/dashboard.jpg?v=1043" width="2160" height="1350" alt="Dashboard: returns due, overdue returns, fees ready to bill and fees outstanding, for the whole firm"></div>
 <p class="shotNote">Real screens, with a made-up firm and clients.</p></div></div>
 </div>
 </section>
@@ -282,7 +282,7 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
  var tabs=[].slice.call(document.querySelectorAll('.shotTabs [role=tab]')),img=$('shotImg'),pane=$('shotPane');
  function pick(t,focus){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);if(on)x.removeAttribute('tabindex');else x.setAttribute('tabindex','-1')});
   var small=window.matchMedia&&matchMedia('(max-width:700px)').matches&&['dashboard','todo','alloc','notices'].indexOf(t.dataset.shot)>=0;
-  img.src='shots/'+(small?'phone-':'')+t.dataset.shot+'.jpg?v=1097b';img.width=small?780:2160;img.height=small?1688:1350;img.alt=t.dataset.alt;pane.setAttribute('aria-labelledby',t.id);if(focus)t.focus()}
+  img.src='shots/'+(small?'phone-':'')+t.dataset.shot+'.jpg?v=1043';img.width=small?780:2160;img.height=small?1688:1350;img.alt=t.dataset.alt;pane.setAttribute('aria-labelledby',t.id);if(focus)t.focus()}
  pick(tabs[0]);tabs.forEach(function(t,i){t.addEventListener('click',function(){pick(t)});t.addEventListener('keydown',function(ev){var k=ev.key==='ArrowRight'?1:ev.key==='ArrowLeft'?-1:0;if(k){ev.preventDefault();pick(tabs[(i+k+tabs.length)%tabs.length],true)}})});
 
  /* demo video and tutorials: YouTube loads only after a click */
