@@ -25,6 +25,11 @@
 /* 10.20.0: a web address or any long word in the office's message wraps inside the card on a phone */
 .cx h1{font-size:20px;margin:0 0 6px;overflow-wrap:anywhere}.cx p{font-size:15px;line-height:1.55;overflow-wrap:anywhere}.mu{font-size:13.5px;color:var(--mu)}
 .note{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:6px}.note p+p{margin-top:6px}
+/* 10.48.2: a locked file's password, asked under the file */
+.pwq{border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:10px 12px;margin:6px 0 4px;font-size:14px}.pwq label{display:block;font-weight:600;margin-bottom:6px;overflow-wrap:anywhere}
+.pwq .pwr{display:flex;gap:8px;flex-wrap:wrap}.pwq input{flex:1 1 180px;min-width:0;min-height:42px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;background:var(--card);color:var(--fg)}
+.pwq button{min-height:42px;border-radius:10px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg)}.pwq button.pri{background:var(--brand,#0F6E56);border-color:transparent;color:#fff}
+.pwq .pwm{margin-top:6px;font-size:13.5px}.pwq.ok{color:var(--ok)}
 .allin{display:none;background:var(--ok-bg);color:var(--ok);border-radius:14px;padding:12px 14px;font-weight:600;margin-bottom:10px}.allin.on{display:block}
 .grp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.grp h2{font-size:17px;font-weight:600;min-width:0;overflow-wrap:anywhere}.grp span{flex:none;font-size:13px;color:var(--mu);font-weight:600;white-space:nowrap}.grpx{height:1px;background:rgba(0,0,0,.1);margin:24px 0 16px}
 .it{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--card)}.it.done{background:var(--card2)}
@@ -173,8 +178,30 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
         return wait(1500 * tries).then(function () { return post({ up: 'piece', uid: uid, probe: 1 }); }).then(function (p) { if (stop(p)) throw Object.assign(new Error(p.error), { final: 1 }); if (p.ok) { if (p.done) { at = file.size; show(1); return null; } at = p.next || 0; } return step(); }, function () { return step(); });
       });
     }
-    return step();
+    return step().then(function () { return uid; });
   }
+  /* 10.48.2: is the file locked with a password? A PDF that names /Encrypt (looked for at its start and its end), or a Word, Excel or
+     PowerPoint file (.docx .xlsx .pptx) that is not a zip but an encrypted container */
+  function bytesOf(blob) { return new Promise(function (y) { var r = new FileReader(); r.onload = function () { y(new Uint8Array(r.result)); }; r.onerror = function () { y(new Uint8Array(0)); }; r.readAsArrayBuffer(blob); }); }
+  function lockedFile(f) { var ext = ((f.name.match(/\.([a-z0-9]+)$/i) || [])[1] || '').toLowerCase();
+    if (ext === 'pdf') { var K = 1048576; return Promise.all([bytesOf(f.slice(0, K)), bytesOf(f.slice(Math.max(0, f.size - K)))]).then(function (L) {
+        var hit = false; L.forEach(function (u) { var s = ''; for (var i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); if (/\/Encrypt\s*(\d|<<)/.test(s)) hit = true; }); return hit; }); }
+    if (ext === 'docx' || ext === 'xlsx' || ext === 'pptx') return bytesOf(f.slice(0, 8)).then(function (u) { return u.length >= 4 && u[0] === 0xD0 && u[1] === 0xCF && u[2] === 0x11 && u[3] === 0xE0; });
+    return Promise.resolve(false); }
+  /* asked under the file, then and there: the password goes to the office sealed; "I Don't Have It" tells the office it is locked */
+  function pwAsk(list, f, uid, after) {
+    var box = el('div', 'pwq'), lb = el('label', '', f.name + ' has a password. Type it so the office can open the file.'), row = el('div', 'pwr'), inp = el('input'), sv = el('button', 'pri', 'Save Password'), no = el('button', '', 'I Don\'t Have It'), msg = el('div', 'pwm');
+    var id = 'pw_' + uid; inp.id = id; lb.htmlFor = id; inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off'); sv.type = 'button'; no.type = 'button';
+    row.appendChild(inp); row.appendChild(sv); row.appendChild(no); box.appendChild(lb); box.appendChild(row); box.appendChild(msg);
+    if (after && after.parentNode === list) list.insertBefore(box, after.nextSibling); else list.appendChild(box);
+    function go(pw) { if (pw === null) return; sv.disabled = no.disabled = inp.disabled = true; msg.textContent = 'Saving…';
+      post({ up: 'pw', uid: uid, pw: pw }).then(function (j) { if (!j.ok) { sv.disabled = no.disabled = inp.disabled = false; msg.textContent = j.error || 'Could not be saved. Please try again.'; return; }
+        box.className = 'pwq ok'; box.textContent = pw ? 'Password saved for ' + f.name + '.' : 'The office will see that ' + f.name + ' is locked.'; },
+        function () { sv.disabled = no.disabled = inp.disabled = false; msg.textContent = 'Could not be saved. Please try again.'; }); }
+    sv.onclick = function () { var v = inp.value; if (!v) { msg.textContent = 'Type the password, or choose I Don\'t Have It.'; inp.focus(); return; } go(v); };
+    no.onclick = function () { go(''); };
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); sv.onclick(); } });
+    setTimeout(function () { try { inp.focus(); } catch (e) { } }, 50); }
   function icon() { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', 'M12 16V4m0 0L7 9m5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2'); s.appendChild(p); return s; }
   /* 10.34.0: a file's pill. Its fill shows true progress: it eases over about as long as the last piece took, so it never runs ahead */
   function svgOf(d) { var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); var p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); s.appendChild(p); return s; }
@@ -275,7 +302,7 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
       function take(fs) { var chain = Promise.resolve(); Array.prototype.slice.call(list.querySelectorAll('.ln.bad,.fp.final')).forEach(function (x) { x.remove(); });
         fs.forEach(function (f) { var P = filePill(f); list.appendChild(P.el);
           var go = function () { chain = chain.then(function () { if (f.size > MAX) throw { message: 'Larger than 25 MB', final: 1 }; if (!f.size) throw { message: 'This file is empty', final: 1 }; busy++; P.send(); return send(f, it.id, P.show); })
-            .then(function () { busy = Math.max(0, busy - 1); n++; mark(); P.done(); },
+            .then(function (uid) { busy = Math.max(0, busy - 1); n++; mark(); P.done(); if (uid) lockedFile(f).then(function (l) { if (l) pwAsk(list, f, uid, P.el); }); },
               function (e) { if (f.size <= MAX && f.size) busy = Math.max(0, busy - 1); P.fail((e && e.message) || 'Could not be sent. Please try again.', e && e.final ? null : go); }); };
           go(); }); }
       inp.onchange = function () { var fs = [].slice.call(inp.files || []); inp.value = ''; take(fs); };
