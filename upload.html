@@ -7,21 +7,43 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 <style>
-/* the green band at the top, as on the home page: deep green, a soft glow, the leaf and the flower */
-.uph{position:relative;overflow:hidden;background:#0D3A2C;color:#fff;padding:44px 0 96px}
-.uph::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 70% at 6% 100%,rgba(242,182,50,.14),transparent 70%),radial-gradient(50% 70% at 98% 60%,rgba(46,160,112,.34),transparent 70%)}
-.uph .shape.sL{left:-90px;top:26px;width:230px;height:230px}.uph .shape.sR{right:-70px;top:8px;width:200px;height:200px}
-.uph .in{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px;text-align:center}
-.upill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(242,182,50,.45);color:#F8D98A;font-size:14px;background:rgba(242,182,50,.08);max-width:100%;overflow-wrap:anywhere}
-.upill i{width:7px;height:7px;border-radius:50%;background:#F2B632;flex:none}
-.upill .pw{min-width:0}.upill .pf,.upill .pt{display:inline-block}.upill .pt::before{content:"\00B7";margin:0 6px}
-@media(max-width:560px){.upill{border-radius:18px;padding:8px 16px}.upill .pf,.upill .pt{display:block}.upill .pt{font-size:13px;opacity:.9;margin-top:1px}.upill .pt::before{content:none}}
-.uph h1{font-size:clamp(1.7rem,4.6vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin:16px 0 8px;overflow-wrap:anywhere}
-.uph .sub{color:#CFE0D8;font-size:15.5px;overflow-wrap:anywhere}
-.prog{display:flex;align-items:center;gap:12px;max-width:420px;margin:20px auto 0}.prog .trk{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.16);overflow:hidden}.prog .trk i{display:block;height:100%;width:0;background:#F2B632;border-radius:8px;transition:width .3s}
-.prog span{font-size:14px;color:#F8D98A;font-weight:600;white-space:nowrap}
-/* the card of documents, lifted over the band */
-.cx{position:relative;z-index:2;max-width:680px;margin:-64px auto 0;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:22px;padding:24px 24px 10px;box-sizing:border-box;box-shadow:0 18px 44px rgba(13,58,44,.14)}
+/* 27 Nov 2026 (owner): the page is the sending firm's own. A plain letterhead at the top (the firm's logo or initials, its name, the
+   line under it and how to reach it), then what is asked, for whom and by when. No leaf, flower or other decoration.
+   Everything takes the page's tokens, so it reads the same in light and dark. */
+body{background:var(--bg)}
+.lh{background:var(--card);border-bottom:1px solid var(--line);box-shadow:inset 0 4px 0 var(--g)}
+.col{max-width:720px;margin:0 auto;padding:0 20px;box-sizing:border-box}
+.lh.wide .col,.rq.wide .col{max-width:900px}
+.lhTop{display:flex;align-items:center;gap:16px;padding:26px 0 18px}
+.lhLogo{flex:none;display:grid;place-items:center;width:60px;height:60px;border-radius:14px;background:#fff;border:1px solid var(--line);overflow:hidden}
+.lhLogo img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;padding:6px;box-sizing:border-box;object-fit:contain}
+.lhLogo.mono{background:var(--g);border-color:transparent;color:#fff;font:700 22px/1 var(--f-d);letter-spacing:.01em}
+.lhName{min-width:0;flex:1}
+.lhName b{display:block;font:700 clamp(1.25rem,3.4vw,1.6rem)/1.15 var(--f-d);letter-spacing:-.015em;color:var(--fg);overflow-wrap:anywhere}
+.lhName span{display:block;margin-top:4px;font-size:14.5px;color:var(--mu);overflow-wrap:anywhere}
+.lhSafe{flex:none;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:var(--ok-bg);color:var(--ok);font:600 13px/1 var(--f-b);white-space:nowrap}
+.lhSafe svg,.lhMeta svg,.rqF svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.lhMeta{display:flex;flex-wrap:wrap;gap:6px 22px;padding:12px 0 14px;border-top:1px solid var(--line);font-size:13.5px;color:var(--mu)}
+.lhMeta span,.lhMeta a{display:inline-flex;align-items:flex-start;gap:7px;min-width:0;color:inherit;text-decoration:none;overflow-wrap:anywhere;line-height:1.45}
+.lhMeta svg{margin-top:2px}
+.lhName .lhAdr{display:flex;align-items:flex-start;gap:6px;margin-top:6px;font-size:13.5px;line-height:1.45}.lhName .lhAdr span{display:block;margin:0;font-size:inherit}.lhAdr svg{width:14px;height:14px;flex:none;margin-top:3px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.lhMeta a:hover{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+.lhMeta a:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+/* what is asked */
+.rq .col{padding-top:28px;padding-bottom:22px}
+.rqK{font:700 12.5px/1 var(--f-b);letter-spacing:.08em;text-transform:uppercase;color:var(--link)}
+.rq h1{font:700 clamp(1.6rem,4.4vw,2.2rem)/1.12 var(--f-d);letter-spacing:-.02em;margin:10px 0 0;color:var(--fg);overflow-wrap:anywhere;text-wrap:pretty}
+.rqF{display:flex;flex-wrap:wrap;gap:8px 10px;margin:16px 0 0;padding:0}
+.rqF div{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:14.5px;line-height:1.3}
+.rqF svg{color:var(--mu)}
+.rqF dt{color:var(--mu)}.rqF dd{margin:0;font-weight:600;color:var(--fg);overflow-wrap:anywhere}
+.prog{display:flex;align-items:center;gap:12px;margin:18px 0 0}.prog .trk{flex:1;height:8px;border-radius:8px;background:var(--line);overflow:hidden}.prog .trk i{display:block;height:100%;width:0;background:var(--ok);border-radius:8px;transition:width .3s}
+.prog span{font-size:14px;color:var(--fg);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:560px){.col{padding:0 14px}.lhTop{gap:12px;padding:22px 0 14px}.lhLogo{width:50px;height:50px;border-radius:12px}.lhLogo.mono{font-size:19px}.lhSafe{padding:8px}.lhSafe span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .lhMeta{flex-direction:column;gap:6px}.rq .col{padding-top:22px;padding-bottom:16px}.rqF div{padding:7px 10px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.prog .trk i{transition:none}}
+/* the card of documents */
+.cx{position:relative;z-index:2;max-width:720px;margin:0 auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:22px;padding:24px 24px 10px;box-sizing:border-box;box-shadow:0 1px 2px rgba(13,58,44,.05),0 14px 34px -18px rgba(13,58,44,.22)}
 /* 10.20.0: a web address or any long word in the office's message wraps inside the card on a phone */
 .cx h1{font-size:20px;margin:0 0 6px;overflow-wrap:anywhere}.cx p{font-size:15px;line-height:1.55;overflow-wrap:anywhere}.mu{font-size:13.5px;color:var(--mu)}
 .note{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:6px}.note p+p{margin-top:6px}
@@ -46,10 +68,10 @@
 .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;width:0;background:var(--ok)}
 /* 10.20.0: the bar and the spinner take the page's green, which is the light green in dark mode */
 .spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--ok);border-radius:50%;animation:r .9s linear infinite;margin:8px 0 14px}@keyframes r{to{transform:rotate(360deg)}}
-.plain{margin-top:24px}.foot2{text-align:center;font-size:13px;opacity:.75;margin:18px 0 28px}
+.plain{margin-top:24px}.foot2{text-align:center;font-size:13px;color:var(--mu);margin:22px 16px 30px;line-height:1.7;overflow-wrap:anywhere}.foot2 a{color:inherit}.foot2 #sentBy:empty{display:none}.foot2 #sentBy{display:block;color:var(--fg);font-weight:600}
 /* 10.27.0 */
 /* 10.27.0: documents and questions sit in one card for each heading; questions have answer boxes and tables */
-.cx.wide{max-width:860px}
+.cx.wide{max-width:900px}
 .gc{border:1px solid var(--line);border-radius:16px;padding:16px;margin:16px 0;background:var(--card)}
 .gc .grp{margin:0 0 4px}
 .gc .it{border:0;border-top:1px solid var(--line);border-radius:0;padding:14px 0 12px;margin:0;background:none}.gc .it:first-of-type{border-top:0;padding-top:6px}.gc .it.done{background:none}
@@ -103,7 +125,7 @@ html{scroll-padding-bottom:140px}.foot{position:sticky;bottom:0;z-index:3;displa
 .foot[hidden]{display:none}.fst{font-size:14px;color:var(--mu);font-weight:600}.fst.bad{color:var(--bad)}.fst.ok{color:var(--ok)}
 .foot .btn{min-height:46px}
 @media(max-width:700px){.gc{padding:14px;border-radius:14px}.foot{margin:16px -14px -6px;padding:10px 14px;border-radius:0 0 18px 18px}.foot .btn{flex:1 1 auto}}
-@media(max-width:700px){.uph{padding:30px 0 86px}.cx{margin:-60px 12px 0;padding:18px 14px 6px;border-radius:18px}.uph .shape{display:none}}
+@media(max-width:700px){.cx{margin:0 12px;padding:18px 14px 6px;border-radius:18px}}
 /* 10.34.0: a pill for each file: it fills while the file goes, says Reconnecting while a dropped connection is tried again, and turns solid green when received */
 .fp{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:18px minmax(0,1fr) auto auto;align-items:center;gap:10px;min-height:44px;margin-top:8px;padding:0 5px 0 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font-size:14px;transition:border-color .3s,color .3s;animation:fpIn .3s ease-out}
 @keyframes fpIn{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
@@ -135,9 +157,10 @@ html{scroll-padding-bottom:140px}.foot{position:sticky;bottom:0;z-index:3;displa
 <!-- 10.20.0: with JavaScript off the page says so, and does not spin for ever -->
 <noscript><style>#box h1,#box .spin{display:none}</style></noscript></head><body>
 <main id="main">
-<header class="uph" id="head" hidden><span class="shape sL" aria-hidden="true"></span><span class="shape sR" aria-hidden="true"></span><div class="in" id="headIn"></div></header>
+<header class="lh" id="head" hidden><div class="col" id="headIn"></div></header>
+<section class="rq" id="rq" hidden><div class="col" id="rqIn"></div></section>
 <div class="cx plain" id="box" aria-live="polite"><h1>Opening your request</h1><div class="spin"></div><noscript><p>This page needs JavaScript. Please open the link in Chrome, Safari, Edge or Firefox.</p></noscript></div>
-<p class="foot2"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener" style="color:inherit">Terms of Use</a></p></main>
+<p class="foot2"><span id="sentBy"></span>Powered by <a href="https://www.shakha360.com/" target="_blank" rel="noopener">Shakha 360</a> · <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> · <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a></p></main>
 <script>
 /* Shakha 360 web app address (the same one as connect.html) */
 var APP = 'https://shakha360-327918432563.asia-south1.run.app/exec';
@@ -147,10 +170,10 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) APP = location.origin 
 var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && /^https:\/\//.test(c.api || '') && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) APP = c.api; }).catch(function () { });
 (function () {
   var q = new URLSearchParams(location.search), K = { f: q.get('f') || '', r: q.get('r') || '', t: q.get('t') || '' };
-  var box = document.getElementById('box'), head = document.getElementById('head'), headIn = document.getElementById('headIn'), P = 5242880, MAX = 26214400, busy = 0;
+  var box = document.getElementById('box'), head = document.getElementById('head'), headIn = document.getElementById('headIn'), rq = document.getElementById('rq'), rqIn = document.getElementById('rqIn'), sentBy = document.getElementById('sentBy'), P = 5242880, MAX = 26214400, busy = 0;
   /* everything shown here is set as text, never as page code */
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
-  function fail(t, m) { head.hidden = true; box.className = 'cx plain'; box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
+  function fail(t, m) { head.hidden = true; rq.hidden = true; sentBy.textContent = ''; box.className = 'cx plain'; box.textContent = ''; box.appendChild(el('h1', '', t)); box.appendChild(el('p', '', m)); }
   function post(o) { var b = {}; for (var k in K) b[k] = K[k]; for (var j in o) b[j] = o[j];
     return APP_READY.then(function () { return fetch(window.SHAKHA_APP || APP, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store', body: JSON.stringify(b) }); }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status);
       /* 10.20.0: a reply that is not Shakha 360's own (a proxy's or an error page) counts as a connection fault */
@@ -252,17 +275,42 @@ var APP_READY = fetch('shakha-config.json', { cache: 'no-store' }).then(function
   function showErr(inp, e, msg) { e.textContent = msg || ''; e.hidden = !msg; if (msg) { inp.setAttribute('aria-invalid', 'true'); inp.setAttribute('aria-describedby', e.id); } else { inp.removeAttribute('aria-invalid'); } }
 
   function draw(o) {
-    document.title = (o.items.some(function (i) { return i.q; }) ? 'Your request · ' : 'Upload documents · ') + o.firm; box.className = 'cx'; box.textContent = ''; headIn.textContent = ''; head.hidden = false;
-    /* the band: who is asking, for what, from whom, by when, and how far it has got */
-    /* 10.21.3: the firm and its line under the name are each kept whole: side by side with a dot on a computer, one under the other on a phone */
-    var pill = el('span', 'upill'); pill.appendChild(el('i')); var pw = el('span', 'pw'); pw.appendChild(el('span', 'pf', o.firm)); if (o.tagline) pw.appendChild(el('span', 'pt', o.tagline)); pill.appendChild(pw); headIn.appendChild(pill);
-    headIn.appendChild(el('h1', '', o.title));
+    document.title = (o.items.some(function (i) { return i.q; }) ? 'Your request · ' : 'Upload documents · ') + o.firm; box.className = 'cx'; box.textContent = ''; headIn.textContent = ''; rqIn.textContent = ''; head.hidden = false; rq.hidden = false;
+    /* the letterhead: the firm that sent the link. Its logo when the office has one (else its initials), its name, the line under the
+       name, and its address, phone, email and website when the server sends them (an older server sends none, and the page is still whole).
+       Every word is set as text; the logo is used only if it is a PNG, JPG, WebP or GIF picture; links are built here, never taken as sent. */
+    var B = o.brand || {}, top = el('div', 'lhTop'), lg = el('span', 'lhLogo');
+    function ico(d) { var x = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); x.setAttribute('viewBox', '0 0 24 24'); x.setAttribute('aria-hidden', 'true'); d.split('|').forEach(function (dd) { var pth = document.createElementNS('http://www.w3.org/2000/svg', 'path'); pth.setAttribute('d', dd); x.appendChild(pth); }); return x; }
+    function mono() { var w = String(o.firm || '').replace(/^\s*m\/s\.?\s*/i, '').split(/[\s.&,]+/).filter(function (x) { return x && !/^(and|co|llp|ltd|pvt|the)$/i.test(x); }); var t = ((w[0] || '').charAt(0) + (w[1] || '').charAt(0)).toUpperCase(); lg.className = 'lhLogo mono'; lg.textContent = t || '•'; lg.setAttribute('aria-hidden', 'true'); }
+    if (typeof B.logo === 'string' && /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(B.logo)) { var im = new Image(); im.alt = o.firm + ' logo'; im.onerror = function () { lg.textContent = ''; mono(); }; im.src = B.logo; lg.appendChild(im); } else mono();
+    var nm = el('div', 'lhName'); nm.appendChild(el('b', '', o.firm)); if (o.tagline) nm.appendChild(el('span', '', o.tagline));
+    var safe = el('span', 'lhSafe'); safe.appendChild(ico('M6 11V8a6 6 0 0 1 12 0v3|M5 11h14v10H5z')); safe.appendChild(el('span', '', 'Secure upload link')); safe.title = 'Only someone with this link can send files here';
+    top.appendChild(lg); top.appendChild(nm); top.appendChild(safe); headIn.appendChild(top);
+    var meta = el('div', 'lhMeta'), T = function (x) { return typeof x === 'string' ? x.trim().slice(0, 240) : ''; };
+    function bit(d, txt, href) { var e = el(href ? 'a' : 'span'); if (href) { e.href = href; if (/^https:/.test(href)) { e.target = '_blank'; e.rel = 'noopener noreferrer'; } } e.appendChild(ico(d)); e.appendChild(el('span', '', txt)); meta.appendChild(e); return e; }
+    /* the address sits under the firm's name, as on a letterhead; phone, email and website share the row below */
+    if (T(B.addr)) { var ad = el('span', 'lhAdr'); ad.appendChild(ico('M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z|M12 12.2a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.200z')); ad.appendChild(el('span', '', T(B.addr))); nm.appendChild(ad); }
+    var ph = T(B.phone); if (ph) bit('M6.5 3h3l1.5 4.5-2 1.500a12 12 0 0 0 6 6l1.5-2 4.5 1.500v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z', ph, /^[+\d][\d\s()-]{5,22}$/.test(ph) ? 'tel:' + ph.replace(/[^\d+]/g, '') : '');
+    var em = T(B.email); if (/^[^@\s<>"']+@[^@\s<>"']+\.[^@\s<>"']+$/.test(em)) bit('M3 6h18v12H3z|M3.5 6.500l8.5 6.5 8.5-6.5', em, 'mailto:' + em);
+    var wb = T(B.web).replace(/^https?:\/\//i, '').replace(/\/+$/, ''); if (/^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}(\/[^\s"'<>]*)?$/i.test(wb)) bit('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z|M3 12h18|M12 3c2.5 2.7 2.5 15.3 0 18|M12 3c-2.5 2.7-2.5 15.3 0 18', wb, 'https://' + wb);
+    if (meta.children.length) headIn.appendChild(meta);
+    sentBy.textContent = 'This link was sent to you by ' + o.firm + '.';
+    /* what is asked: the title, for whom, by when, and how far it has got */
+    var hasQ0 = o.items.some(function (i) { return i.q && !i.optional; }), hasD0 = o.items.some(function (i) { return !i.q && !i.optional; });
+    rqIn.appendChild(el('p', 'rqK', hasQ0 && hasD0 ? 'Documents and questions' : hasQ0 ? 'Questions for you' : 'Document request'));
+    rqIn.appendChild(el('h1', '', o.title));
     var hasDue = !o.noDue && o.dueText && o.dueText !== 'the earliest';
-    headIn.appendChild(el('p', 'sub', 'For ' + o.client + (hasDue ? ' · by ' + o.dueText : '')));
-    var prog = el('div', 'prog'), trk = el('div', 'trk'), fillP = el('i'), cnt = el('span', '', ''); trk.appendChild(fillP); prog.appendChild(trk); prog.appendChild(cnt); headIn.appendChild(prog);
+    var facts = el('dl', 'rqF'); function fact(d, k, v) { var r = el('div'); r.appendChild(ico(d)); r.appendChild(el('dt', '', k)); r.appendChild(el('dd', '', v)); facts.appendChild(r); }
+    if (o.client) fact('M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z|M4.5 20.500a7.5 7.5 0 0 1 15 0', 'For', o.client);
+    if (hasDue) fact('M4 6h16v15H4z|M4 10.500h16|M8.5 3.500v4|M15.5 3.500v4', 'Send by', o.dueText);
+    var nD = o.items.filter(function (i) { return !i.q && !i.optional; }).length, nQ = o.items.filter(function (i) { return i.q && !i.optional; }).length, asked = [];
+    if (nD) asked.push(nD + (nD === 1 ? ' document' : ' documents')); if (nQ) asked.push(nQ + (nQ === 1 ? ' question' : ' questions'));
+    if (asked.length) fact('M6 3h9l4 4v14H6z|M14 3v5h5|M9 13h6|M9 17h4', 'Asked', asked.join(' and '));
+    if (facts.children.length) rqIn.appendChild(facts);
+    var prog = el('div', 'prog'), trk = el('div', 'trk'), fillP = el('i'), cnt = el('span', '', ''); trk.appendChild(fillP); prog.appendChild(trk); prog.appendChild(cnt); rqIn.appendChild(prog);
     trk.setAttribute('role', 'progressbar'); trk.setAttribute('aria-valuemin', '0'); trk.setAttribute('aria-label', 'Done');
     var need = o.items.filter(function (i) { return !i.optional; }), hasQ = need.some(function (i) { return i.q; }), hasD = need.some(function (i) { return !i.q; });
-    if (need.some(function (i) { return i.kind === 'table'; })) box.className = 'cx wide';
+    var wideP = need.some(function (i) { return i.kind === 'table'; }); if (wideP) box.className = 'cx wide'; head.className = 'lh' + (wideP ? ' wide' : ''); rq.className = 'rq' + (wideP ? ' wide' : '');
     var sum = el('div', 'sum'); sum.hidden = true; sum.tabIndex = -1; box.appendChild(sum);
     var thanks = el('div', 'thanks'); thanks.hidden = true; thanks.setAttribute('role', 'status'); box.appendChild(thanks);
     var allin = el('div', 'allin', 'Every document is in. Thank you. You can still add more files below.'); if (!hasQ) box.appendChild(allin);
