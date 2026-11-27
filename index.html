@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Public+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="anim.css">
+<link rel="stylesheet" href="anim.css?v=1128">
 <script>/* motion is used only if this page can run scripts and the visitor has not asked for less of it */
 (function(d){try{if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches){d.documentElement.className+=' sx';
 setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx')},3500)}}catch(e){}})(document);</script>
@@ -64,6 +64,24 @@ setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx'
 .cbox .ctot b{background:#F7CB4D;border-radius:999px;padding:8px 18px;font-size:1.5rem;font-variant-numeric:tabular-nums}
 .oneCard .ppts{grid-template-columns:1fr 1fr!important;gap:10px 20px!important;margin-top:20px!important;padding-top:20px;border-top:1px solid var(--line)}
 .oneBtns{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:26px}
+/* the demo form once sent (28 Nov 2026): a Sent badge at the card's top right, and the thank-you in the form's place, where the
+   visitor is looking, not under the button */
+.form h3{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--ok-bg);color:var(--ok);font:600 13px/1 var(--f-b);animation:cPop .35s cubic-bezier(.3,1.5,.5,1) both}
+.cBadge[hidden],.cThanks[hidden]{display:none}
+.cBadge svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.form.sent>*:not(h3):not(.cThanks){display:none}
+.cThanks{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:44px 12px 36px;animation:cRise .45s cubic-bezier(.2,.7,.2,1) both}
+.cThanks:focus{outline:none}.cThanks:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:12px}
+.cTick{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 10px var(--ok-bg);margin-bottom:10px;animation:cPop .5s cubic-bezier(.3,1.5,.5,1) both}
+.cTick svg{width:34px;height:34px;fill:none;stroke:var(--card);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;animation:cDraw .4s .3s ease-out forwards}
+.cThanks h4{font:700 1.5rem/1.2 var(--f-d);letter-spacing:-.015em;margin:0;color:var(--fg);overflow-wrap:anywhere}
+.cThanks p{color:var(--mu);max-width:36ch;margin:0;text-align:center;overflow-wrap:anywhere}
+.cThanks .btn{margin-top:14px}
+@keyframes cPop{from{opacity:0;scale:.5}to{opacity:1;scale:1}}
+@keyframes cRise{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+@keyframes cDraw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.cBadge,.cThanks,.cTick{animation:none}.cTick svg{animation:none;stroke-dashoffset:0}}
 .oneCard .pprice .amt{font-size:clamp(2.6rem,4.4vw,3.4rem);letter-spacing:-.03em}
 .one{align-items:stretch}
 .one .calc{display:flex;flex-direction:column}
@@ -250,7 +268,7 @@ setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx'
 </ul></div>
 
 <form class="form" id="cForm" novalidate>
-<h3>Request a demo</h3><p>Fields marked <span aria-hidden="true">*</span><span class="vh">with an asterisk</span> are required.</p>
+<h3><span id="cHead">Request a demo</span><span class="cBadge" id="cBadge" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Sent</span></h3><p>Fields marked <span aria-hidden="true">*</span><span class="vh">with an asterisk</span> are required.</p>
 <fieldset class="fld"><legend>What would you like?</legend><div class="radios">
 <label><input type="radio" name="want" value="A live demo" checked>A live demo</label>
 <label><input type="radio" name="want" value="An answer to a question">Ask a question</label></div></fieldset>
@@ -271,6 +289,7 @@ setTimeout(function(){if(!window.sxReady)d.documentElement.classList.remove('sx'
 <button class="btn" type="submit" id="cSend">Send my request</button>
 <p class="fNote">Your request goes straight to Team Shakha 360. We use these details only to reply to you.</p>
 <p class="fDone" id="cDone" role="status"></p>
+<div class="cThanks" id="cThanks" role="status" tabindex="-1" hidden><span class="cTick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><h4 id="cThH"></h4><p id="cThP"></p><button type="button" class="btn line" id="cAgain">Send another request</button></div>
 </form>
 </div></section>
 
@@ -339,11 +358,14 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
   var end=function(){btn.disabled=false;btn.textContent=lbl};
   fetch(APP,{method:'POST',credentials:'omit',redirect:'follow',cache:'no-store',body:JSON.stringify({site:'enquiry',want:want==='A live demo'?'demo':'question',name:g('name'),firm:g('firm'),email:g('email'),phone:g('phone'),city:g('city'),branches:g('branches'),msg:g('msg'),web:g('web')})})
    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
-   .then(function(j){end();if(j&&j.ok===true){var to=g('email');f.reset();$('cBr').dispatchEvent(new Event('change',{bubbles:true}));say('Thank you. Your request has reached Team Shakha 360. We will reply to '+to+'.');done.className='fDone ok';return}
+   .then(function(j){end();if(j&&j.ok===true){var to=g('email'),who=g('name').split(/\s+/)[0];f.reset();$('cBr').dispatchEvent(new Event('change',{bubbles:true}));done.textContent='';
+      $('cThH').textContent='Thank you'+(who?', '+who:'')+'.';$('cThP').textContent='Your request has reached Team Shakha 360. We will reply to '+to+'.';$('cHead').textContent=want==='A live demo'?'Demo requested':'Question sent';
+      $('cBadge').hidden=false;$('cThanks').hidden=false;f.classList.add('sent');$('cThanks').focus({preventScroll:true});f.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});return}
      /* a sentence of Shakha 360's own (a field to put right, or too many requests) is shown as it is; anything else offers the email app */
      done.className='fDone bad';if(j&&j.ok===false&&j.error)say(j.error,/write to/.test(j.error));else say('This could not be sent just now.',true)})
    .catch(function(){end();done.className='fDone bad';say('This could not be sent just now.',true)});
 });
+ $('cAgain').addEventListener('click',function(){f.classList.remove('sent');$('cThanks').hidden=true;$('cBadge').hidden=true;$('cHead').textContent='Request a demo';$('cName').focus()});
  document.querySelectorAll('[data-demo]').forEach(function(a){a.addEventListener('click',function(){f.querySelector('input[value="A live demo"]').checked=true})});
 
  /* scroll motion: content rises into place as it enters the screen (skipped for reduced motion) */
@@ -417,5 +439,5 @@ var TUTORIALS=[           /* add a YouTube ID to each one as it is recorded */
 </script>
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="js/anim.js?v=1127" defer></script>
+<script src="js/anim.js?v=1128" defer></script>
 </body></html>

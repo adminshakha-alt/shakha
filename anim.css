@@ -99,6 +99,9 @@ html.sx .sx-dot{opacity:0}
 .sx-stem{fill:none;stroke:var(--link);stroke-opacity:.34;stroke-width:2.4;stroke-linecap:round}
 .sx-leaf{fill:var(--link);fill-opacity:.46}
 .sx-rib{fill:none;stroke:#F7F3E8;stroke-opacity:.55;stroke-width:1.4;stroke-linecap:round}
+/* the leaf beside the heading on the yellow band: dark green in both light and dark, or it fades into the yellow in dark mode */
+.sx-on-band .sx-leaf{fill:#0D3A2C;fill-opacity:.62}
+.sx-on-band .sx-rib{stroke:#F2B632;stroke-opacity:.75}
 #main{position:relative}
 @media (prefers-color-scheme:dark){
   .sx-stem{stroke-opacity:.3}
