@@ -455,8 +455,15 @@
 
       // a leaf beside each heading, opening when that heading arrives
       marks.forEach(function (head, i) {
-        var ly = Math.round(head.getBoundingClientRect().top - mr.top - top + 12);
-        if (ly < 24 || ly > H - 24) return;
+        // Where the heading really sits, leaving out the 24px it is lowered by
+        // while it waits to be revealed. Measured with that shift, the first
+        // heading's leaf was drawn only if the vine happened to be built before
+        // the heading had risen; built after (a tall window, or a reload part
+        // way down the page) it fell above the vine's start and was dropped.
+        var shift = 0, rv = head.closest(".rv");
+        if (rv) { try { shift = new DOMMatrixReadOnly(getComputedStyle(rv).transform).m42 || 0; } catch (e) {} }
+        var ly = Math.max(28, Math.round(head.getBoundingClientRect().top - shift - mr.top - top + 12));
+        if (ly > H - 24) return;
         var right = i % 2 === 0;
         var g = document.createElementNS(NS, "g");
         g.setAttribute("transform", "translate(" + cx + " " + ly + ") rotate(" + (right ? -20 : 160) +
