@@ -413,6 +413,7 @@
       // zoom both change what the window width means.
       var band = Math.round(marks[0].getBoundingClientRect().left);
       var reach = Math.min(36, (band - 20) / 2);      // how far a leaf sticks out
+      vine = null;
       if (reach < 13) { host.style.display = "none"; return; }  // genuinely no margin
       host.style.display = "";
       host.style.width = band + "px";
@@ -448,10 +449,12 @@
       var L = stem.getTotalLength();
       stem.style.strokeDasharray = L;
       stem.style.strokeDashoffset = L;
-      trigs.push(ScrollTrigger.create({
-        trigger: host, start: "top 72%", end: "bottom 88%", scrub: 0.6,
-        animation: gsap.fromTo(stem, { strokeDashoffset: L }, { strokeDashoffset: 0, ease: "none" })
-      }));
+      // How far the stem is drawn, and which leaves are open, is worked out
+      // from the scroll position by paint() below. It used to be left to
+      // ScrollTrigger, and every time the page changed height (a click on
+      // the fee calculator, a question opened) the vine was rebuilt and
+      // drew itself again to its full length, popping every leaf.
+      vine = { stem: stem, L: L, top: mr.top + window.pageYOffset + top, H: H, leaves: [] };
 
       // a leaf beside each heading, opening when that heading arrives
       marks.forEach(function (head, i) {
@@ -475,16 +478,40 @@
         rib.setAttribute("d", "M3 0 C13 -3 24 -3 31 -1");
         rib.setAttribute("class", "sx-rib");
         g.appendChild(leaf); g.appendChild(rib);
+        // on the yellow band the leaf takes a dark green, so it shows in dark mode too
+        if (head.closest(".band")) g.setAttribute("class", "sx-on-band");
         svg.appendChild(g);
-        trigs.push(ScrollTrigger.create({
-          trigger: head, start: "top 78%", once: true,
-          animation: gsap.from(g, {
-            scale: 0, opacity: 0, transformOrigin: "0% 50%",
-            duration: 0.55, ease: "back.out(2.4)"
-          })
-        }));
+        // a leaf that has already opened stays open through a rebuild; one
+        // still to come waits hidden
+        if (!shown[i]) g.style.opacity = "0";
+        vine.leaves.push({ i: i, g: g, y: head.getBoundingClientRect().top - shift + window.pageYOffset });
+      });
+      paint(true);
+    }
+
+    // where the vine stands for the present scroll position. The stem starts
+    // when its top is 72% down the window and is whole when its foot is 88%
+    // down; a leaf opens when its heading is 78% down. "instant" puts the stem
+    // there at once (after a rebuild); otherwise it eases there.
+    var vine = null, shown = {}, queued = false;
+    function paint(instant) {
+      if (!vine) return;
+      var vh = window.innerHeight, sy = window.pageYOffset;
+      var a = vine.top - vh * 0.72, b = vine.top + vine.H - vh * 0.88;
+      var p = b > a ? Math.max(0, Math.min(1, (sy - a) / (b - a))) : 1, off = vine.L * (1 - p);
+      if (instant) { gsap.killTweensOf(vine.stem); gsap.set(vine.stem, { strokeDashoffset: off }); }
+      else gsap.to(vine.stem, { strokeDashoffset: off, duration: 0.6, ease: "power1.out", overwrite: true });
+      vine.leaves.forEach(function (lf) {
+        if (shown[lf.i] || sy + vh * 0.78 < lf.y) return;
+        shown[lf.i] = 1;
+        lf.g.style.opacity = "";
+        gsap.from(lf.g, { scale: 0, opacity: 0, transformOrigin: "0% 50%", duration: 0.55, ease: "back.out(2.4)" });
       });
     }
+    window.addEventListener("scroll", function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () { queued = false; paint(false); });
+    }, { passive: true });
 
     build();
     var rt;
